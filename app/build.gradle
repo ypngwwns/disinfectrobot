@@ -24,28 +24,28 @@ android {
     }
 
     signingConfigs {
-        release {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('../targe.jks')
-            storePassword 'android'
-        }
-        debug {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('../targe.jks')
-            storePassword 'android'
-        }
+//        release {
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file('../targe.jks')
+//            storePassword 'android'
+//        }
+//        debug {
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file('../targe.jks')
+//            storePassword 'android'
+//        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+//            signingConfig signingConfigs.debug
         }
 
     }
@@ -69,7 +69,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation('com.sonicers:commonlib:0.0.14') {
         transitive = true//依赖传递为true时才能把依赖的库打进去
-        exclude group:'com.blankj',module:'utilcode'
+        exclude group: 'com.blankj', module: 'utilcode'
     }
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.jeremyliao:retrofit-mock:0.1.0'
