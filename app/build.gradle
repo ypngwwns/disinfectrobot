@@ -17,11 +17,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDir 'libs'
-        }
-    }
 
     signingConfigs {
 //        release {
@@ -52,6 +47,20 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java'
+                srcDirs 'build/generated/data_binding_base_class_source_out/devDebug/out'
+            }
+        }
     }
 }
 
