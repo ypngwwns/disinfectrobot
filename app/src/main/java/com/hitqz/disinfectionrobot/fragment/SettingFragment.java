@@ -7,18 +7,18 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.hitqz.disinfectionrobot.databinding.FragmentMainBinding;
+import com.hitqz.disinfectionrobot.databinding.FragmentSettingBinding;
 
-public class MainFragment extends Fragment {
+public class SettingFragment extends Fragment {
 
-    FragmentMainBinding mBinding;
+    FragmentSettingBinding mBinding;
 
-    private MainFragment() {
+    private SettingFragment() {
         // Required empty public constructor
     }
 
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
+    public static SettingFragment newInstance() {
+        SettingFragment fragment = new SettingFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -27,7 +27,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentMainBinding.inflate(getLayoutInflater());
+        mBinding = FragmentSettingBinding.inflate(getLayoutInflater());
         return mBinding.getRoot();
     }
 }
