@@ -28,8 +28,6 @@ public class MainActivity extends BaseActivity implements IGo {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.transparent).statusBarDarkFont(true).init();
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         go2Main();
