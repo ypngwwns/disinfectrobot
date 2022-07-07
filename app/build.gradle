@@ -100,6 +100,7 @@ dependencies {
     //http://commons.apache.org/proper/commons-compress/download_compress.cgi
     implementation 'org.apache.commons:commons-compress:1.18'
     implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
+    implementation "org.java-websocket:Java-WebSocket:1.4.0"
 }
 repositories {
     mavenCentral()

@@ -1,4 +1,4 @@
-package net;
+package com.hitqz.disinfectionrobot.net;
 
 public class BattleInfoBean {
 

@@ -1,4 +1,4 @@
-package net;
+package com.hitqz.disinfectionrobot.net;
 
 import android.content.Context;
 import android.util.Log;

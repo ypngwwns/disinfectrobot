@@ -1,4 +1,4 @@
-package net;
+package com.hitqz.disinfectionrobot.net;
 
 import java.util.List;
 

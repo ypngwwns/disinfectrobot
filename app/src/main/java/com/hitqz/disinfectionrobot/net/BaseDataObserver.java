@@ -1,4 +1,4 @@
-package net;
+package com.hitqz.disinfectionrobot.net;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;

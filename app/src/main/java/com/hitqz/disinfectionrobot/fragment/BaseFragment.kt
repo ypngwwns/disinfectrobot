@@ -5,8 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import com.hitqz.disinfectionrobot.i.IGo
 import com.trello.rxlifecycle3.components.support.RxFragment
-import net.ISkyNet
-import net.RetrofitManager
+import com.hitqz.disinfectionrobot.net.ISkyNet
+import com.hitqz.disinfectionrobot.net.RetrofitManager
 
 open class BaseFragment : RxFragment() {
 
