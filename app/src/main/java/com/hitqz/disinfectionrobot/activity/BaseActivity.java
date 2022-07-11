@@ -18,12 +18,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.i.IDialog;
 import com.hitqz.disinfectionrobot.net.ISkyNet;
 import com.hitqz.disinfectionrobot.net.RetrofitManager;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 @SuppressLint("Registered")
-public class BaseActivity extends RxAppCompatActivity {
+public class BaseActivity extends RxAppCompatActivity implements IDialog {
 
     /**
      * 屏幕适配
@@ -87,6 +88,7 @@ public class BaseActivity extends RxAppCompatActivity {
         transaction.commit();
     }
 
+    @Override
     public void showDialog() {
         if (mLoadingDailog == null) {
             LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(this)
@@ -99,6 +101,7 @@ public class BaseActivity extends RxAppCompatActivity {
         mLoadingDailog.show();
     }
 
+    @Override
     public void dismissDialog() {
         if (mLoadingDailog != null) {
             mLoadingDailog.dismiss();

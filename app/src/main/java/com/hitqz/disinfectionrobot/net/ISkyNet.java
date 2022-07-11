@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.net;
 
+import com.hitqz.disinfectionrobot.data.Goal;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ISkyNet {
 
@@ -30,8 +32,8 @@ public interface ISkyNet {
      *
      * @return VestBean
      */
-    @GET("/app/vest/{num}")
-    Observable<BaseRespond<VestBean>> vest(@Path("num") int num);
+    @GET("/robot-web/web/robotMapPos/getByMapCheck")
+    Observable<BaseRespond<List<Goal>>> getByMapCheck(@Query("mapCode") String mapCode);
 
     /**
      * 获取马甲同一阵营的信息
