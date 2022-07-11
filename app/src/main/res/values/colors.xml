@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimaryLight">#b3e5fc</color>
+    <color name="colorPrimary">#03a9f4</color>
+    <color name="colorPrimaryDark">#0288d1</color>
+
+    <!--<color name="colorPrimaryLight">#cfd8dc</color>-->
+    <!--<color name="colorPrimary">#607d8b</color>-->
+    <!--<color name="colorPrimaryDark">#455a64</color>-->
+    <color name="laserLineColor">#ffeb3b</color>
+    <color name="laserPointColor">#b71c1c</color>
+
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="textYellow">#FFB5A73F</color>
+    <color name="textgray">#FFA3A2A1</color>
+    <color name="naviBtnPress">#FFC4C4C4</color>
+    <color name="naviBtnNormal">#FF363535</color>
+    <color name="naviViewBg">#aca9a9</color>
+
+    <color name="colorText">#ffffff</color>
+
 </resources>
