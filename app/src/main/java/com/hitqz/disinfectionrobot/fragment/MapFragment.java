@@ -16,11 +16,12 @@ import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.util.PathUtil;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
-import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CheckResult")
@@ -47,7 +48,7 @@ public class MapFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
-    private void initMap(String mapCode) throws IOException {
+    private void initMap(String mapCode) {
         mMapData = new MapData(PathUtil.getMapPGMFile(getMContext().getApplicationContext(), mapCode),
                 PathUtil.getMapYmlFile(getMContext().getApplicationContext(), mapCode));
     }
@@ -65,10 +66,28 @@ public class MapFragment extends BaseFragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> {
-                    mBinding.navigationView.setBitmap(mMapData.bitmap);
-                    initGoalList();
-                    dismissDialog();
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        dismissDialog();
+                        mBinding.navigationView.setBitmap(mMapData.bitmap);
+                        initGoalList();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
                 });
 
 

@@ -1,13 +1,15 @@
 package com.hitqz.disinfectionrobot.util;
 
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 // 目前该类pgm格式值针对P5,  P2格式不支持
-public class PGM
-{
+public class PGM {
+    public static final String TAG = PGM.class.getSimpleName();
     int width = 0;
     int height = 0;
     int maxpix = 0;
@@ -24,6 +26,7 @@ public class PGM
             in = new DataInputStream(fin);
             return doParse(in);
         } catch (Exception e) {
+            Log.e(TAG, e.toString());
             return false;
         }
     }
@@ -61,7 +64,7 @@ public class PGM
         // 过滤注释
         if (c == '#') {
             do {
-                c = (char)in.readByte();
+                c = (char) in.readByte();
             } while ((c != '\n') && (c != '\r'));
             c = readOneByte(in);
         }
@@ -70,7 +73,7 @@ public class PGM
         int k = 0;
         do {
             k = k * 10 + c - '0';
-            c = (char)in.readByte();
+            c = (char) in.readByte();
         } while (c >= '0' && c <= '9');
         width = k;
 
@@ -107,9 +110,9 @@ public class PGM
             c = (char) in.readByte();
             if (c == '\r') {
                 in.readByte();
-                c = (char)in.readByte();
+                c = (char) in.readByte();
             } else if (c == '\n') {
-                c = (char)in.readByte();
+                c = (char) in.readByte();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,8 +126,8 @@ public class PGM
 
         try {
             char[] typeArray = new char[2];
-            typeArray[0] = (char)in.readByte();
-            typeArray[1] = (char)in.readByte();
+            typeArray[0] = (char) in.readByte();
+            typeArray[1] = (char) in.readByte();
 
             if (typeArray[0] == 'P' && typeArray[1] == '5') {
                 builder.append(typeArray);
@@ -138,7 +141,7 @@ public class PGM
 
     // 直接开辟如此大块的空间，在图片非常大的情况下可能会OOM
     private void readData() {
-        if (in == null ||width == 0 || height == 0) {
+        if (in == null || width == 0 || height == 0) {
             return;
         }
 
@@ -197,7 +200,7 @@ public class PGM
         int destPos = mPixs.length;
         int w = getWidth();
         int h = getHeight();
-        for (int i=0; i<h; i++) {
+        for (int i = 0; i < h; i++) {
             srcPos = h * i;
             destPos -= w;
             System.arraycopy(mPixs, srcPos, dest, destPos, w);
