@@ -275,6 +275,11 @@ public class NavigationView extends View {
         }
     }
 
+    public void setNavigationPoints(List<NavigationPoint> navigationPoints) {
+        this.mNavigationPoints = navigationPoints;
+        postInvalidate();
+    }
+
 
     public void setResolutionAndOrigin(float resolution, float originX, float originY) {
         this.mResolution = resolution;
