@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.hitqz.disinfectionrobot.databinding.ActivityBuildMapBinding;
+import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.databinding.ActivityViewDirectionsBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
+import com.hitqz.disinfectionrobot.fragment.MapFragment;
 
 /**
  * 查看路线
@@ -14,13 +17,24 @@ import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 @SuppressLint("CheckResult")
 public class ViewDirectionsActivity extends BaseActivity {
 
-    ActivityBuildMapBinding mBinding;
+    ActivityViewDirectionsBinding mBinding;
+    private MapFragment mMapFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = ActivityBuildMapBinding.inflate(getLayoutInflater());
+        mBinding = ActivityViewDirectionsBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (mMapFragment == null) {
+            mMapFragment = MapFragment.newInstance();
+            fragmentTransaction.add(R.id.vp_content, mMapFragment);
+        } else {
+            fragmentTransaction.show(mMapFragment);
+        }
+
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     @Override

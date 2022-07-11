@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.hitqz.disinfectionrobot.databinding.FragmentSettingBinding;
+import com.hitqz.disinfectionrobot.databinding.FragmentMapBinding;
 
 public class MapFragment extends Fragment {
 
-    FragmentSettingBinding mBinding;
+    FragmentMapBinding mBinding;
 
     private MapFragment() {
         // Required empty public constructor
@@ -27,7 +27,7 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentSettingBinding.inflate(getLayoutInflater());
+        mBinding = FragmentMapBinding.inflate(getLayoutInflater());
         return mBinding.getRoot();
     }
 }
