@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.net.ISkyNet;
+import com.hitqz.disinfectionrobot.net.RetrofitManager;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 @SuppressLint("Registered")
@@ -29,7 +31,8 @@ public class BaseActivity extends RxAppCompatActivity {
      */
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;
-    LoadingDailog mLoadingDailog;
+    protected LoadingDailog mLoadingDailog;
+    protected ISkyNet mISkyNet;
 
     private static void setCustomDensity(@NonNull Activity activity) {
         Application application = activity.getApplication();
@@ -73,6 +76,7 @@ public class BaseActivity extends RxAppCompatActivity {
                 .statusBarColor(R.color.transparent).statusBarDarkFont(true).init();
         setCustomDensity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mISkyNet = RetrofitManager.getInstance(this).create(ISkyNet.class);
     }
 
     protected void replaceFragment(Fragment fragment) {

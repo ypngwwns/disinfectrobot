@@ -3,17 +3,25 @@ package com.hitqz.disinfectionrobot.net;
 import android.content.Context;
 import android.util.Log;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
+import com.hitqz.disinfectionrobot.constant.TokenKeys;
 import com.jeremy.retrofitmock.SimpleMockInterceptor;
 import com.sonicers.commonlib.net.HttpCommonInterceptor;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -23,7 +31,7 @@ public class RetrofitManager {
 
     public static final String TAG = "RetrofitManager";
 
-    public static final String SEVER_URL = "http://47.105.46.189:11000";
+    public static final String SEVER_URL = "http://192.168.3.2:8090";
 
     private static final int DEFAULT_TIME_OUT = 5;//超时时间 5s
     private static final int DEFAULT_READ_TIME_OUT = 10;
@@ -41,6 +49,7 @@ public class RetrofitManager {
                     .addHeaderParams("Content-Type", "application/json")
                     .build();
             builder.addInterceptor(commonInterceptor);
+            builder.addNetworkInterceptor(new TokenHeaderInterceptor());
             ClearableCookieJar cookieJar =
                     new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(DisinfectRobotApplication.instance.getApplicationContext()));
 
@@ -96,6 +105,28 @@ public class RetrofitManager {
         @Override
         public void log(String message) {
             Log.i("Retrofit", message);
+        }
+    }
+
+
+    //在请求头里添加token的拦截器处理
+    public static class TokenHeaderInterceptor implements Interceptor {
+        @NotNull
+        @Override
+        public Response intercept(@NotNull Chain chain) throws IOException {
+
+            long expireTime = SPUtils.getInstance().getLong(TokenKeys.expiresIn, 0);
+
+            if (System.currentTimeMillis() > expireTime) {
+                Request originalRequest = chain.request();
+                return chain.proceed(originalRequest);
+            } else {
+                Request originalRequest = chain.request();
+                //key的话以后台给的为准，我这边是叫token
+                Request updateRequest = originalRequest.newBuilder().addHeader("Authorization", SPUtils.getInstance().getString(TokenKeys.tokenHead)
+                        + SPUtils.getInstance().getString(TokenKeys.token)).build();
+                return chain.proceed(updateRequest);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -22,20 +23,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.constant.TokenKeys;
 import com.hitqz.disinfectionrobot.databinding.ActivityMainBinding;
 import com.hitqz.disinfectionrobot.fragment.DeployFragment;
 import com.hitqz.disinfectionrobot.fragment.MainFragment;
 import com.hitqz.disinfectionrobot.fragment.SettingFragment;
 import com.hitqz.disinfectionrobot.i.IGo;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.net.data.UserLoginData;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClient;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
+import com.hitqz.disinfectionrobot.util.MD5Util;
+import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+@SuppressLint("CheckResult")
 public class MainActivity extends BaseActivity implements IGo {
     public static final String TAG = "MainActivity";
 
@@ -111,13 +119,44 @@ public class MainActivity extends BaseActivity implements IGo {
         bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mHandler = new Handler();
-        go2Main();
+        String passwd = MD5Util.string2MD5("123456");
+        showDialog();
+        mISkyNet.oauthToken(
+                        "web-app",
+                        "123456",
+                        "password",
+                        "admin",
+                        passwd,
+                        null
+                ).compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<UserLoginData>() {
+                    @Override
+                    public void onSuccess(UserLoginData model) {
+                        dismissDialog();
+                        ToastUtils.showShort("登录成功");
+                        SPUtils.getInstance().put(
+                                TokenKeys.expiresIn,
+                                System.currentTimeMillis() + (model.getExpiresIn() - 10) * 1000
+                        );
+                        SPUtils.getInstance().put(TokenKeys.tokenHead, model.getTokenHead());
+                        SPUtils.getInstance().put(TokenKeys.token, model.getToken());
+                        go2Main();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        dismissDialog();
+                        ToastUtils.showShort("登录失败");
+                    }
+                });
+
         setListener();
 
         startJWebSClientService();

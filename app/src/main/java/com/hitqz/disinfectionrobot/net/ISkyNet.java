@@ -1,20 +1,29 @@
 package com.hitqz.disinfectionrobot.net;
 
+import com.hitqz.disinfectionrobot.net.data.UserLoginData;
+
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ISkyNet {
 
     /**
-     * 获取实兵演习百度地图信息
-     *
-     * @return MapBean
+     * Oauth2获取token
      */
-    @GET("/app/map")
-    Observable<BaseRespond<MapBean>> map();
+    @FormUrlEncoded
+    @POST("/robot-auth/oauth/token")
+    Observable<BaseRespond<UserLoginData>> oauthToken(@Field("client_id") String client_id,
+                                                      @Field("client_secret") String client_secret,
+                                                      @Field("grant_type") String grant_type,
+                                                      @Field("username") String username,
+                                                      @Field("password") String password,
+                                                      @Field("refresh_token") String refresh_token);
 
     /**
      * 获取马甲的信息
