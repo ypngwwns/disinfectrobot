@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.ActivityDisinfectRegularlyBinding;
 import com.hitqz.disinfectionrobot.fragment.DisinfectRegularlyFragment;
+import com.hitqz.disinfectionrobot.fragment.EditTasksFragment;
 
 public class DisinfectRegularlyActivity extends BaseActivity {
     ActivityDisinfectRegularlyBinding mBinding;
     private DisinfectRegularlyFragment mDisinfectRegularlyFragment;
+    private EditTasksFragment mEditTasksFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,10 +36,28 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    public void go2EditTask() {
+        hideOther();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (mEditTasksFragment == null) {
+            mEditTasksFragment = EditTasksFragment.newInstance();
+            fragmentTransaction.add(R.id.vp_content, mEditTasksFragment);
+        } else {
+            fragmentTransaction.show(mEditTasksFragment);
+        }
+
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
     private void hideOther() {
         if (mDisinfectRegularlyFragment != null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.hide(mDisinfectRegularlyFragment);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+        if (mEditTasksFragment != null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.hide(mEditTasksFragment);
             fragmentTransaction.commitAllowingStateLoss();
         }
     }

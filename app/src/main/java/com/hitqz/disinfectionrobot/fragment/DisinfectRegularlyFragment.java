@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
 import com.hitqz.disinfectionrobot.dapter.TimedTaskAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
 
@@ -46,10 +48,22 @@ public class DisinfectRegularlyFragment extends Fragment {
         list.add(new Object());
         list.add(new Object());
         mBinding.lvTimedTask.setAdapter(new TimedTaskAdapter(getContext(), list));
+        mBinding.lvTimedTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
+            }
+        });
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
+            }
+        });
+        mBinding.fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
             }
         });
     }
