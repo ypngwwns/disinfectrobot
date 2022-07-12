@@ -46,5 +46,11 @@ public class DisinfectRegularlyFragment extends Fragment {
         list.add(new Object());
         list.add(new Object());
         mBinding.lvTimedTask.setAdapter(new TimedTaskAdapter(getContext(), list));
+        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 }

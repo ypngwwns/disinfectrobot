@@ -12,7 +12,9 @@
         android:id="@+id/lv_timed_task"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:divider="@null"
         app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
+        android:paddingTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

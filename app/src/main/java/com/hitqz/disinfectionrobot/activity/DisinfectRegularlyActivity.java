@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.ActivityDisinfectRegularlyBinding;
-import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.fragment.DisinfectRegularlyFragment;
 
 public class DisinfectRegularlyActivity extends BaseActivity {
@@ -20,19 +19,6 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         mBinding = ActivityDisinfectRegularlyBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         go2DisinfectRegularly();
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        CommonDialog dialog = new CommonDialog();
-        dialog.setOnClickListener(new CommonDialog.OnClickListener() {
-            @Override
-            public void onConfirm() {
-                finish();
-            }
-        });
-        dialog.show(getSupportFragmentManager(), dialog.getTag());
     }
 
     public void go2DisinfectRegularly() {
