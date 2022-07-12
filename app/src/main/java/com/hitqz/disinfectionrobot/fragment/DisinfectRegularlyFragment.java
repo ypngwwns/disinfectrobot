@@ -13,6 +13,7 @@ import com.hitqz.disinfectionrobot.dapter.TimedTaskAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DisinfectRegularlyFragment extends Fragment {
 
@@ -39,6 +40,11 @@ public class DisinfectRegularlyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding.lvTimedTask.setAdapter(new TimedTaskAdapter(getContext(), new ArrayList<>()));
+        List<Object> list = new ArrayList<>();
+        list.add(new Object());
+        list.add(new Object());
+        list.add(new Object());
+        list.add(new Object());
+        mBinding.lvTimedTask.setAdapter(new TimedTaskAdapter(getContext(), list));
     }
 }
