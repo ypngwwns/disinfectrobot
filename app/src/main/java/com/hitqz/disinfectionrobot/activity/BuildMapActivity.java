@@ -2,6 +2,7 @@ package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +19,16 @@ public class BuildMapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = ActivityBuildMapBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+        setListener();
+    }
+
+    private void setListener() {
+        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
