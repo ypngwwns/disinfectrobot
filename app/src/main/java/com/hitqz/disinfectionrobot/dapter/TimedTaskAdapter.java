@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * 记录列表
  */
-public class DeployListAdapter extends BaseAdapter {
+public class TimedTaskAdapter extends BaseAdapter {
 
     private List<Object> mData;
     private Context mContext;
     private int mSelectedPos = -1;
 
-    public DeployListAdapter(Context mContext, List<Object> mData) {
+    public TimedTaskAdapter(Context mContext, List<Object> mData) {
         this.mData = mData;
         this.mContext = mContext;
     }

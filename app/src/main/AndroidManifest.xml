@@ -54,6 +54,11 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".activity.DisinfectRegularlyActivity"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>
