@@ -49,6 +49,11 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".activity.DeploymentRouteActivity"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>

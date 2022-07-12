@@ -73,8 +73,6 @@ public class BaseActivity extends RxAppCompatActivity implements IDialog {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.transparent).statusBarDarkFont(true).init();
         setCustomDensity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mISkyNet = RetrofitManager.getInstance(this).create(ISkyNet.class);

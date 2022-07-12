@@ -4,6 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_height="400dp" />
+
+    <TextView
+        android:id="@+id/tv_ssid"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        android:textColor="#ffffff"
+        android:layout_margin="20dp"
+        android:textSize="20dp"
+        android:text="DST_123456"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         card_view:layout_constraintStart_toStartOf="parent"

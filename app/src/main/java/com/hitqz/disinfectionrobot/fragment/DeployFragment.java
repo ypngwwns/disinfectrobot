@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hitqz.disinfectionrobot.activity.BuildMapActivity;
+import com.hitqz.disinfectionrobot.activity.DeploymentRouteActivity;
 import com.hitqz.disinfectionrobot.databinding.FragmentDeployBinding;
 
 public class DeployFragment extends Fragment {
@@ -42,6 +43,13 @@ public class DeployFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), BuildMapActivity.class);
+                startActivity(intent);
+            }
+        });
+        mBinding.cvDeploymentRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DeploymentRouteActivity.class);
                 startActivity(intent);
             }
         });

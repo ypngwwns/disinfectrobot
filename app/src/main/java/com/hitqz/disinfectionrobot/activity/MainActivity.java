@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.gyf.immersionbar.ImmersionBar;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.constant.TokenKeys;
 import com.hitqz.disinfectionrobot.databinding.ActivityMainBinding;
@@ -150,7 +151,8 @@ public class MainActivity extends BaseActivity implements IGo {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.transparent).statusBarDarkFont(true).init();
         checkPermission();
         mHandler = new Handler();
         String passwd = MD5Util.string2MD5("123456");
