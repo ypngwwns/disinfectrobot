@@ -119,7 +119,7 @@ public class JWebSocketClientService extends Service {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
 
                 Intent intent = new Intent();
-                intent.setAction("com.hitqz.ws.content.content");
+                intent.setAction("com.hitqz.ws.content");
                 intent.putExtra("message", message);
                 sendBroadcast(intent);
 

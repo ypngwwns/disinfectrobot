@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity implements IGo {
      */
     private void doRegisterReceiver() {
         chatMessageReceiver = new ChatMessageReceiver();
-        IntentFilter filter = new IntentFilter("com.hitqz.ws.content.content");
+        IntentFilter filter = new IntentFilter("com.hitqz.ws.content");
         registerReceiver(chatMessageReceiver, filter);
     }
 
