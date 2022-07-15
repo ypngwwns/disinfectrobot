@@ -3,6 +3,7 @@ package com.hitqz.disinfectionrobot.activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hitqz.disinfectionrobot.R;
@@ -24,11 +25,10 @@ public class DisinfectRegularlyActivity extends BaseActivity {
     }
 
     public void go2DisinfectRegularly() {
-        hideOther();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mDisinfectRegularlyFragment == null) {
             mDisinfectRegularlyFragment = DisinfectRegularlyFragment.newInstance();
-            fragmentTransaction.add(R.id.vp_content, mDisinfectRegularlyFragment);
+            fragmentTransaction.add(R.id.vp_content, mDisinfectRegularlyFragment, DisinfectRegularlyFragment.TAG);
         } else {
             fragmentTransaction.show(mDisinfectRegularlyFragment);
         }
@@ -41,7 +41,8 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mEditTasksFragment == null) {
             mEditTasksFragment = EditTasksFragment.newInstance();
-            fragmentTransaction.add(R.id.vp_content, mEditTasksFragment);
+            fragmentTransaction.add(R.id.vp_content, mEditTasksFragment, EditTasksFragment.TAG);
+            fragmentTransaction.addToBackStack(null);//后退时先移除，不销毁Activity
         } else {
             fragmentTransaction.show(mEditTasksFragment);
         }
@@ -55,10 +56,17 @@ public class DisinfectRegularlyActivity extends BaseActivity {
             fragmentTransaction.hide(mDisinfectRegularlyFragment);
             fragmentTransaction.commitAllowingStateLoss();
         }
-        if (mEditTasksFragment != null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.hide(mEditTasksFragment);
-            fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int backCount = fragmentManager.getBackStackEntryCount();
+        if (backCount == 0) {
+            finish();
+        } else if (backCount == 1) {
+            go2DisinfectRegularly();
+            super.onBackPressed();
         }
     }
 }

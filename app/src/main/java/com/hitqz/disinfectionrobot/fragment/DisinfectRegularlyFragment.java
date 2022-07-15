@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisinfectRegularlyFragment extends Fragment {
+    public static final String TAG = DisinfectRegularlyFragment.class.getSimpleName();
 
     FragmentDisinfectRegularlyBinding mBinding;
 

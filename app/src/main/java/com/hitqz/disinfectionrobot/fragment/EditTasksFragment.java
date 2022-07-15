@@ -17,6 +17,7 @@ import java.util.List;
 
 public class EditTasksFragment extends Fragment {
 
+    public static final String TAG = EditTasksFragment.class.getSimpleName();
     FragmentEditTasksBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;
 
@@ -47,5 +48,12 @@ public class EditTasksFragment extends Fragment {
         list.add("二号会议室");
         mDisinfectAreaAdapter = new DisinfectAreaAdapter(list);
         mBinding.lvDisinfectionArea.setAdapter(mDisinfectAreaAdapter);
+
+        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 }
