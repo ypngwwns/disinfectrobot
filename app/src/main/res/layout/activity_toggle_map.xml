@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.hitqz.disinfectionrobot.widget.NavigationView
         android:id="@+id/navigation_view"
@@ -11,5 +12,22 @@
     <include
         android:id="@+id/include_layout_common_title_bar"
         layout="@layout/layout_common_title_bar" />
+
+    <Button
+        android:id="@+id/btn_map_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
+        android:text="选择地图" />
+
+    <TextView
+        android:id="@+id/tv_map_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
+        android:layout_width="wrap_content"
+        android:text="map0622"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
