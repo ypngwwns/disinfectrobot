@@ -122,7 +122,6 @@ public class MainActivity extends BaseActivity implements IGo {
         bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
     }
 
-
     //动态访问权限弹窗
     public Boolean checkPermission() {
         boolean isGranted = true;
@@ -182,6 +181,7 @@ public class MainActivity extends BaseActivity implements IGo {
                     @Override
                     public void onFailure(String msg) {
                         dismissDialog();
+                        go2Main();
                         ToastUtils.showShort("登录失败");
                     }
                 });

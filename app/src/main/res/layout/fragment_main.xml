@@ -134,6 +134,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_manual_control"
         card_view:layout_constraintStart_toEndOf="@id/cv_view_directions"
         card_view:layout_constraintTop_toBottomOf="@id/card_view"
         android:layout_width="wrap_content"

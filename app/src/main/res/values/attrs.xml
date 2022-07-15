@@ -7,4 +7,9 @@
         <attr format="dimension" name="shadow_dx" />
         <attr format="dimension" name="shadow_dy" />
     </declare-styleable>
+    <declare-styleable name="RockerView">
+        <attr name="areaBackground" format="color|reference" />
+        <attr name="rockerBackground" format="color|reference" />
+        <attr name="rockerRadius" format="dimension" />
+    </declare-styleable>
 </resources>
