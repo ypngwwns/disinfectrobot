@@ -1,6 +1,7 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -75,6 +76,12 @@ public class DeploymentRouteActivity extends BaseActivity {
             }
         });
         dialog.show(getSupportFragmentManager(), DeployAlertDialog.TAG);
+        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
