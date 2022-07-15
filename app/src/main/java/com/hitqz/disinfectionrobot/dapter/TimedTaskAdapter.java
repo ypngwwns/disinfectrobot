@@ -17,16 +17,11 @@ public class TimedTaskAdapter extends BaseAdapter {
 
     private List<Object> mData;
     private Context mContext;
-    private int mSelectedPos = -1;
+    private View.OnClickListener mOnClickListener;
 
     public TimedTaskAdapter(Context mContext, List<Object> mData) {
         this.mData = mData;
         this.mContext = mContext;
-    }
-
-    public void setSelectedPos(int selectedPos) {
-        mSelectedPos = selectedPos;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -47,6 +42,19 @@ public class TimedTaskAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_record, parent, false);
+        convertView.setTag(position);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickListener != null) {
+                    mOnClickListener.onClick(v);
+                }
+            }
+        });
         return convertView;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
     }
 }

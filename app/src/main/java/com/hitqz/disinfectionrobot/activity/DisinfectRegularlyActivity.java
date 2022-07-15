@@ -67,6 +67,7 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         } else if (backCount == 1) {
             go2DisinfectRegularly();
             super.onBackPressed();
+            mEditTasksFragment = null;
         }
     }
 }

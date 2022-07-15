@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +20,8 @@ public class DisinfectRegularlyFragment extends Fragment {
     public static final String TAG = DisinfectRegularlyFragment.class.getSimpleName();
 
     FragmentDisinfectRegularlyBinding mBinding;
+    private TimedTaskAdapter mTimedTaskAdapter;
+    private List<Object> mList;
 
     private DisinfectRegularlyFragment() {
         // Required empty public constructor
@@ -43,15 +44,16 @@ public class DisinfectRegularlyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        List<Object> list = new ArrayList<>();
-        list.add(new Object());
-        list.add(new Object());
-        list.add(new Object());
-        list.add(new Object());
-        mBinding.lvTimedTask.setAdapter(new TimedTaskAdapter(getContext(), list));
-        mBinding.lvTimedTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mList = new ArrayList<>();
+        mList.add(new Object());
+        mList.add(new Object());
+        mList.add(new Object());
+        mList.add(new Object());
+        mTimedTaskAdapter = new TimedTaskAdapter(getContext(), mList);
+        mBinding.lvTimedTask.setAdapter(mTimedTaskAdapter);
+        mTimedTaskAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
             }
         });
