@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
+import com.hitqz.disinfectionrobot.activity.StartDisinfectActivity;
 import com.hitqz.disinfectionrobot.activity.ViewDirectionsActivity;
 import com.hitqz.disinfectionrobot.databinding.FragmentMainBinding;
 
@@ -50,6 +51,13 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), DisinfectRegularlyActivity.class);
+                startActivity(intent);
+            }
+        });
+        mBinding.btnStartDisinfect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), StartDisinfectActivity.class);
                 startActivity(intent);
             }
         });

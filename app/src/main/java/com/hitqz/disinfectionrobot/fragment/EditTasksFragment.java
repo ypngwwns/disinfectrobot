@@ -20,6 +20,7 @@ public class EditTasksFragment extends Fragment {
     public static final String TAG = EditTasksFragment.class.getSimpleName();
     FragmentEditTasksBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;
+    private List<String> mList;
 
     private EditTasksFragment() {
         // Required empty public constructor
@@ -42,11 +43,11 @@ public class EditTasksFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        List<String> list = new ArrayList<>();
-        list.add("大厅");
-        list.add("一号会议室");
-        list.add("二号会议室");
-        mDisinfectAreaAdapter = new DisinfectAreaAdapter(list);
+        mList = new ArrayList<>();
+        mList.add("大厅");
+        mList.add("一号会议室");
+        mList.add("二号会议室");
+        mDisinfectAreaAdapter = new DisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mDisinfectAreaAdapter);
 
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
