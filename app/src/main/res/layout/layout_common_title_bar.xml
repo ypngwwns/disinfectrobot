@@ -9,15 +9,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="24dp"
         android:text="DST_123456"
         android:textColor="@android:color/white"
         android:textSize="15dp" />
 
-    <ImageButton
-        android:id="@+id/ib_back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/selector_back" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:paddingStart="37.5dp"
+        android:paddingEnd="37.5dp"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="14.5dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:background="@drawable/selector_back" />
+    </FrameLayout>
+
 
 </RelativeLayout>

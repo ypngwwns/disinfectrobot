@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/deploy_bg">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_build_map"
         card_view:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="70dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         card_view:cardCornerRadius="4dp">
@@ -17,20 +18,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shape_round_white_dp8"
+            android:background="#FFFFFF"
             android:padding="10dp">
 
             <ImageView
                 android:src="@mipmap/build_map"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="83dp"
+                android:layout_height="72.5dp" />
 
             <TextView
                 android:text="构建地图"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/DeployFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -39,7 +37,7 @@
         android:id="@+id/cv_deployment_route"
         card_view:layout_constraintTop_toBottomOf="@id/cv_build_map"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -48,20 +46,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shape_round_white_dp8"
+            android:background="#FFFFFF"
             android:padding="10dp">
 
             <ImageView
                 android:src="@mipmap/deployment_route"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="83dp"
+                android:layout_height="72.5dp" />
 
             <TextView
                 android:text="部署路线"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/DeployFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -70,7 +65,7 @@
         android:id="@+id/cv_set_up_disinfection_area"
         card_view:layout_constraintTop_toBottomOf="@id/cv_deployment_route"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -79,20 +74,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shape_round_white_dp8"
+            android:background="#FFFFFF"
             android:padding="10dp">
 
             <ImageView
                 android:src="@mipmap/set_up_disinfection_area"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="83dp"
+                android:layout_height="72.5dp" />
 
             <TextView
-                android:text="设置消毒区"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/DeployFragmentTextStyle"
+                android:text="设置消毒区" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -101,7 +93,7 @@
         android:id="@+id/cv_toggle_map"
         card_view:layout_constraintTop_toBottomOf="@id/cv_set_up_disinfection_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -110,20 +102,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shape_round_white_dp8"
+            android:background="#FFFFFF"
             android:padding="10dp">
 
             <ImageView
                 android:src="@mipmap/toggle_map"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="83dp"
+                android:layout_height="72.5dp" />
 
             <TextView
                 android:text="切换地图"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/DeployFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

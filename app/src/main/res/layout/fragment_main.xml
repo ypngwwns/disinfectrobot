@@ -7,19 +7,21 @@
     <ImageView
         android:layout_width="match_parent"
         card_view:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimaryDark"
-        android:layout_height="400dp" />
+        android:background="@mipmap/main_bg"
+        android:layout_height="534.5dp" />
 
     <TextView
         android:id="@+id/tv_ssid"
-        card_view:layout_constraintTop_toTopOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        android:textColor="#ffffff"
-        android:layout_margin="20dp"
-        android:textSize="20dp"
-        android:text="DST_123456"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="53dp"
+        android:text="DST_123456"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -27,8 +29,10 @@
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintTop_toTopOf="parent"
         card_view:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_height="117dp"
         card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
@@ -38,7 +42,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="83dp"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
@@ -46,7 +50,8 @@
                     android:id="@+id/info_text"
                     android:text="充电中"
                     android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:textColor="#323232"
+                    android:textSize="26dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -55,8 +60,9 @@
                 <TextView
                     android:id="@+id/sub_info_text"
                     android:layout_below="@id/info_text"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16.5dp"
                     android:layout_gravity="center_horizontal"
+                    android:textColor="#999999"
                     android:text="正在充电"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -68,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="65dp"
                 android:text="开始消毒" />
         </RelativeLayout>
 
@@ -82,7 +88,7 @@
         card_view:layout_constraintTop_toBottomOf="@id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36.5dp"
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
@@ -92,14 +98,16 @@
 
             <ImageView
                 android:src="@mipmap/view_directions"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+                android:layout_width="53.5dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="33dp"
+                android:layout_marginEnd="33dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
 
             <TextView
                 android:text="查看路线"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/MainFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -110,25 +118,27 @@
         card_view:layout_constraintTop_toBottomOf="@id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="36.5dp"
+        android:layout_marginEnd="36.5dp"
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
                 android:src="@mipmap/disinfect_regularly"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+                android:layout_width="53.5dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="33dp"
+                android:layout_marginEnd="33dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
 
             <TextView
                 android:text="定时消毒"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/MainFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -139,8 +149,8 @@
         card_view:layout_constraintTop_toBottomOf="@id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginTop="36.5dp"
+        android:layout_marginStart="36.5dp"
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
@@ -150,14 +160,16 @@
 
             <ImageView
                 android:src="@mipmap/manual_control"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+                android:layout_width="53.5dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="33dp"
+                android:layout_marginEnd="33dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
 
             <TextView
                 android:text="手动控制"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/MainFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

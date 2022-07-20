@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.tu.loadingdialog.LoadingDailog;
-import com.gyf.immersionbar.ImmersionBar;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.i.IDialog;
 import com.hitqz.disinfectionrobot.net.ISkyNet;
