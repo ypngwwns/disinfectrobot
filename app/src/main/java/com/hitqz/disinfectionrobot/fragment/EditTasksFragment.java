@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
+import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class EditTasksFragment extends Fragment {
 
     public static final String TAG = EditTasksFragment.class.getSimpleName();
     FragmentEditTasksBinding mBinding;
-    private DisinfectAreaAdapter mDisinfectAreaAdapter;
+    private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
     private List<String> mList;
     private boolean mSelectedAllArea = true;
 
@@ -49,8 +49,8 @@ public class EditTasksFragment extends Fragment {
         mList.add("大厅");
         mList.add("一号会议室");
         mList.add("二号会议室");
-        mDisinfectAreaAdapter = new DisinfectAreaAdapter(mList);
-        mBinding.lvDisinfectionArea.setAdapter(mDisinfectAreaAdapter);
+        mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
+        mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
 
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
             @Override

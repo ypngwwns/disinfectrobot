@@ -6,7 +6,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
+import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.databinding.ActivityManualControlBinding;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class ManualControlActivity extends BaseActivity {
 
     ActivityManualControlBinding mBinding;
 
-    private DisinfectAreaAdapter mDisinfectAreaAdapter;
+    private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
     private List<String> mList;
 
     @Override

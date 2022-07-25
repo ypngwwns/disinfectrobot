@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
-import com.hitqz.disinfectionrobot.dapter.TimedTaskAdapter;
+import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectAreaListBinding;
 
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ import java.util.List;
 public class DisinfectAreaListFragment extends Fragment {
 
     FragmentDisinfectAreaListBinding mBinding;
-    private TimedTaskAdapter mTimedTaskAdapter;
-    private List<Object> mList;
+    private DisinfectAreaAdapter mDisinfectAreaAdapter;
+    private List<String> mList;
 
     private DisinfectAreaListFragment() {
         // Required empty public constructor
@@ -44,13 +44,13 @@ public class DisinfectAreaListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mList = new ArrayList<>();
-        mList.add(new Object());
-        mList.add(new Object());
-        mList.add(new Object());
-        mList.add(new Object());
-        mTimedTaskAdapter = new TimedTaskAdapter(getContext(), mList);
-        mBinding.lvTimedTask.setAdapter(mTimedTaskAdapter);
-        mTimedTaskAdapter.setOnClickListener(new View.OnClickListener() {
+        mList.add("大厅");
+        mList.add("会议室1");
+        mList.add("会议室2");
+        mList.add("会议室2");
+        mDisinfectAreaAdapter = new DisinfectAreaAdapter(mList);
+        mBinding.lvTimedTask.setAdapter(mDisinfectAreaAdapter);
+        mDisinfectAreaAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea();

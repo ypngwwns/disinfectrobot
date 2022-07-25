@@ -1,6 +1,7 @@
 package com.hitqz.disinfectionrobot.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,13 @@ import com.hitqz.disinfectionrobot.R;
 import java.util.List;
 
 @SuppressLint("CheckResult")
-public class DisinfectAreaAdapter extends BaseAdapter {
-    public static final String TAG = DisinfectAreaAdapter.class.getSimpleName();
+public class SelectDisinfectAreaAdapter extends BaseAdapter {
+    public static final String TAG = SelectDisinfectAreaAdapter.class.getSimpleName();
 
     private final List<String> mList;
     private int mSelectedPos = -1;
-    private View.OnClickListener mOnClickListener;
 
-    public DisinfectAreaAdapter(List<String> list) {
+    public SelectDisinfectAreaAdapter(List<String> list) {
         this.mList = list;
     }
 
@@ -46,19 +46,23 @@ public class DisinfectAreaAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_disinfect_area, parent, false);
-        TextView tv1 = convertView.findViewById(R.id.tv1);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_disinfect_area, parent, false);
+            holder = new ViewHolder();
+            holder.tv1 = convertView.findViewById(R.id.tv1);
+            holder.vp = convertView.findViewById(R.id.vp_background);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
         String name = mList.get(position);
-        tv1.setText(name);
-        convertView.setTag(position);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnClickListener != null) {
-                    mOnClickListener.onClick(v);
-                }
-            }
-        });
+        holder.tv1.setText(name);
+        if (position == mSelectedPos) {
+            holder.vp.setBackgroundColor(Color.BLUE);
+        } else {
+            holder.vp.setBackgroundColor(Color.parseColor("#03a9f4"));
+        }
         return convertView;
     }
 
@@ -67,7 +71,8 @@ public class DisinfectAreaAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        mOnClickListener = onClickListener;
+    public class ViewHolder {
+        private TextView tv1;
+        private ViewGroup vp;
     }
 }

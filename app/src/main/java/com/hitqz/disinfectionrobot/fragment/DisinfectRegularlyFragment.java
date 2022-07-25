@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
-import com.hitqz.disinfectionrobot.dapter.TimedTaskAdapter;
+import com.hitqz.disinfectionrobot.adapter.TimedTaskAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
 
 import java.util.ArrayList;

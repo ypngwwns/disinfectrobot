@@ -1,4 +1,4 @@
-package com.hitqz.disinfectionrobot.dapter;
+package com.hitqz.disinfectionrobot.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
