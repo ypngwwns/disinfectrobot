@@ -58,7 +58,7 @@ public class ShadowRelativeLayout extends RelativeLayout {
         setPaint();
     }
 
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     @Override
     public void draw(Canvas canvas) {

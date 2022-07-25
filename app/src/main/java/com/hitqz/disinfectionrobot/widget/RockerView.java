@@ -67,10 +67,10 @@ public class RockerView extends View {
     private static final int ROCKER_BACKGROUND_MODE_COLOR = 5;
     private static final int ROCKER_BACKGROUND_MODE_XML = 6;
     private static final int ROCKER_BACKGROUND_MODE_DEFAULT = 7;
-    private Paint mAreaBackgroundPaint;
-    private Paint mRockerPaint;
+    private final Paint mAreaBackgroundPaint;
+    private final Paint mRockerPaint;
     private Point mRockerPosition;
-    private Point mCenterPoint;
+    private final Point mCenterPoint;
     private int mAreaRadius;
     private int mRockerRadius;
     private CallBackMode mCallBackMode = CallBackMode.CALL_BACK_MODE_MOVE;
@@ -88,8 +88,8 @@ public class RockerView extends View {
 
     private boolean touchable = true;
 
-    private int mGrayAreaColor = Color.parseColor("#323232");
-    private int mGrayRockerColor = Color.parseColor("#565656");
+    private final int mGrayAreaColor = Color.parseColor("#323232");
+    private final int mGrayRockerColor = Color.parseColor("#565656");
 
     public RockerView(Context context, AttributeSet attrs) {
         super(context, attrs);

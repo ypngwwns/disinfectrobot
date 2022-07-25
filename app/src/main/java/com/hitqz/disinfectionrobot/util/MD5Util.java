@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 public class MD5Util {
@@ -7,7 +8,7 @@ public class MD5Util {
      * MD5 生成32位md5码 大写
      */
     public static String getMD5String(String s) {
-        char hexDigits[] = {
+        char[] hexDigits = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
         try {
@@ -20,7 +21,7 @@ public class MD5Util {
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
             int j = md.length;
-            char str[] = new char[j * 2];
+            char[] str = new char[j * 2];
             int k = 0;
             for (int i = 0; i < j; i++) {
                 byte byte0 = md[i];
@@ -67,7 +68,7 @@ public class MD5Util {
     public static String hexMD5(String inStr) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] byteArray = inStr.getBytes("UTF-8");
+            byte[] byteArray = inStr.getBytes(StandardCharsets.UTF_8);
             byte[] md5Bytes = md5.digest(byteArray);
             StringBuffer hexValue = new StringBuffer();
             for (int i = 0; i < md5Bytes.length; i++) {

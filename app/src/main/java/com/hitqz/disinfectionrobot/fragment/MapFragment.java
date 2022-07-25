@@ -55,7 +55,6 @@ public class MapFragment extends BaseFragment {
                 PathUtil.getMapYmlFile(getMContext().getApplicationContext(), mapCode));
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -92,8 +91,6 @@ public class MapFragment extends BaseFragment {
 
                     }
                 });
-
-
     }
 
     private void initGoalList() {

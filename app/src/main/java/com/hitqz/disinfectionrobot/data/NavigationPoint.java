@@ -14,5 +14,4 @@ public class NavigationPoint extends LitePalSupport {
     public float drawX;
     public float drawY;
     public float angle;
-
 }

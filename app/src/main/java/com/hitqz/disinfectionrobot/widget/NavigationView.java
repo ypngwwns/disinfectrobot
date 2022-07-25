@@ -24,7 +24,6 @@ import com.hitqz.disinfectionrobot.util.AngleUtil;
 
 import java.util.List;
 
-
 public class NavigationView extends View {
     public static final String TAG = NavigationView.class.getSimpleName();
 
@@ -36,7 +35,6 @@ public class NavigationView extends View {
     private Paint mSelectedPaint;
     private Paint laserLinePaint;
     private Paint laserPointPaint;
-
 
     private Bitmap rechargeBitmap;
     private Bitmap selectedPointBitmap;
@@ -65,7 +63,7 @@ public class NavigationView extends View {
     private float mOriDis = 0f;// 初始的两个手指按下的触摸点的距离
     private float mScaleSum = 1f;
     private PointF mMid = new PointF();
-    private PointF mStart = new PointF();
+    private final PointF mStart = new PointF();
 
     private final Matrix mBitmapMatrix = new Matrix();
 
@@ -85,7 +83,6 @@ public class NavigationView extends View {
         super(context, attrs, defStyleAttr);
         init();
     }
-
 
     private void init() {
         mRobotPaint = new Paint();             // 创建画笔
@@ -152,7 +149,6 @@ public class NavigationView extends View {
         }
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         // 绘制有先后顺序
@@ -187,7 +183,7 @@ public class NavigationView extends View {
         }
     }
 
-    private int mSelectedPos = -1;
+    private final int mSelectedPos = -1;
 
     private void drawNavPosition(Canvas canvas) {
         if (mNavigationPoints != null && mBitmap != null && mNavigationPoints.size() > 0) {
@@ -279,7 +275,6 @@ public class NavigationView extends View {
         this.mNavigationPoints = navigationPoints;
         postInvalidate();
     }
-
 
     public void setResolutionAndOrigin(float resolution, float originX, float originY) {
         this.mResolution = resolution;
@@ -394,7 +389,6 @@ public class NavigationView extends View {
         return new PointF(midX, midY);
     }
 
-
     private float clampScale(float scale) {
         float max = MAX_SCALE_FACTER / mScaleSum;
         float min = MIN_SCALE_FACTER / mScaleSum;
@@ -428,7 +422,6 @@ public class NavigationView extends View {
         mOnLongPressListener = onLongPressListener;
     }
 
-
     public float[] getMapAxis(float[] src) {
         float[] dst = new float[2];
         Matrix matrix = new Matrix();
@@ -439,10 +432,9 @@ public class NavigationView extends View {
         return dst;
     }
 
-
     private static class MapViewGestureListener extends GestureDetector.SimpleOnGestureListener {
 
-        private NavigationView mMapView;
+        private final NavigationView mMapView;
 
         public MapViewGestureListener(NavigationView mapView) {
             this.mMapView = mapView;

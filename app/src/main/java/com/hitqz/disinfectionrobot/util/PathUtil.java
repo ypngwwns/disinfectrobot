@@ -22,7 +22,6 @@ public class PathUtil {
         return file;
     }
 
-
     public static String getMapPGMFile(Context context, String mapName) {
         return getSDPath(context) + "/" + mapName + "/" + mapName + ".pgm";
     }
@@ -30,7 +29,6 @@ public class PathUtil {
     public static String getMapYmlFile(Context context, String mapName) {
         return getSDPath(context) + "/" + mapName + "/" + mapName + ".yaml";
     }
-
 
     public static String getSDPath(Context context) {
         File sdDir = null;

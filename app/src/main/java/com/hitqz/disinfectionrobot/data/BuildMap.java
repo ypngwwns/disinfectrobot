@@ -7,13 +7,12 @@ import android.util.Log;
 
 import java.util.Arrays;
 
-
 public class BuildMap {
     public static final String TAG = BuildMap.class.getSimpleName();
     private float mResolution = 1.0f;
-    private PointF mMapOrigin = new PointF(0.0f, 0.0f);
-    private PointF mImageShowOrigin = new PointF(0.0f, 0.0f);
-    private float mShowScale = 1.0f;
+    private final PointF mMapOrigin = new PointF(0.0f, 0.0f);
+    private final PointF mImageShowOrigin = new PointF(0.0f, 0.0f);
+    private final float mShowScale = 1.0f;
     private Bitmap mMapBitmap = null;
     private int mMapWidth = 0;
     private int mMapHeight = 0;

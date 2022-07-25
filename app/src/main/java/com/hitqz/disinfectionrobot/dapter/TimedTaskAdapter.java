@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class TimedTaskAdapter extends BaseAdapter {
 
-    private List<Object> mData;
-    private Context mContext;
+    private final List<Object> mData;
+    private final Context mContext;
     private View.OnClickListener mOnClickListener;
 
     public TimedTaskAdapter(Context mContext, List<Object> mData) {

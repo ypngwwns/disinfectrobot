@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements IGo {
     private JWebSocketClientService.JWebSocketClientBinder binder;
     private JWebSocketClientService jWebSClientService;
     private ChatMessageReceiver chatMessageReceiver;
-    private ServiceConnection serviceConnection = new ServiceConnection() {
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             Log.e("MainActivity", "服务与活动成功绑定");

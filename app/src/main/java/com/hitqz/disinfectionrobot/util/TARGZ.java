@@ -32,7 +32,6 @@ public class TARGZ {
         return taos;
     }
 
-
     private static void addToArchiveCompression(TarArchiveOutputStream out, File file, String dir) throws IOException {
         String entry = dir + File.separator + file.getName();
         if (file.isFile()) {

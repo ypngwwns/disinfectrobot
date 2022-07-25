@@ -13,8 +13,7 @@ import java.util.zip.InflaterInputStream;
  * @author wanghr
  * 创建时间：2018/8/21 14:00
  */
-public class CompressUtil
-{
+public class CompressUtil {
     private static final String TAG = "CompressUtil";
 
     public static byte[] compress(byte[] data) {
@@ -31,7 +30,7 @@ public class CompressUtil
         }
     }
 
-    public static  byte[] decompress(byte[] data) {
+    public static byte[] decompress(byte[] data) {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         InflaterInputStream iis = new InflaterInputStream(bais);
 

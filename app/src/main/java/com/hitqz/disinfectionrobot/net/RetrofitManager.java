@@ -108,7 +108,6 @@ public class RetrofitManager {
         }
     }
 
-
     //在请求头里添加token的拦截器处理
     public static class TokenHeaderInterceptor implements Interceptor {
         @NotNull

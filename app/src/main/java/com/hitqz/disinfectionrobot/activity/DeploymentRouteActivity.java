@@ -6,10 +6,17 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.hitqz.disinfectionrobot.data.MapData;
+import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.ActivityDeployRouteBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
+import com.hitqz.disinfectionrobot.dialog.PointEditDialog;
+import com.hitqz.disinfectionrobot.util.AngleUtil;
 import com.hitqz.disinfectionrobot.util.PathUtil;
+import com.hitqz.disinfectionrobot.widget.NavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -20,6 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DeploymentRouteActivity extends BaseActivity {
     ActivityDeployRouteBinding mBinding;
     private MapData mMapData;
+    private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
 
     private void initMap(String mapCode) {
         mMapData = new MapData(PathUtil.getMapPGMFile(getApplicationContext(), mapCode),
@@ -82,6 +90,28 @@ public class DeploymentRouteActivity extends BaseActivity {
                 finish();
             }
         });
+        mBinding.navigationView.setOnLongPressListener(new NavigationView.OnLongPressListener() {
+            @Override
+            public void onLongPress(float x, float y) {
+                PointEditDialog dialog = new PointEditDialog();
+                dialog.setOnClickListener(new PointEditDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm(String text, float currentAngle) {
+                        NavigationPoint navigationPoint = new NavigationPoint();
+                        navigationPoint.mapCode = "mCurrMapCode";
+                        navigationPoint.name = text;
+                        navigationPoint.rawX = x;
+                        navigationPoint.rawY = y;
+                        navigationPoint.radian = AngleUtil.angle2radian(currentAngle);
+                        navigationPoint.save();
+                        mNavigationPoints.add(navigationPoint);
+                        mBinding.navigationView.postInvalidate();
+                    }
+                });
+                dialog.show(getSupportFragmentManager(), dialog.getTag());
+            }
+        });
+        mBinding.navigationView.setNavigationPoints(mNavigationPoints);
     }
 
     @Override

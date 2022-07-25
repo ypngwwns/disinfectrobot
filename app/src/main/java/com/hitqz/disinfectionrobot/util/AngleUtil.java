@@ -14,7 +14,7 @@ public class AngleUtil {
 //        String detail = " radian: " + radian + " angle: " + angle + " calc: " + calcRadian;
 //        LogUtil.w(TAG, detail);
 
-        return (float)angle;
+        return (float) angle;
     }
 
     public static float calcRadian(PointF touchPoint, PointF centerPoint) {
@@ -28,7 +28,7 @@ public class AngleUtil {
 
         double radian = Math.atan2(lenY, lenX);
 
-        return (float)radian;
+        return (float) radian;
     }
 
     public static double radian2Angle(double radian) {

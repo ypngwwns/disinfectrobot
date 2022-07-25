@@ -136,7 +136,6 @@ public class DateTimeUtils {
         return date;
     }
 
-
     /**
      * 获取年龄
      *
@@ -182,6 +181,7 @@ public class DateTimeUtils {
 
     /**
      * 获取两个日期之间的间隔天数
+     *
      * @param startDate
      * @param endDate
      * @return
@@ -201,5 +201,4 @@ public class DateTimeUtils {
         toCalendar.set(Calendar.MILLISECOND, 0);
         return (int) ((toCalendar.getTime().getTime() - fromCalendar.getTime().getTime()) / (1000 * 60 * 60 * 24));
     }
-
 }

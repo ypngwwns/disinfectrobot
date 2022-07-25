@@ -97,11 +97,7 @@ public class PGM {
         maxpix = k;
         // 当前类只能处理单字节的灰度
         // 灰度值超过255的处理不了
-        if (maxpix > 255) {
-            return false;
-        }
-
-        return true;
+        return maxpix <= 255;
     }
 
     private char readOneByte(DataInputStream in) {

@@ -38,8 +38,8 @@ public class JWebSocketClientService extends Service {
     public JWebSocketClient client2;
     public onClintOpenListener mOnClintOpenListener;
     PowerManager.WakeLock wakeLock;//锁屏唤醒
-    private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
-    private Handler mHandler = new Handler();
+    private final JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
+    private final Handler mHandler = new Handler();
 
     public JWebSocketClientService() {
     }
@@ -309,7 +309,7 @@ public class JWebSocketClientService extends Service {
         }
     }
 
-    private Runnable heartBeatRunnable = new Runnable() {
+    private final Runnable heartBeatRunnable = new Runnable() {
         @Override
         public void run() {
             Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");

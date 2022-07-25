@@ -7,11 +7,7 @@ public class NetUtil {
         try {
             Process process = Runtime.getRuntime().exec("/system/bin/ping -c 1 -w 100 " + ipAddress);
             int status = process.waitFor();
-            if (status == 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return status == 0;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

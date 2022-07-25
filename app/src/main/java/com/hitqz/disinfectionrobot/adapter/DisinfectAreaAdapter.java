@@ -16,7 +16,7 @@ import java.util.List;
 public class DisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = DisinfectAreaAdapter.class.getSimpleName();
 
-    private List<String> mList;
+    private final List<String> mList;
     private int mSelectedPos = -1;
 
     public DisinfectAreaAdapter(List<String> list) {

@@ -89,6 +89,7 @@ public class DeployAlertDialog extends DialogFragment {
 
     public interface OnClickListener {
         void onConfirm();
+
         void onCancel();
     }
 }

@@ -18,8 +18,8 @@ open class BaseFragment : RxFragment() {
         super.onAttach(context)
         if (context is IDialog) mIDialog = context else {
             throw RuntimeException(
-                (context.toString()
-                        + " must implement IDialog")
+                    (context.toString()
+                            + " must implement IDialog")
             )
         }
         mContext = context
@@ -28,7 +28,7 @@ open class BaseFragment : RxFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mSkyNet = RetrofitManager.getInstance((context as Activity).applicationContext)
-            .create(ISkyNet::class.java)
+                .create(ISkyNet::class.java)
     }
 
     open fun isValidContext(): Boolean {

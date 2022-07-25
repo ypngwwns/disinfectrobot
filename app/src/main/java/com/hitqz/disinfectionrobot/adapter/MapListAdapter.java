@@ -75,7 +75,6 @@ public class MapListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-
     public class ViewHolder {
         private TextView tv1;
         private ViewGroup vp;
