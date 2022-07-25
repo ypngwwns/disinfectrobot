@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.tu.loadingdialog.LoadingDailog;
+import com.gyf.immersionbar.ImmersionBar;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.i.IDialog;
 import com.hitqz.disinfectionrobot.net.ISkyNet;
@@ -72,6 +73,8 @@ public class BaseActivity extends RxAppCompatActivity implements IDialog {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.transparent).statusBarDarkFont(true).init();
         setCustomDensity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mISkyNet = RetrofitManager.getInstance(this).create(ISkyNet.class);

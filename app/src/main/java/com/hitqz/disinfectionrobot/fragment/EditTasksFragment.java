@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class EditTasksFragment extends Fragment {
     FragmentEditTasksBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;
     private List<String> mList;
+    private boolean mSelectedAllArea = true;
 
     private EditTasksFragment() {
         // Required empty public constructor
@@ -56,5 +58,41 @@ public class EditTasksFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        onSelectChanged();
+        mBinding.cbAllArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mSelectedAllArea == isChecked) {
+                    return;
+                }
+                mSelectedAllArea = isChecked;
+                onSelectChanged();
+            }
+        });
+        mBinding.cbPartArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mSelectedAllArea == !isChecked) {
+                    return;
+                }
+                mSelectedAllArea = !isChecked;
+                onSelectChanged();
+            }
+        });
+    }
+
+    private void onSelectChanged() {
+
+        if (mSelectedAllArea) {
+            mBinding.cbAllArea.setChecked(true);
+            mBinding.cbPartArea.setChecked(false);
+            mBinding.tvSelectDisinfectionArea.setVisibility(View.GONE);
+            mBinding.lvDisinfectionArea.setVisibility(View.GONE);
+        } else {
+            mBinding.cbAllArea.setChecked(false);
+            mBinding.cbPartArea.setChecked(true);
+            mBinding.tvSelectDisinfectionArea.setVisibility(View.VISIBLE);
+            mBinding.lvDisinfectionArea.setVisibility(View.VISIBLE);
+        }
     }
 }

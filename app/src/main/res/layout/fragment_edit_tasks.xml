@@ -48,6 +48,7 @@
             android:layout_height="1dp" />
 
         <CheckBox
+            android:id="@+id/cb_all_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -76,6 +77,7 @@
             android:layout_height="1dp" />
 
         <CheckBox
+            android:id="@+id/cb_part_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
