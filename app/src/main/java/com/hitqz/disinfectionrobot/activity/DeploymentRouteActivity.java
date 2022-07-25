@@ -12,6 +12,7 @@ import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
 import com.hitqz.disinfectionrobot.dialog.PointEditDialog;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
+import com.hitqz.disinfectionrobot.util.DBHelper;
 import com.hitqz.disinfectionrobot.util.PathUtil;
 import com.hitqz.disinfectionrobot.widget.NavigationView;
 
@@ -25,9 +26,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class DeploymentRouteActivity extends BaseActivity {
+    private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     ActivityDeployRouteBinding mBinding;
     private MapData mMapData;
-    private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
 
     private void initMap(String mapCode) {
         mMapData = new MapData(PathUtil.getMapPGMFile(getApplicationContext(), mapCode),
@@ -98,7 +99,7 @@ public class DeploymentRouteActivity extends BaseActivity {
                     @Override
                     public void onConfirm(String text, float currentAngle) {
                         NavigationPoint navigationPoint = new NavigationPoint();
-                        navigationPoint.mapCode = "mCurrMapCode";
+                        navigationPoint.mapCode = "map0622";
                         navigationPoint.name = text;
                         navigationPoint.rawX = x;
                         navigationPoint.rawY = y;
@@ -111,6 +112,10 @@ public class DeploymentRouteActivity extends BaseActivity {
                 dialog.show(getSupportFragmentManager(), dialog.getTag());
             }
         });
+
+        List<NavigationPoint> list = DBHelper.findAllNavigationPoint("map0622");
+        mNavigationPoints.clear();
+        mNavigationPoints.addAll(list);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
     }
 

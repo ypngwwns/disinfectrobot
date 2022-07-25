@@ -1,11 +1,13 @@
 package com.hitqz.disinfectionrobot.net;
 
 import com.hitqz.disinfectionrobot.data.Goal;
+import com.hitqz.disinfectionrobot.data.MapPos;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -58,4 +60,12 @@ public interface ISkyNet {
      */
     @GET("/app/battleStatus")
     Observable<BaseRespond<Integer>> battleStatus();
+
+    /**
+     * 新增节点
+     *
+     * @return List<VestBean>
+     */
+    @GET("/robot/api/map/map_pos_add")
+    Observable<BaseRespond<Integer>> map_pos_add(@Body MapPos mapPos);
 }

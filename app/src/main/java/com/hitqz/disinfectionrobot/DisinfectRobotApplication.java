@@ -3,6 +3,8 @@ package com.hitqz.disinfectionrobot;
 import android.app.Application;
 import android.content.Context;
 
+import org.litepal.LitePal;
+
 public class DisinfectRobotApplication extends Application {
     public static Context instance;
 
@@ -10,5 +12,6 @@ public class DisinfectRobotApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        LitePal.initialize(this);
     }
 }

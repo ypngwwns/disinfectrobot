@@ -3,9 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/vp_content"
+    <com.hitqz.disinfectionrobot.widget.NavigationView
+        android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/include_layout_common_title_bar"
+        layout="@layout/layout_common_title_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
