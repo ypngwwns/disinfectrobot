@@ -62,5 +62,11 @@ public class DisinfectAreaListFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        mBinding.fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea();
+            }
+        });
     }
 }
