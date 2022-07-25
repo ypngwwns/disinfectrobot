@@ -30,16 +30,16 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.constant.TokenKeys;
+import com.hitqz.disinfectionrobot.data.LoginRequest;
+import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.databinding.ActivityMainBinding;
 import com.hitqz.disinfectionrobot.fragment.DeployFragment;
 import com.hitqz.disinfectionrobot.fragment.MainFragment;
 import com.hitqz.disinfectionrobot.fragment.SettingFragment;
 import com.hitqz.disinfectionrobot.i.IGo;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
-import com.hitqz.disinfectionrobot.net.data.UserLoginData;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClient;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
-import com.hitqz.disinfectionrobot.util.MD5Util;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.lang.reflect.Field;
@@ -59,7 +59,6 @@ public class MainActivity extends BaseActivity implements IGo {
     private JWebSocketClient client;
     private JWebSocketClientService.JWebSocketClientBinder binder;
     private JWebSocketClientService jWebSClientService;
-    private ChatMessageReceiver chatMessageReceiver;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -80,6 +79,7 @@ public class MainActivity extends BaseActivity implements IGo {
             Log.e("MainActivity", "服务与活动成功断开");
         }
     };
+    private ChatMessageReceiver chatMessageReceiver;
 
     private void initWebSocket() {
         if (client != null && client.isOpen()) {
@@ -151,27 +151,51 @@ public class MainActivity extends BaseActivity implements IGo {
         setContentView(mBinding.getRoot());
         checkPermission();
         mHandler = new Handler();
-        String passwd = MD5Util.string2MD5("123456");
+//        String passwd = MD5Util.string2MD5("123456");
         showDialog();
-        mISkyNet.oauthToken(
-                        "web-app",
-                        "123456",
-                        "password",
-                        "admin",
-                        passwd,
-                        null
-                ).compose(RxSchedulers.io_main())
-                .subscribeWith(new BaseDataObserver<UserLoginData>() {
+//        mISkyNet.oauthToken(
+//                        "web-app",
+//                        "123456",
+//                        "password",
+//                        "admin",
+//                        passwd,
+//                        null
+//                ).compose(RxSchedulers.io_main())
+//                .subscribeWith(new BaseDataObserver<UserLoginData>() {
+//                    @Override
+//                    public void onSuccess(UserLoginData model) {
+//                        dismissDialog();
+//                        ToastUtils.showShort("登录成功");
+//                        SPUtils.getInstance().put(
+//                                TokenKeys.expiresIn,
+//                                System.currentTimeMillis() + (model.getExpiresIn() - 10) * 1000
+//                        );
+//                        SPUtils.getInstance().put(TokenKeys.tokenHead, model.getTokenHead());
+//                        SPUtils.getInstance().put(TokenKeys.token, model.getToken());
+//                        go2Main();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String msg) {
+//                        dismissDialog();
+//                        go2Main();
+//                        ToastUtils.showShort("登录失败");
+//                    }
+//                });
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.username = "admin";
+        loginRequest.password = "hgd2022";
+
+        mISkyNet.login(loginRequest).compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<LoginResponse>() {
                     @Override
-                    public void onSuccess(UserLoginData model) {
+                    public void onSuccess(LoginResponse model) {
                         dismissDialog();
                         ToastUtils.showShort("登录成功");
                         SPUtils.getInstance().put(
-                                TokenKeys.expiresIn,
-                                System.currentTimeMillis() + (model.getExpiresIn() - 10) * 1000
+                                TokenKeys.ssid, model.ssid
                         );
-                        SPUtils.getInstance().put(TokenKeys.tokenHead, model.getTokenHead());
-                        SPUtils.getInstance().put(TokenKeys.token, model.getToken());
+                        SPUtils.getInstance().put(TokenKeys.token, model.token);
                         go2Main();
                     }
 

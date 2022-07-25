@@ -1,6 +1,8 @@
 package com.hitqz.disinfectionrobot.net;
 
 import com.hitqz.disinfectionrobot.data.Goal;
+import com.hitqz.disinfectionrobot.data.LoginRequest;
+import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.data.MapPos;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
 
@@ -68,4 +70,12 @@ public interface ISkyNet {
      */
     @GET("/robot/api/map/map_pos_add")
     Observable<BaseRespond<Integer>> map_pos_add(@Body MapPos mapPos);
+
+    /**
+     * 登录
+     *
+     * @return List<VestBean>
+     */
+    @GET("/robot/api/login")
+    Observable<BaseRespond<LoginResponse>> login(@Body LoginRequest loginRequest);
 }

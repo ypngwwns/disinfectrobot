@@ -5,17 +5,16 @@ package com.hitqz.disinfectionrobot.net;
  */
 public class BaseRespond<T> {
 
-    private int code;
-    private String status;
+    private int resultCode;
     private String msg;
     private T data;
 
     public int getCode() {
-        return code;
+        return resultCode;
     }
 
     public void setCode(int code) {
-        this.code = code;
+        this.resultCode = code;
     }
 
     public String getMsg() {
@@ -32,13 +31,5 @@ public class BaseRespond<T> {
 
     public void setData(T data) {
         this.data = data;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
