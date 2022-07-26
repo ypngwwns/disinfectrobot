@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Region;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -29,45 +30,38 @@ public class NavigationView extends View {
 
     public static final float MAX_SCALE_FACTER = 5f;
     public static final float MIN_SCALE_FACTER = 0.5f;
-
+    private final PointF mStart = new PointF();
+    private final Matrix mBitmapMatrix = new Matrix();
+    private int mSelectedPos = -1;
     private Paint mPointPaint;
     private Paint mRobotPaint;
     private Paint mSelectedPaint;
     private Paint laserLinePaint;
     private Paint laserPointPaint;
-
     private Bitmap rechargeBitmap;
     private Bitmap selectedPointBitmap;
     private Bitmap naviPointBitmap;
-
     // 机器人坐标
     private NavigationPoint mRobotPos;
     // 充电点
     private NavigationPoint mRechargePos;
     private List<NavigationPoint> mNavigationPoints;
-
     private boolean mShowLaserScan = true;
-
     // 地图信息
     private float mResolution = 0f;
     private float mOriginX;
     private float mOriginY;
     private Bitmap mBitmap;
-
     // 激光数据
     private LaserScan mLaserScan;
-
     // 移动缩放缓存
     private int mTouchMode = 0;//1：缩放，2：移动
     private Matrix mMatrix;
     private float mOriDis = 0f;// 初始的两个手指按下的触摸点的距离
     private float mScaleSum = 1f;
     private PointF mMid = new PointF();
-    private final PointF mStart = new PointF();
-
-    private final Matrix mBitmapMatrix = new Matrix();
-
     private GestureDetector mGestureDetector;
+    private OnLongPressListener mOnLongPressListener;
 
     public NavigationView(Context context) {
         super(context);
@@ -82,6 +76,15 @@ public class NavigationView extends View {
     public NavigationView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    /**
+     * 取两指的中心点坐标
+     */
+    public static PointF getMid(MotionEvent event) {
+        float midX = (event.getX(1) + event.getX(0)) / 2;
+        float midY = (event.getY(1) + event.getY(0)) / 2;
+        return new PointF(midX, midY);
     }
 
     private void init() {
@@ -182,8 +185,6 @@ public class NavigationView extends View {
             canvas.restore();
         }
     }
-
-    private final int mSelectedPos = -1;
 
     private void drawNavPosition(Canvas canvas) {
         if (mNavigationPoints != null && mBitmap != null && mNavigationPoints.size() > 0) {
@@ -380,15 +381,6 @@ public class NavigationView extends View {
         return (float) Math.sqrt(x * x + y * y);
     }
 
-    /**
-     * 取两指的中心点坐标
-     */
-    public static PointF getMid(MotionEvent event) {
-        float midX = (event.getX(1) + event.getX(0)) / 2;
-        float midY = (event.getY(1) + event.getY(0)) / 2;
-        return new PointF(midX, midY);
-    }
-
     private float clampScale(float scale) {
         float max = MAX_SCALE_FACTER / mScaleSum;
         float min = MIN_SCALE_FACTER / mScaleSum;
@@ -408,12 +400,6 @@ public class NavigationView extends View {
         return mScaleSum;
     }
 
-    private OnLongPressListener mOnLongPressListener;
-
-    public interface OnLongPressListener {
-        void onLongPress(float x, float y);
-    }
-
     public OnLongPressListener getOnLongPressListener() {
         return mOnLongPressListener;
     }
@@ -422,7 +408,7 @@ public class NavigationView extends View {
         mOnLongPressListener = onLongPressListener;
     }
 
-    public float[] getMapAxis(float[] src) {
+    public float[] getRawMapAxis(float[] src) {
         float[] dst = new float[2];
         Matrix matrix = new Matrix();
         mMatrix.invert(matrix);
@@ -430,6 +416,18 @@ public class NavigationView extends View {
         dst[0] = dst[0] * mResolution + mOriginX;
         dst[1] = (mBitmap.getHeight() - dst[1]) * mResolution + mOriginY;
         return dst;
+    }
+
+    public float[] getDrawMapAxis(float[] src) {
+        float[] dst = new float[2];
+        Matrix matrix = new Matrix();
+        mMatrix.invert(matrix);
+        matrix.mapPoints(dst, src);
+        return dst;
+    }
+
+    public interface OnLongPressListener {
+        void onLongPress(float x, float y);
     }
 
     private static class MapViewGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -446,9 +444,36 @@ public class NavigationView extends View {
             if (mMapView != null && mMapView.getOnLongPressListener() != null) {
                 float x = e.getX();
                 float y = e.getY();
-                float[] mapXY = mMapView.getMapAxis(new float[]{x, y});
+                float[] mapXY = mMapView.getRawMapAxis(new float[]{x, y});
                 mMapView.getOnLongPressListener().onLongPress(mapXY[0], mapXY[1]);
             }
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            // 判断当前位置是否有导航点
+            float x = e.getX();
+            float y = e.getY();
+            float[] mapXY = mMapView.getDrawMapAxis(new float[]{x, y});
+
+            float size = 10f * mMapView.mScaleSum;
+            for (int i = 0; i < mMapView.mNavigationPoints.size(); i++) {
+                NavigationPoint navigationPoint = mMapView.mNavigationPoints.get(i);
+
+                Region region = new Region(
+                        (int) (navigationPoint.drawX - size),
+                        (int) (navigationPoint.drawY - size),
+                        (int) (navigationPoint.drawX + size),
+                        (int) (navigationPoint.drawY + size)
+                );
+
+                if (region.contains((int) mapXY[0], (int) mapXY[1])) {
+                    mMapView.mSelectedPos = i;
+                    mMapView.postInvalidate();
+                    return true;
+                }
+            }
+            return super.onSingleTapUp(e);
         }
     }
 }
