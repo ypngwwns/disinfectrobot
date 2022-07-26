@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapData;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditDisinfectAreaBinding;
@@ -29,6 +30,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
     FragmentEditDisinfectAreaBinding mBinding;
     private MapData mMapData;
     private List<NavigationPoint> mNavigationPoints = new ArrayList<>();
+    private NavigationPointAdapter mNavigationPointAdapter;
 
     private EditDisinfectAreaFragment() {
         // Required empty public constructor
@@ -99,5 +101,8 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 getActivity().onBackPressed();
             }
         });
+
+        mNavigationPointAdapter = new NavigationPointAdapter(getContext(), mNavigationPoints);
+        mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
     }
 }

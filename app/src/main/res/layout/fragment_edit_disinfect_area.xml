@@ -15,6 +15,7 @@
 
 
     <com.hitqz.disinfectionrobot.widget.NavigationPointListLayout
+        android:id="@+id/npll"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

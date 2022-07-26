@@ -42,39 +42,6 @@ public class NavigationPointListLayout extends LinearLayout {
 
     private void init(Context context) {
         mBinding = LayoutNavigationPointListBinding.inflate(LayoutInflater.from(context), this, true);
-
-        mBinding.getCurPoint.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                NavigationActivity navigationActivity = (NavigationActivity) getContext();
-//                AddCurrentPositionDialog dialog = new AddCurrentPositionDialog();
-//                dialog.setOnClickListener(navigationActivity::addCurrentPosition);
-//                dialog.show(navigationActivity.getSupportFragmentManager(), dialog.getTag());
-            }
-        });
-
-        mBinding.editPointList.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if (mBinding.editPointList.isActivated()) {
-//                    mBinding.editPointList.setActivated(false);
-//                    mBinding.navigationPointList.setDragType(false);
-//                    editing = false;
-//                    return;
-//                }
-//                editing = true;
-//                mBinding.editPointList.setActivated(true);
-//                mBinding.navigationPointList.setDragType(true);
-            }
-        });
-        mBinding.closePointList.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setVisibility(View.GONE);
-//                selectPosReset();
-//                mNavigationView.setCurrentMode(NavigationView.ViewOpeModeEum.NORMAL_MODE);
-            }
-        });
     }
 
     public void setListener(INavigationPointListListener listener) {
