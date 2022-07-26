@@ -11,17 +11,17 @@
 
         <ImageView
             android:id="@+id/list_drag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:clickable="true"
             android:focusable="true"
             android:layout_marginStart="30dp"
-            android:background="@drawable/list_drag" />
+            android:src="@mipmap/disinfect_" />
 
         <TextView
             android:id="@+id/point_name"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="18dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -35,11 +35,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <Button
+        <ImageView
             android:id="@+id/delete_point"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@mipmap/deploy_"
+            android:layout_width="18.5dp"
+            android:layout_height="18.5dp"
+            android:src="@mipmap/close"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="30dp" />
 
