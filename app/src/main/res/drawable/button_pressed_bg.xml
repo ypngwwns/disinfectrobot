@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    android:useLevel="false">
+
+    <!-- 边角圆弧的半径 -->
+    <corners android:radius="5dp" />
+    <!-- 背景颜色 -->
+    <solid android:color="@color/colorPrimaryDark" />
+    <!-- 描边，width是边得宽度，color是颜色 -->
+    <stroke
+        android:width="1dp"
+        android:color="@color/colorPrimary" />
+</shape>

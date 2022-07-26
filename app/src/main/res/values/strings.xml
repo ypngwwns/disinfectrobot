@@ -2,4 +2,8 @@
     <string name="app_name">DisinfectionRobot</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navi_point_list">导航点列表</string>
+    <string name="get_cur_point">☉</string>
+    <string name="close_point_list">x</string>
+    <string name="edit_point_list">✍</string>
 </resources>

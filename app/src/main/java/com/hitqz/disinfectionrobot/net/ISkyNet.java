@@ -68,7 +68,7 @@ public interface ISkyNet {
      *
      * @return List<VestBean>
      */
-    @GET("/robot/api/map/map_pos_add")
+    @POST("/robot/api/map/map_pos_add")
     Observable<BaseRespond<Integer>> map_pos_add(@Body MapPos mapPos);
 
     /**
@@ -76,6 +76,6 @@ public interface ISkyNet {
      *
      * @return List<VestBean>
      */
-    @GET("/robot/api/login")
+    @POST("/robot/api/login")
     Observable<BaseRespond<LoginResponse>> login(@Body LoginRequest loginRequest);
 }
