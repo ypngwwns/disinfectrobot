@@ -17,13 +17,11 @@ public class NavigationPointAdapter extends DragAdapter {
     private static final String TAG = "NavigationPointAdapter";
 
     private View.OnClickListener deleteClickListener;
-    private View.OnClickListener editClickListener;
     private View.OnClickListener ponitNameClickListener;
-    private View.OnClickListener movetoClickListener;
 
     private int selectedPos = -1;
 
-    private boolean dragable = false;
+    private boolean dragable = true;
 
     public NavigationPointAdapter(Context context, List<NavigationPoint> data) {
         super(context, data);
@@ -49,16 +47,8 @@ public class NavigationPointAdapter extends DragAdapter {
         this.deleteClickListener = deleteClickListener;
     }
 
-    public void setEditClickListener(View.OnClickListener editClickListener) {
-        this.editClickListener = editClickListener;
-    }
-
     public void setPonitNameClickListener(View.OnClickListener ponitNameClickListener) {
         this.ponitNameClickListener = ponitNameClickListener;
-    }
-
-    public void setMovetoClickListener(View.OnClickListener movetoClickListener) {
-        this.movetoClickListener = movetoClickListener;
     }
 
     public void addList(List<NavigationPoint> data) {
@@ -158,24 +148,16 @@ public class NavigationPointAdapter extends DragAdapter {
             holder = new ViewHolder();
             holder.dragView = convertView.findViewById(R.id.list_drag);
             holder.pointName = convertView.findViewById(R.id.point_name);
-            holder.editPoint = convertView.findViewById(R.id.edit_point);
             holder.deletePoint = convertView.findViewById(R.id.delete_point);
-            holder.movetoPoint = convertView.findViewById(R.id.moveto_point);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         if (dragable) {
             holder.dragView.setVisibility(View.VISIBLE);
-            holder.editPoint.setVisibility(View.VISIBLE);
-            holder.deletePoint.setVisibility(View.VISIBLE);
-            holder.movetoPoint.setVisibility(View.GONE);
             holder.pointName.setClickable(false);
         } else {
             holder.dragView.setVisibility(View.INVISIBLE);
-            holder.editPoint.setVisibility(View.GONE);
-            holder.deletePoint.setVisibility(View.INVISIBLE);
-            holder.movetoPoint.setVisibility(View.VISIBLE);
             holder.pointName.setClickable(true);
         }
         holder.pointName.setText(data.get(position).name);
@@ -185,10 +167,6 @@ public class NavigationPointAdapter extends DragAdapter {
             holder.deletePoint.setTag(position);
         }
 
-        if (editClickListener != null) {
-            holder.editPoint.setOnClickListener(editClickListener);
-            holder.editPoint.setTag(position);
-        }
         if (dragable) {
             holder.pointName.setOnClickListener(null);
             holder.pointName.setTag(position);
@@ -197,11 +175,6 @@ public class NavigationPointAdapter extends DragAdapter {
                 holder.pointName.setOnClickListener(ponitNameClickListener);
                 holder.pointName.setTag(position);
             }
-        }
-
-        if (movetoClickListener != null) {
-            holder.movetoPoint.setOnClickListener(movetoClickListener);
-            holder.movetoPoint.setTag(position);
         }
 
         if (selectedPos == position) {
@@ -216,8 +189,6 @@ public class NavigationPointAdapter extends DragAdapter {
     private class ViewHolder {
         public ImageView dragView;
         public TextView pointName;
-        public Button editPoint;
         public Button deletePoint;
-        public Button movetoPoint;
     }
 }

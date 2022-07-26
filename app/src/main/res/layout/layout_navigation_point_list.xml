@@ -17,8 +17,10 @@
 
 
         <com.hitqz.disinfectionrobot.widget.DragListView
-            android:id="@+id/navigation_point_list"
+            android:id="@+id/dlv_navigation_point"
             android:layout_width="match_parent"
+            android:divider="@color/black"
+            android:dividerHeight="1dp"
             android:layout_height="match_parent" />
     </androidx.cardview.widget.CardView>
 

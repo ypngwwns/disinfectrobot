@@ -42,6 +42,7 @@ public class NavigationPointListLayout extends LinearLayout {
 
     private void init(Context context) {
         mBinding = LayoutNavigationPointListBinding.inflate(LayoutInflater.from(context), this, true);
+        mBinding.dlvNavigationPoint.setDragType(true);
     }
 
     public void setListener(INavigationPointListListener listener) {
@@ -50,7 +51,7 @@ public class NavigationPointListLayout extends LinearLayout {
 
     public void setNavigationPointAdapter(NavigationPointAdapter navigationPointAdapter) {
         mNavigationPointAdapter = navigationPointAdapter;
-        mBinding.navigationPointList.setAdapter(mNavigationPointAdapter);
+        mBinding.dlvNavigationPoint.setAdapter(mNavigationPointAdapter);
     }
 
     public void selectPosReset() {
