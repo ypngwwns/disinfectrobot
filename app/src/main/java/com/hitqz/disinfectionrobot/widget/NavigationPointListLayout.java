@@ -72,4 +72,8 @@ public class NavigationPointListLayout extends LinearLayout {
 
         void onClickClose();
     }
+
+    public void setName(String name){
+        mBinding.tvMapAreaName.setText(name);
+    }
 }

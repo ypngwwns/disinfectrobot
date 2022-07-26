@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.ActivitySetDisinfectAreaBinding;
 import com.hitqz.disinfectionrobot.fragment.DisinfectAreaListFragment;
 import com.hitqz.disinfectionrobot.fragment.EditDisinfectAreaFragment;
@@ -31,7 +32,7 @@ public class SetDisinfectAreaActivity extends BaseActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    public void go2EditDisinfectArea() {
+    public void go2EditDisinfectArea(MapArea mapArea) {
         hideOther();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mEditDisinfectAreaFragment == null) {
@@ -40,6 +41,7 @@ public class SetDisinfectAreaActivity extends BaseActivity {
         } else {
             fragmentTransaction.show(mEditDisinfectAreaFragment);
         }
+        mEditDisinfectAreaFragment.setMapArea(mapArea);
 
         fragmentTransaction.commitAllowingStateLoss();
     }

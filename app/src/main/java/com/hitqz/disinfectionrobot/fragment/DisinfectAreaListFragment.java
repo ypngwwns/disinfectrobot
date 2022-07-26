@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
 import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
+import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectAreaListBinding;
 import com.hitqz.disinfectionrobot.dialog.DisinfectAreaNameDialog;
 
@@ -53,7 +55,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
         mDisinfectAreaAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea();
+                ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea(new MapArea());
             }
         });
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +71,14 @@ public class DisinfectAreaListFragment extends BaseFragment {
                 dialog.setOnClickListener(new DisinfectAreaNameDialog.OnClickListener() {
                     @Override
                     public void onConfirm(String text) {
-                        ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea();
+                        if (mList.contains(text)) {
+                            ToastUtils.showShort("已存在同名消毒区，请重新输入");
+                            return;
+                        }
+                        dialog.dismiss();
+                        MapArea mapArea = new MapArea();
+                        mapArea.setMapAreaName(text);
+                        ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea(mapArea);
                     }
                 });
                 dialog.show(getFragmentManager(), DisinfectAreaNameDialog.TAG);

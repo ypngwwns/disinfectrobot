@@ -1,15 +1,21 @@
 package com.hitqz.disinfectionrobot.data;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Position {
-    double X;
+
+    @SerializedName("x")
+    public double x;
+    @SerializedName("y")
+    public double y;
+    @SerializedName("yaw")
+    public double yaw;
 
     public double getX() {
-        return X;
+        return x;
     }
 
-    double Y;
-
     public double getY() {
-        return Y;
+        return y;
     }
 }

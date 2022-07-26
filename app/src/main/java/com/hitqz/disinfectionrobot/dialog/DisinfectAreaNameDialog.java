@@ -31,6 +31,7 @@ public class DisinfectAreaNameDialog extends DialogFragment {
         setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Dialog_Alert);
     }
 
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -62,7 +63,6 @@ public class DisinfectAreaNameDialog extends DialogFragment {
                         if (mOnClickListener != null) {
                             mOnClickListener.onConfirm(String.valueOf(mBinding.et1.getText()));
                         }
-                        dismiss();
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

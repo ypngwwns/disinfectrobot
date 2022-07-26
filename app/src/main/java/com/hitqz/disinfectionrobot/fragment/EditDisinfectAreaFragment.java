@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
+import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.data.MapData;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditDisinfectAreaBinding;
@@ -31,6 +32,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
     private MapData mMapData;
     private List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     private NavigationPointAdapter mNavigationPointAdapter;
+    private MapArea mMapArea;
 
     private EditDisinfectAreaFragment() {
         // Required empty public constructor
@@ -104,5 +106,12 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
         mNavigationPointAdapter = new NavigationPointAdapter(getContext(), mNavigationPoints);
         mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
+        if (mMapArea != null) {
+            mBinding.npll.setName(mMapArea.getMapAreaName());
+        }
+    }
+
+    public void setMapArea(MapArea mapArea) {
+        mMapArea = mapArea;
     }
 }
