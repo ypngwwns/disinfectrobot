@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
+import com.hitqz.disinfectionrobot.adapter.DisinfectPointAdapter;
 import com.hitqz.disinfectionrobot.data.LaserScan;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
@@ -64,7 +64,7 @@ public class NavigationView extends View {
     private PointF mMid = new PointF();
     private GestureDetector mGestureDetector;
     private OnLongPressListener mOnLongPressListener;
-    private NavigationPointAdapter mNavigationPointAdapter;
+    private DisinfectPointAdapter mDisinfectPointAdapter;
 
     public NavigationView(Context context) {
         super(context);
@@ -434,8 +434,8 @@ public class NavigationView extends View {
         return dst;
     }
 
-    public void setNavigationPointAdapter(NavigationPointAdapter navigationPointAdapter) {
-        mNavigationPointAdapter = navigationPointAdapter;
+    public void setNavigationPointAdapter(DisinfectPointAdapter disinfectPointAdapter) {
+        mDisinfectPointAdapter = disinfectPointAdapter;
     }
 
     public List<NavigationPoint> getSelectedNavigationPoints() {
@@ -489,8 +489,8 @@ public class NavigationView extends View {
                     } else {
                         mMapView.mSelectedNavigationPoints.add(navigationPoint);
                     }
-                    if (mMapView.mNavigationPointAdapter != null) {
-                        mMapView.mNavigationPointAdapter.notifyDataSetChanged();
+                    if (mMapView.mDisinfectPointAdapter != null) {
+                        mMapView.mDisinfectPointAdapter.notifyDataSetChanged();
                     }
                     mMapView.postInvalidate();
                     return true;

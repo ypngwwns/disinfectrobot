@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.hitqz.disinfectionrobot.adapter.DragAdapter;
-import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
+import com.hitqz.disinfectionrobot.adapter.DisinfectPointAdapter;
 
 public class DragListView extends ListView {
     private static final String TAG = "DragListView";
@@ -237,8 +237,8 @@ public class DragListView extends ListView {
 
     public void setDragType(boolean dragType) {
         this.dragType = dragType;
-        if (getAdapter() instanceof NavigationPointAdapter) {
-            ((NavigationPointAdapter) getAdapter()).setDragType(dragType);
+        if (getAdapter() instanceof DisinfectPointAdapter) {
+            ((DisinfectPointAdapter) getAdapter()).setDragType(dragType);
         }
     }
 }

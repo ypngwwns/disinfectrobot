@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
+import com.hitqz.disinfectionrobot.adapter.DisinfectPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.data.MapData;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
@@ -31,7 +31,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
     FragmentEditDisinfectAreaBinding mBinding;
     private MapData mMapData;
     private List<NavigationPoint> mNavigationPoints = new ArrayList<>();
-    private NavigationPointAdapter mNavigationPointAdapter;
+    private DisinfectPointAdapter mDisinfectPointAdapter;
     private MapArea mMapArea;
 
     private EditDisinfectAreaFragment() {
@@ -104,9 +104,9 @@ public class EditDisinfectAreaFragment extends BaseFragment {
             }
         });
 
-        mNavigationPointAdapter = new NavigationPointAdapter(getContext(), mBinding.navigationView.getSelectedNavigationPoints());
-        mBinding.navigationView.setNavigationPointAdapter(mNavigationPointAdapter);
-        mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
+        mDisinfectPointAdapter = new DisinfectPointAdapter(getContext(), mBinding.navigationView.getSelectedNavigationPoints());
+        mBinding.navigationView.setNavigationPointAdapter(mDisinfectPointAdapter);
+        mBinding.npll.setNavigationPointAdapter(mDisinfectPointAdapter);
         if (mMapArea != null) {
             mBinding.npll.setName(mMapArea.getMapAreaName());
         }
