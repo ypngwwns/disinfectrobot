@@ -37,7 +37,7 @@ public class DisinfectPointListLayout extends LinearLayout {
 
     private void init(Context context) {
         mBinding = LayoutDisinfectPointListBinding.inflate(LayoutInflater.from(context), this, true);
-        mBinding.dlvNavigationPoint.setDragType(true);
+        mBinding.dlvDisinfectPoint.setDragType(true);
     }
 
     public void setListener(INavigationPointListListener listener) {
@@ -46,7 +46,7 @@ public class DisinfectPointListLayout extends LinearLayout {
 
     public void setNavigationPointAdapter(DisinfectPointAdapter disinfectPointAdapter) {
         mDisinfectPointAdapter = disinfectPointAdapter;
-        mBinding.dlvNavigationPoint.setAdapter(mDisinfectPointAdapter);
+        mBinding.dlvDisinfectPoint.setAdapter(mDisinfectPointAdapter);
     }
 
     @Override

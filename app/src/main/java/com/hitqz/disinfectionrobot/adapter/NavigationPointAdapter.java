@@ -13,15 +13,15 @@ import com.hitqz.disinfectionrobot.data.NavigationPoint;
 
 import java.util.List;
 
-public class DisinfectPointAdapter extends DragAdapter {
-    private static final String TAG = DisinfectPointAdapter.class.getSimpleName();
+public class NavigationPointAdapter extends DragAdapter {
+    private static final String TAG = NavigationPointAdapter.class.getSimpleName();
 
     private View.OnClickListener deleteClickListener;
     private View.OnClickListener ponitNameClickListener;
 
     private boolean dragable = true;
 
-    public DisinfectPointAdapter(Context context, List<NavigationPoint> data) {
+    public NavigationPointAdapter(Context context, List<NavigationPoint> data) {
         super(context, data);
     }
 
@@ -90,7 +90,7 @@ public class DisinfectPointAdapter extends DragAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_disinfect_point, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_navigation_point, parent, false);
             holder = new ViewHolder();
             holder.dragView = convertView.findViewById(R.id.list_drag);
             holder.pointName = convertView.findViewById(R.id.point_name);

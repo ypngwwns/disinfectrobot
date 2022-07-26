@@ -17,7 +17,7 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_marginStart="30dp"
-            android:background="@mipmap/setup_" />
+            android:background="@drawable/list_drag" />
 
         <TextView
             android:id="@+id/point_name"

@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapData;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.ActivityDeployRouteBinding;
@@ -29,6 +30,7 @@ public class DeploymentRouteActivity extends BaseActivity {
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     ActivityDeployRouteBinding mBinding;
     private MapData mMapData;
+    private NavigationPointAdapter mNavigationPointAdapter;
 
     private void initMap(String mapCode) {
         mMapData = new MapData(PathUtil.getMapPGMFile(getApplicationContext(), mapCode),
@@ -117,6 +119,9 @@ public class DeploymentRouteActivity extends BaseActivity {
         mNavigationPoints.clear();
         mNavigationPoints.addAll(list);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
+        mNavigationPointAdapter = new NavigationPointAdapter(this, mNavigationPoints);
+        mBinding.navigationView.setPointAdapter(mNavigationPointAdapter);
+        mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
     }
 
     @Override
