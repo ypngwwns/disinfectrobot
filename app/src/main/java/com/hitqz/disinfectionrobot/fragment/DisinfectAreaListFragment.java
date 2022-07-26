@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
 import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectAreaListBinding;
+import com.hitqz.disinfectionrobot.dialog.DisinfectAreaNameDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisinfectAreaListFragment extends Fragment {
+public class DisinfectAreaListFragment extends BaseFragment {
 
     FragmentDisinfectAreaListBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;
@@ -65,7 +65,14 @@ public class DisinfectAreaListFragment extends Fragment {
         mBinding.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea();
+                DisinfectAreaNameDialog dialog = new DisinfectAreaNameDialog();
+                dialog.setOnClickListener(new DisinfectAreaNameDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm(String text) {
+                        ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea();
+                    }
+                });
+                dialog.show(getFragmentManager(), DisinfectAreaNameDialog.TAG);
             }
         });
     }
