@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DisinfectionRobot</string>
+    <string name="app_name">消毒机器人</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navi_point_list">导航点列表</string>
