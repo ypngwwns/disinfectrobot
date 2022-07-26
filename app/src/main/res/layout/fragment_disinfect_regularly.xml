@@ -27,6 +27,8 @@
         android:contentDescription="add"
         app:tint="@null"
         android:src="@mipmap/add"
+        app:backgroundTint="#0178FF"
+        android:backgroundTint="#0178FF"
         android:layout_margin="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

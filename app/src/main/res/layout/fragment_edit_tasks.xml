@@ -108,6 +108,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:contentDescription="add"
         app:tint="@null"
+        app:backgroundTint="#E92B2B"
+        android:backgroundTint="#E92B2B"
         android:src="@mipmap/delete"
         android:layout_margin="16dp" />
 
