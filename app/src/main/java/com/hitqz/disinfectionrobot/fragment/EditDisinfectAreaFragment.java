@@ -104,7 +104,8 @@ public class EditDisinfectAreaFragment extends BaseFragment {
             }
         });
 
-        mNavigationPointAdapter = new NavigationPointAdapter(getContext(), mNavigationPoints);
+        mNavigationPointAdapter = new NavigationPointAdapter(getContext(), mBinding.navigationView.getSelectedNavigationPoints());
+        mBinding.navigationView.setNavigationPointAdapter(mNavigationPointAdapter);
         mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
         if (mMapArea != null) {
             mBinding.npll.setName(mMapArea.getMapAreaName());

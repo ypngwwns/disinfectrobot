@@ -19,10 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
 import com.hitqz.disinfectionrobot.data.LaserScan;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationView extends View {
@@ -32,7 +34,6 @@ public class NavigationView extends View {
     public static final float MIN_SCALE_FACTER = 0.5f;
     private final PointF mStart = new PointF();
     private final Matrix mBitmapMatrix = new Matrix();
-    private int mSelectedPos = -1;
     private Paint mPointPaint;
     private Paint mRobotPaint;
     private Paint mSelectedPaint;
@@ -46,6 +47,7 @@ public class NavigationView extends View {
     // 充电点
     private NavigationPoint mRechargePos;
     private List<NavigationPoint> mNavigationPoints;
+    private List<NavigationPoint> mSelectedNavigationPoints = new ArrayList<>();
     private boolean mShowLaserScan = true;
     // 地图信息
     private float mResolution = 0f;
@@ -62,6 +64,7 @@ public class NavigationView extends View {
     private PointF mMid = new PointF();
     private GestureDetector mGestureDetector;
     private OnLongPressListener mOnLongPressListener;
+    private NavigationPointAdapter mNavigationPointAdapter;
 
     public NavigationView(Context context) {
         super(context);
@@ -199,7 +202,12 @@ public class NavigationView extends View {
                 // 安卓是以顺时针为坐标系
                 canvas.rotate(-drawPoint.angle);
                 mBitmapMatrix.reset();
-                Bitmap bitmap = mSelectedPos == i ? selectedPointBitmap : naviPointBitmap;
+                Bitmap bitmap = null;
+                if (mSelectedNavigationPoints.contains(navigationPoint)) {
+                    bitmap = selectedPointBitmap;
+                } else {
+                    bitmap = naviPointBitmap;
+                }
                 mBitmapMatrix.setTranslate(-bitmap.getWidth() / 2f, -bitmap.getHeight() / 2f);
                 canvas.drawBitmap(bitmap, mBitmapMatrix, null);
                 canvas.restore();
@@ -426,6 +434,14 @@ public class NavigationView extends View {
         return dst;
     }
 
+    public void setNavigationPointAdapter(NavigationPointAdapter navigationPointAdapter) {
+        mNavigationPointAdapter = navigationPointAdapter;
+    }
+
+    public List<NavigationPoint> getSelectedNavigationPoints() {
+        return mSelectedNavigationPoints;
+    }
+
     public interface OnLongPressListener {
         void onLongPress(float x, float y);
     }
@@ -468,7 +484,14 @@ public class NavigationView extends View {
                 );
 
                 if (region.contains((int) mapXY[0], (int) mapXY[1])) {
-                    mMapView.mSelectedPos = i;
+                    if (mMapView.mSelectedNavigationPoints.contains(navigationPoint)) {
+                        mMapView.mSelectedNavigationPoints.remove(navigationPoint);
+                    } else {
+                        mMapView.mSelectedNavigationPoints.add(navigationPoint);
+                    }
+                    if (mMapView.mNavigationPointAdapter != null) {
+                        mMapView.mNavigationPointAdapter.notifyDataSetChanged();
+                    }
                     mMapView.postInvalidate();
                     return true;
                 }

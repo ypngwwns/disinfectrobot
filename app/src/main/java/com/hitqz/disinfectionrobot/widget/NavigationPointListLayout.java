@@ -55,7 +55,6 @@ public class NavigationPointListLayout extends LinearLayout {
     }
 
     public void selectPosReset() {
-        mNavigationPointAdapter.setSelectedPos(-1);
         mNavigationPointAdapter.notifyDataSetInvalidated();
     }
 
@@ -67,13 +66,13 @@ public class NavigationPointListLayout extends LinearLayout {
 //        }
     }
 
+    public void setName(String name) {
+        mBinding.tvMapAreaName.setText(name);
+    }
+
     public interface INavigationPointListListener {
         void onClickEdit();
 
         void onClickClose();
-    }
-
-    public void setName(String name){
-        mBinding.tvMapAreaName.setText(name);
     }
 }
