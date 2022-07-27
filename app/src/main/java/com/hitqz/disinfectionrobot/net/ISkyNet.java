@@ -3,6 +3,9 @@ package com.hitqz.disinfectionrobot.net;
 import com.hitqz.disinfectionrobot.data.Goal;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
+import com.hitqz.disinfectionrobot.data.MapDataGetResponse;
+import com.hitqz.disinfectionrobot.data.MapListGetRequest;
+import com.hitqz.disinfectionrobot.data.MapListGetResponse;
 import com.hitqz.disinfectionrobot.data.MapPos;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
 
@@ -78,4 +81,25 @@ public interface ISkyNet {
      */
     @POST("/robot/api/login")
     Observable<BaseRespond<LoginResponse>> login(@Body LoginRequest loginRequest);
+
+    /**
+     * 建图
+     * <p>
+     * 0:开始建图
+     * 1:停止建图
+     */
+    @POST("/robot/api/map/map_build")
+    Observable<BaseRespond<LoginResponse>> map_build(@Body LoginRequest loginRequest);
+
+    /**
+     * 读取地图列表
+     */
+    @POST("/robot/api/map/map_list_get")
+    Observable<BaseRespond<MapListGetResponse>> map_list_get(@Body MapListGetRequest mapListGetRequest);
+
+    /**
+     * 读取地图数据
+     */
+    @POST("/robot/api/map/map_data_get")
+    Observable<BaseRespond<MapDataGetResponse>> map_data_get(@Body MapListGetRequest mapListGetRequest);
 }
