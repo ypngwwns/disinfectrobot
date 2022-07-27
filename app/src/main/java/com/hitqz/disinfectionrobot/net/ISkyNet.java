@@ -1,24 +1,22 @@
 package com.hitqz.disinfectionrobot.net;
 
-import com.hitqz.disinfectionrobot.data.Goal;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
+import com.hitqz.disinfectionrobot.data.MapAreaSetRequest;
+import com.hitqz.disinfectionrobot.data.MapChangeRequest;
 import com.hitqz.disinfectionrobot.data.MapDataGetResponse;
 import com.hitqz.disinfectionrobot.data.MapListGetRequest;
 import com.hitqz.disinfectionrobot.data.MapListGetResponse;
-import com.hitqz.disinfectionrobot.data.MapPos;
+import com.hitqz.disinfectionrobot.data.MapPosAddRequest;
+import com.hitqz.disinfectionrobot.data.MapPosAddResponse;
+import com.hitqz.disinfectionrobot.data.MapPosDeleteRequest;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ISkyNet {
 
@@ -35,52 +33,12 @@ public interface ISkyNet {
                                                       @Field("refresh_token") String refresh_token);
 
     /**
-     * 获取马甲的信息
-     *
-     * @return VestBean
-     */
-    @GET("/robot-web/web/robotMapPos/getByMapCheck")
-    Observable<BaseRespond<List<Goal>>> getByMapCheck(@Query("mapCode") String mapCode);
-
-    /**
-     * 获取马甲同一阵营的信息
-     *
-     * @return List<VestBean>
-     */
-    @GET("/app/teamInfo/{num}")
-    Observable<BaseRespond<List<VestBean>>> teamInfo(@Path("num") int num);
-
-    /**
-     * 获取演习日志
-     *
-     * @return BattleInfoBean
-     */
-    @GET("/app/battleInfo/{num}")
-    Observable<BaseRespond<List<BattleInfoBean>>> battleInfo(@Path("num") int num);
-
-    /**
-     * 获取演习日志
-     *
-     * @return List<VestBean>
-     */
-    @GET("/app/battleStatus")
-    Observable<BaseRespond<Integer>> battleStatus();
-
-    /**
-     * 新增节点
-     *
-     * @return List<VestBean>
-     */
-    @POST("/robot/api/map/map_pos_add")
-    Observable<BaseRespond<Integer>> map_pos_add(@Body MapPos mapPos);
-
-    /**
      * 登录
      *
      * @return List<VestBean>
      */
     @POST("/robot/api/login")
-    Observable<BaseRespond<LoginResponse>> login(@Body LoginRequest loginRequest);
+    Observable<BaseRespond<LoginResponse>> login(@Body LoginRequest request);
 
     /**
      * 建图
@@ -89,17 +47,47 @@ public interface ISkyNet {
      * 1:停止建图
      */
     @POST("/robot/api/map/map_build")
-    Observable<BaseRespond<LoginResponse>> map_build(@Body LoginRequest loginRequest);
+    Observable<BaseRespond<LoginResponse>> map_build(@Body LoginRequest request);
 
     /**
      * 读取地图列表
      */
     @POST("/robot/api/map/map_list_get")
-    Observable<BaseRespond<MapListGetResponse>> map_list_get(@Body MapListGetRequest mapListGetRequest);
+    Observable<BaseRespond<MapListGetResponse>> map_list_get(@Body MapListGetRequest request);
 
     /**
      * 读取地图数据
      */
     @POST("/robot/api/map/map_data_get")
-    Observable<BaseRespond<MapDataGetResponse>> map_data_get(@Body MapListGetRequest mapListGetRequest);
+    Observable<BaseRespond<MapDataGetResponse>> map_data_get(@Body MapListGetRequest request);
+
+    /**
+     * 读取地图节点
+     */
+    @POST("/robot/api/map/map_pos_get")
+    Observable<BaseRespond<MapDataGetResponse>> map_pos_get(@Body MapListGetRequest request);
+
+    /**
+     * 切换地图
+     */
+    @POST("/robot/api/map/map_change")
+    Observable<BaseRespond<Object>> map_change(@Body MapChangeRequest request);
+
+    /**
+     * 新增节点
+     */
+    @POST("/robot/api/map/map_pos_add")
+    Observable<BaseRespond<MapPosAddResponse>> map_pos_add(@Body MapPosAddRequest request);
+
+    /**
+     * 新增节点
+     */
+    @POST("/robot/api/map/map_pos_delete")
+    Observable<BaseRespond<Object>> map_pos_delete(@Body MapPosDeleteRequest request);
+
+    /**
+     * 新建消毒区
+     */
+    @POST("/robot/api/map/map_area_set")
+    Observable<BaseRespond<Object>> map_area_set(@Body MapAreaSetRequest request);
 }

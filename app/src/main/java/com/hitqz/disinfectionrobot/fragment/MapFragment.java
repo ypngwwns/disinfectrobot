@@ -8,17 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.ToastUtils;
-import com.hitqz.disinfectionrobot.data.Goal;
 import com.hitqz.disinfectionrobot.data.MapData;
-import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentMapBinding;
-import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.util.PathUtil;
-import com.sonicers.commonlib.rx.RxSchedulers;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -94,32 +86,6 @@ public class MapFragment extends BaseFragment {
     }
 
     private void initGoalList() {
-        showDialog();
-        getMSkyNet().getByMapCheck("map0622")
-                .compose(RxSchedulers.io_main())
-                .subscribeWith(new BaseDataObserver<List<Goal>>() {
-                    @Override
-                    public void onSuccess(List<Goal> model) {
-                        if (model != null && model.size() > 0) {
-                            List<NavigationPoint> navigationPoints = new ArrayList<>();
-                            for (Goal goal : model) {
-                                NavigationPoint navigationPoint = new NavigationPoint();
-                                navigationPoint.rawX = goal.getPosx();
-                                navigationPoint.rawY = goal.getPosy();
-                                navigationPoint.radian = goal.getYaw();
-                                navigationPoints.add(navigationPoint);
-                            }
-                            mBinding.navigationView.setNavigationPoints(navigationPoints);
-                            ToastUtils.showShort("获取点位列表成功");
-                            dismissDialog();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(String msg) {
-                        dismissDialog();
-                        ToastUtils.showShort("获取点位列表失败");
-                    }
-                });
     }
 }
