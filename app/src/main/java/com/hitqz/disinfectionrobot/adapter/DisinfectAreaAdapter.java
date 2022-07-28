@@ -16,7 +16,6 @@ public class DisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = DisinfectAreaAdapter.class.getSimpleName();
 
     private final List<String> mList;
-    private int mSelectedPos = -1;
     private View.OnClickListener mOnClickListener;
 
     public DisinfectAreaAdapter(List<String> list) {
@@ -60,11 +59,6 @@ public class DisinfectAreaAdapter extends BaseAdapter {
             }
         });
         return convertView;
-    }
-
-    public void setSelectedPos(int selectedPos) {
-        mSelectedPos = selectedPos;
-        notifyDataSetChanged();
     }
 
     public void setOnClickListener(View.OnClickListener onClickListener) {

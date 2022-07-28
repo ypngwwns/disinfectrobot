@@ -45,6 +45,7 @@
             android:layout_height="1dp" />
 
         <RadioButton
+            android:id="@+id/rb_all_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/colorPrimary"
@@ -75,6 +76,7 @@
             android:layout_height="1dp" />
 
         <RadioButton
+            android:id="@+id/rb_part_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/colorPrimary"
