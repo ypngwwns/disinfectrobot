@@ -1,7 +1,6 @@
 package com.hitqz.disinfectionrobot.adapter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ public class SelectDisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = SelectDisinfectAreaAdapter.class.getSimpleName();
 
     private final List<String> mList;
-    private int mSelectedPos = -1;
 
     public SelectDisinfectAreaAdapter(List<String> list) {
         this.mList = list;
@@ -51,28 +49,16 @@ public class SelectDisinfectAreaAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_disinfect_area, parent, false);
             holder = new ViewHolder();
             holder.tv1 = convertView.findViewById(R.id.tv1);
-            holder.vp = convertView.findViewById(R.id.vp_background);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         String name = mList.get(position);
         holder.tv1.setText(name);
-        if (position == mSelectedPos) {
-            holder.vp.setBackgroundColor(Color.BLUE);
-        } else {
-            holder.vp.setBackgroundColor(Color.parseColor("#03a9f4"));
-        }
         return convertView;
-    }
-
-    public void setSelectedPos(int selectedPos) {
-        mSelectedPos = selectedPos;
-        notifyDataSetChanged();
     }
 
     public class ViewHolder {
         private TextView tv1;
-        private ViewGroup vp;
     }
 }

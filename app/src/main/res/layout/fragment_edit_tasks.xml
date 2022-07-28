@@ -21,7 +21,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tp_time"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:textColor="#999999"
+        android:textSize="18dp"
         android:text="消毒范围" />
 
     <LinearLayout
@@ -37,9 +40,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tp_time"
             app:layout_constraintStart_toStartOf="parent"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:layout_marginStart="10dp"
+            android:textSize="22.5dp"
+            android:textColor="#323232"
+            android:layout_marginStart="40dp"
             android:text="全区消毒" />
 
         <View
@@ -47,10 +50,12 @@
             android:layout_width="0dp"
             android:layout_height="1dp" />
 
-        <CheckBox
-            android:id="@+id/cb_all_area"
+        <RadioButton
+            android:id="@+id/rb_all_area"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"
+            android:layout_marginEnd="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,9 +71,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tp_time"
             app:layout_constraintStart_toStartOf="parent"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:layout_marginStart="10dp"
+            android:textSize="22.5dp"
+            android:textColor="#323232"
+            android:layout_marginStart="40dp"
             android:text="选区消毒" />
 
         <View
@@ -76,10 +81,12 @@
             android:layout_width="0dp"
             android:layout_height="1dp" />
 
-        <CheckBox
-            android:id="@+id/cb_part_area"
+        <RadioButton
+            android:id="@+id/rb_part_area"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"
+            android:layout_marginEnd="20dp" />
     </LinearLayout>
 
     <TextView
@@ -88,7 +95,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/vp_2"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="40dp"
+        android:textColor="#999999"
+        android:textSize="18dp"
         android:text="选择消毒区" />
 
     <ListView
@@ -97,7 +106,9 @@
         android:layout_height="0dp"
         android:divider="@null"
         app:layout_constraintTop_toBottomOf="@id/tv_select_disinfection_area"
-        android:paddingTop="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

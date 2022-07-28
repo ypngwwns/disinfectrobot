@@ -59,7 +59,7 @@ public class EditTasksFragment extends Fragment {
             }
         });
         onSelectChanged();
-        mBinding.cbAllArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.rbAllArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mSelectedAllArea == isChecked) {
@@ -69,7 +69,7 @@ public class EditTasksFragment extends Fragment {
                 onSelectChanged();
             }
         });
-        mBinding.cbPartArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.rbPartArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mSelectedAllArea == !isChecked) {
@@ -84,13 +84,13 @@ public class EditTasksFragment extends Fragment {
     private void onSelectChanged() {
 
         if (mSelectedAllArea) {
-            mBinding.cbAllArea.setChecked(true);
-            mBinding.cbPartArea.setChecked(false);
+            mBinding.rbAllArea.setChecked(true);
+            mBinding.rbPartArea.setChecked(false);
             mBinding.tvSelectDisinfectionArea.setVisibility(View.GONE);
             mBinding.lvDisinfectionArea.setVisibility(View.GONE);
         } else {
-            mBinding.cbAllArea.setChecked(false);
-            mBinding.cbPartArea.setChecked(true);
+            mBinding.rbAllArea.setChecked(false);
+            mBinding.rbPartArea.setChecked(true);
             mBinding.tvSelectDisinfectionArea.setVisibility(View.VISIBLE);
             mBinding.lvDisinfectionArea.setVisibility(View.VISIBLE);
         }
