@@ -5,16 +5,16 @@ package com.hitqz.disinfectionrobot.net;
  */
 public class BaseRespond<T> {
 
-    private int resultCode;
+    private int code;
     private String msg;
     private T data;
 
     public int getCode() {
-        return resultCode;
+        return code;
     }
 
     public void setCode(int code) {
-        this.resultCode = code;
+        this.code = code;
     }
 
     public String getMsg() {

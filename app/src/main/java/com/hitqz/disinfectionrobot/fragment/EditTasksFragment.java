@@ -93,6 +93,7 @@ public class EditTasksFragment extends Fragment {
             mBinding.rbPartArea.setChecked(true);
             mBinding.tvSelectDisinfectionArea.setVisibility(View.VISIBLE);
             mBinding.lvDisinfectionArea.setVisibility(View.VISIBLE);
+            mSelectDisinfectAreaAdapter.notifyDataSetChanged();
         }
     }
 }

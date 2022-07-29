@@ -1,8 +1,6 @@
 package com.hitqz.disinfectionrobot.data;
 
-public class MapAreaSetRequest {
-
+public class MapUploadRequest {
     public String token;
-
-    public MapArea mapAreaAdd;
+    public String mapName;
 }

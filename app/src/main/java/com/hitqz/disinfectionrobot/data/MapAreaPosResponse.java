@@ -2,8 +2,9 @@ package com.hitqz.disinfectionrobot.data;
 
 import java.util.List;
 
-public class MapPosAddRequest {
+public class MapAreaPosResponse {
 
     public String token;
-    public List<MapPosList> data;
+
+    public List<MapArea.MapAreaPos> mapAreaPosList;
 }
