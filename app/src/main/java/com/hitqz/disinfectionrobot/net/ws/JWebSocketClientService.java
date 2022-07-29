@@ -1,14 +1,10 @@
 package com.hitqz.disinfectionrobot.net.ws;
 
-import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
-import static com.hitqz.disinfectionrobot.constant.Constants.WS_URL;
-
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +18,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.activity.MainActivity;
+import com.hitqz.disinfectionrobot.constant.Constants;
 
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -38,8 +34,8 @@ public class JWebSocketClientService extends Service {
     public JWebSocketClient client2;
     public onClintOpenListener mOnClintOpenListener;
     PowerManager.WakeLock wakeLock;//锁屏唤醒
-    private final JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
-    private final Handler mHandler = new Handler();
+    private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
+    private Handler mHandler = new Handler();
 
     public JWebSocketClientService() {
     }
@@ -70,7 +66,9 @@ public class JWebSocketClientService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //初始化websocket
         initSocketClient();
+        initSocketClient2();
         mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
+        mHandler.postDelayed(heartBeatRunnable2, HEART_BEAT_RATE);//开启心跳检测
 
         //设置service为前台服务，提高优先级
         if (Build.VERSION.SDK_INT < 18) {
@@ -85,7 +83,7 @@ public class JWebSocketClientService extends Service {
             //Android7.0以上app启动后通知栏会出现一条"正在运行"的通知
             final Notification notification = new NotificationCompat.Builder(this, "JWebSocketClientService")
                     .setContentTitle("JWebSocketClientService运行中")
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setOngoing(true)
                     .build();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -112,14 +110,14 @@ public class JWebSocketClientService extends Service {
      * 初始化websocket连接
      */
     private void initSocketClient() {
-        URI uri = URI.create(WS_URL);
+        URI uri = URI.create(Constants.WS_MAP_BUILD);
         client = new JWebSocketClient(uri) {
             @Override
             public void onMessage(String message) {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
 
                 Intent intent = new Intent();
-                intent.setAction("com.hitqz.ws.content");
+                intent.setAction("com.xch.servicecallback.content");
                 intent.putExtra("message", message);
                 sendBroadcast(intent);
 
@@ -136,6 +134,34 @@ public class JWebSocketClientService extends Service {
             }
         };
         connect();
+    }
+
+    private void initSocketClient2() {
+        URI uri2 = URI.create(Constants.WS_MAP_BUILD);
+
+        client2 = new JWebSocketClient(uri2) {
+            @Override
+            public void onMessage(String message) {
+                Log.e("JWebSocketClientService", "收到的消息：" + message);
+
+                Intent intent = new Intent();
+                intent.setAction("com.xch.servicecallback.content");
+                intent.putExtra("message", message);
+                sendBroadcast(intent);
+
+                checkLockAndShowNotification(message);
+            }
+
+            @Override
+            public void onOpen(ServerHandshake handshakedata) {
+                super.onOpen(handshakedata);
+                if (mOnClintOpenListener != null) {
+                    mOnClintOpenListener.onClientOpen(client2.getURI().toString());
+                }
+                Log.e("JWebSocketClientService", "websocket连接成功");
+            }
+        };
+        connect2();
     }
 
     /**
@@ -242,26 +268,26 @@ public class JWebSocketClientService extends Service {
      *
      * @param content
      */
-    private void sendNotification(String content) {
-        Intent intent = new Intent();
-        intent.setClass(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setAutoCancel(true)
-                // 设置该通知优先级
-                .setPriority(Notification.PRIORITY_MAX)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("新消息")
-                .setContentText(content)
-                .setVisibility(VISIBILITY_PUBLIC)
-                .setWhen(System.currentTimeMillis())
-                // 向通知添加声音、闪灯和振动效果
-                .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_ALL | Notification.DEFAULT_SOUND)
-                .setContentIntent(pendingIntent)
-                .build();
-        notifyManager.notify(1, notification);//id要保证唯一
-    }
+//    private void sendNotification(String content) {
+//        Intent intent = new Intent();
+//        intent.setClass(this, MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+//                .setAutoCancel(true)
+//                // 设置该通知优先级
+//                .setPriority(Notification.PRIORITY_MAX)
+//                .setSmallIcon(R.drawable.icon)
+//                .setContentTitle("新消息")
+//                .setContentText(content)
+//                .setVisibility(VISIBILITY_PUBLIC)
+//                .setWhen(System.currentTimeMillis())
+//                // 向通知添加声音、闪灯和振动效果
+//                .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_ALL | Notification.DEFAULT_SOUND)
+//                .setContentIntent(pendingIntent)
+//                .build();
+//        notifyManager.notify(1, notification);//id要保证唯一
+//    }
 
     /**
      * 开启重连
@@ -274,6 +300,24 @@ public class JWebSocketClientService extends Service {
                 try {
                     Log.e("JWebSocketClientService", "开启重连");
                     client.reconnectBlocking();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * 开启重连
+     */
+    private void reconnectWs2() {
+        mHandler.removeCallbacks(heartBeatRunnable2);
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Log.e("JWebSocketClientService", "开启重连");
+                    client2.reconnectBlocking();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -309,7 +353,7 @@ public class JWebSocketClientService extends Service {
         }
     }
 
-    private final Runnable heartBeatRunnable = new Runnable() {
+    private Runnable heartBeatRunnable = new Runnable() {
         @Override
         public void run() {
             Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");
@@ -321,6 +365,24 @@ public class JWebSocketClientService extends Service {
                 //如果client已为空，重新初始化连接
                 client = null;
                 initSocketClient();
+            }
+            //每隔一定的时间，对长连接进行一次心跳检测
+            mHandler.postDelayed(this, HEART_BEAT_RATE);
+        }
+    };
+
+    private Runnable heartBeatRunnable2 = new Runnable() {
+        @Override
+        public void run() {
+            Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");
+            if (client2 != null) {
+                if (client2.isClosed()) {
+                    reconnectWs2();
+                }
+            } else {
+                //如果client已为空，重新初始化连接
+                client2 = null;
+                initSocketClient2();
             }
             //每隔一定的时间，对长连接进行一次心跳检测
             mHandler.postDelayed(this, HEART_BEAT_RATE);
