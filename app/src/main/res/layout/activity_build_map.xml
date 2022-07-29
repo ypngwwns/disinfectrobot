@@ -71,13 +71,13 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/btn_start"
-                android:layout_alignTop="@id/btn_cancel"
-                android:layout_toEndOf="@id/btn_cancel"
-                android:text="开始构图"
-                android:layout_marginStart="30dp"
+                android:id="@+id/btn_map_build"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/btn_cancel"
+                android:layout_marginStart="30dp"
+                android:layout_toEndOf="@id/btn_cancel"
+                android:text="开始建图" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
