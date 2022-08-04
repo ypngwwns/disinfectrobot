@@ -35,7 +35,6 @@ public class BuildMapActivity extends BaseActivity {
     public static final String TAG = BuildMapActivity.class.getSimpleName();
 
     ActivityBuildMapBinding mBinding;
-    private boolean mBuildingMap = false;
     private ChatMessageReceiver chatMessageReceiver;
     private JWebSocketClient client2;
     private JWebSocketClientService.JWebSocketClientBinder binder;
@@ -76,7 +75,7 @@ public class BuildMapActivity extends BaseActivity {
         mBinding = ActivityBuildMapBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         setListener();
-        mBinding.btnMapBuild.setText(mBuildingMap ? "保存地图" : "开始建图");
+        mBinding.btnMapBuild.setText("开始建图");
         bindService();
         doRegisterReceiver();
     }
@@ -86,7 +85,7 @@ public class BuildMapActivity extends BaseActivity {
         mBinding.btnMapBuild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBuildingMap) {
+                if ("保存地图".contentEquals(mBinding.btnMapBuild.getText())) {
                     SaveMapDialog dialog = new SaveMapDialog();
                     dialog.setOnClickListener(new SaveMapDialog.OnClickListener() {
                         @Override
@@ -116,7 +115,7 @@ public class BuildMapActivity extends BaseActivity {
                         String token = SPUtils.getInstance().getString(TokenKeys.token);
                         jWebSClientService.sendMsg2("{token:\"" + token + "}");
                     } else {
-                        ToastUtils.showShort("连接已断开，请稍等或重启App哟");
+                        ToastUtils.showShort("socket连接已断开");
                         return;
                     }
                     showDialog();
@@ -127,6 +126,7 @@ public class BuildMapActivity extends BaseActivity {
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
+                                    mBinding.btnMapBuild.setText("保存地图");
                                     dismissDialog();
                                     ToastUtils.showShort("开始建图成功");
                                 }
@@ -138,6 +138,36 @@ public class BuildMapActivity extends BaseActivity {
                                 }
                             });
                 }
+            }
+        });
+        mBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonDialog dialog = new CommonDialog();
+                dialog.setOnClickListener(new CommonDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        String token = SPUtils.getInstance().getString(TokenKeys.token);
+                        MapBuildRequest request = new MapBuildRequest(token, 1);
+
+                        mISkyNet.map_build(request).compose(RxSchedulers.io_main())
+                                .subscribeWith(new BaseDataObserver<Object>() {
+                                    @Override
+                                    public void onSuccess(Object model) {
+                                        mBinding.btnMapBuild.setText("开始建图");
+                                        dismissDialog();
+                                        ToastUtils.showShort("停止建图成功");
+                                    }
+
+                                    @Override
+                                    public void onFailure(String msg) {
+                                        dismissDialog();
+                                        ToastUtils.showShort("停止建图失败:" + msg);
+                                    }
+                                });
+                    }
+                });
+                dialog.show(getSupportFragmentManager(), dialog.getTag());
             }
         });
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
