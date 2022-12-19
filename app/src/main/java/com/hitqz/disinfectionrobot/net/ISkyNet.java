@@ -23,6 +23,7 @@ import com.hitqz.disinfectionrobot.data.ScheduleAddRequest;
 import com.hitqz.disinfectionrobot.data.ScheduleListResponse;
 import com.hitqz.disinfectionrobot.data.ScheduleRequest;
 import com.hitqz.disinfectionrobot.data.ScheduleUpdateRequest;
+import com.hitqz.disinfectionrobot.data.SpeedRequest;
 import com.hitqz.disinfectionrobot.data.Token;
 import com.hitqz.disinfectionrobot.data.UrgentTaskRequest;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
@@ -165,4 +166,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/task/urgent_task")
     Observable<BaseRespond<Object>> urgent_task(@Body UrgentTaskRequest request);
+
+    /**
+     * 临时任务 - 下达
+     */
+    @POST("/robot/api/ctrl/move")
+    Observable<BaseRespond<Object>> ctrlMove(@Body SpeedRequest request);
 }

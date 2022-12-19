@@ -69,8 +69,10 @@ public class RockerView extends View {
     private static final int ROCKER_BACKGROUND_MODE_DEFAULT = 7;
     private final Paint mAreaBackgroundPaint;
     private final Paint mRockerPaint;
-    private Point mRockerPosition;
     private final Point mCenterPoint;
+    private final int mGrayAreaColor = Color.parseColor("#323232");
+    private final int mGrayRockerColor = Color.parseColor("#565656");
+    private Point mRockerPosition;
     private int mAreaRadius;
     private int mRockerRadius;
     private CallBackMode mCallBackMode = CallBackMode.CALL_BACK_MODE_MOVE;
@@ -85,11 +87,7 @@ public class RockerView extends View {
     private int mRockerBackgroundMode = ROCKER_BACKGROUND_MODE_DEFAULT;
     private Bitmap mRockerBitmap;
     private int mRockerColor;
-
     private boolean touchable = true;
-
-    private final int mGrayAreaColor = Color.parseColor("#323232");
-    private final int mGrayRockerColor = Color.parseColor("#565656");
 
     public RockerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -456,7 +454,7 @@ public class RockerView extends View {
             mOnAngleChangeListener.angle(angle);
         }
         if (mOnTouchPointListener != null) {
-            mOnTouchPointListener.postion(y, radian);
+            mOnTouchPointListener.position(y, radian);
         }
         if (null != mOnShakeListener) {
             if (CallBackMode.CALL_BACK_MODE_MOVE == mCallBackMode) {
@@ -783,7 +781,7 @@ public class RockerView extends View {
          * x x轴移动的比例
          * y y轴移动的比例
          */
-        void postion(float x, float y);
+        void position(float xPercent, float yPercent);
 
         // 速度复位
         void onFinish();
