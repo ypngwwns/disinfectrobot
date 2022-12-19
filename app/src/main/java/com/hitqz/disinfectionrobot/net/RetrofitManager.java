@@ -31,7 +31,7 @@ public class RetrofitManager {
 
     public static final String TAG = "RetrofitManager";
 
-    public static final String SEVER_URL = "http://192.168.3.2:8090";
+    public static final String SEVER_URL = "http://192.168.3.245:18080";
 
     private static final int DEFAULT_TIME_OUT = 5;//超时时间 5s
     private static final int DEFAULT_READ_TIME_OUT = 10;
@@ -100,14 +100,6 @@ public class RetrofitManager {
         return mRetrofit.create(service);
     }
 
-    private class HttpLogger implements HttpLoggingInterceptor.Logger {
-
-        @Override
-        public void log(String message) {
-            Log.i("Retrofit", message);
-        }
-    }
-
     //在请求头里添加token的拦截器处理
     public static class TokenHeaderInterceptor implements Interceptor {
         @NotNull
@@ -126,6 +118,14 @@ public class RetrofitManager {
                         + SPUtils.getInstance().getString(TokenKeys.token)).build();
                 return chain.proceed(updateRequest);
             }
+        }
+    }
+
+    private class HttpLogger implements HttpLoggingInterceptor.Logger {
+
+        @Override
+        public void log(String message) {
+            Log.i(TAG, message);
         }
     }
 }

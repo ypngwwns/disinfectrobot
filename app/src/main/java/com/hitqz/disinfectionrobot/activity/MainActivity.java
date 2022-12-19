@@ -192,9 +192,6 @@ public class MainActivity extends BaseActivity implements IGo {
                     public void onSuccess(LoginResponse model) {
                         dismissDialog();
                         ToastUtils.showShort("登录成功");
-                        SPUtils.getInstance().put(
-                                TokenKeys.ssid, model.ssid
-                        );
                         SPUtils.getInstance().put(TokenKeys.token, model.token);
                         go2Main();
                     }
