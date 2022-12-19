@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.net;
 
+import com.hitqz.disinfectionrobot.data.Cmd;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.data.MapAreaListResponse;
@@ -168,8 +169,14 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> urgent_task(@Body UrgentTaskRequest request);
 
     /**
-     * 临时任务 - 下达
+     * 手动速度控制
      */
     @POST("/robot/api/ctrl/move")
     Observable<BaseRespond<Object>> ctrlMove(@Body SpeedRequest request);
+
+    /**
+     * 个手动开启喷雾和关闭喷雾
+     */
+    @POST("/robot/api/ctrl/disinfectCmd")
+    Observable<BaseRespond<Object>> disinfectCmd(@Body Cmd cmd);
 }

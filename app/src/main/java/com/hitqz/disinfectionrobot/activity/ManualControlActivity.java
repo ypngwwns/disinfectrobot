@@ -4,11 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.hitqz.disinfectionrobot.data.Cmd;
 import com.hitqz.disinfectionrobot.data.SpeedRequest;
 import com.hitqz.disinfectionrobot.databinding.ActivityManualControlBinding;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
@@ -59,10 +60,50 @@ public class ManualControlActivity extends BaseActivity {
                 postSpeed();
             }
         });
+
+        mBinding.btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cmd cmd = new Cmd();
+                cmd.cmd = 1;
+                mISkyNet.disinfectCmd(cmd).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object model) {
+                                ToastUtils.showShort("开启喷雾成功");
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                ToastUtils.showShort("开启喷雾失败");
+                            }
+                        });
+            }
+        });
+
+        mBinding.btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cmd cmd = new Cmd();
+                cmd.cmd = 0;
+                mISkyNet.disinfectCmd(cmd).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object model) {
+                                ToastUtils.showShort("关闭喷雾成功");
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                ToastUtils.showShort("关闭喷雾失败");
+                            }
+                        });
+            }
+        });
     }
 
     private void postSpeed() {
-        Log.d("postSpeed", "mSpeedRequest.linearSpeed:" + mSpeedRequest.linearSpeed + "  mSpeedRequest.angleSpeed:" + mSpeedRequest.angleSpeed);
+//        Log.d("postSpeed", "mSpeedRequest.linearSpeed:" + mSpeedRequest.linearSpeed + "  mSpeedRequest.angleSpeed:" + mSpeedRequest.angleSpeed);
         mISkyNet.ctrlMove(mSpeedRequest).compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<Object>() {
                     @Override
