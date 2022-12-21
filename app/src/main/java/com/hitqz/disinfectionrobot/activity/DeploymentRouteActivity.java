@@ -14,6 +14,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
+import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.ActivityDeployRouteBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
@@ -21,7 +22,6 @@ import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
 import com.hitqz.disinfectionrobot.dialog.PointEditDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
-import com.hitqz.disinfectionrobot.util.DBHelper;
 import com.hitqz.disinfectionrobot.widget.NavigationView;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
@@ -58,6 +58,7 @@ public class DeploymentRouteActivity extends BaseActivity {
                                             mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
                                             mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
                                                     mMapDataResponse.mapOriginy);
+                                            getMapPose();
                                             dismissDialog();
                                         }
                                     });
@@ -114,13 +115,36 @@ public class DeploymentRouteActivity extends BaseActivity {
             }
         });
 
-        List<NavigationPoint> list = DBHelper.findAllNavigationPoint("map0622");
-        mNavigationPoints.clear();
-        mNavigationPoints.addAll(list);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
         mNavigationPointAdapter = new NavigationPointAdapter(this, mNavigationPoints);
         mBinding.navigationView.setPointAdapter(mNavigationPointAdapter);
         mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
+    }
+
+    private void getMapPose() {
+        mISkyNet.mapPosListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<MapPose>>() {
+                    @Override
+                    public void onSuccess(List<MapPose> model) {
+//                        mBinding.navigationView.setNavigationPoints(model);
+                        for (MapPose mapPose : model) {
+                            NavigationPoint navigationPoint = new NavigationPoint();
+                            navigationPoint.mapCode = mapPose.mapCode;
+                            navigationPoint.name = mapPose.name;
+                            navigationPoint.rawX = mapPose.posx;
+                            navigationPoint.rawY = mapPose.posy;
+                            navigationPoint.radian = mapPose.yaw;
+                            mNavigationPoints.add(navigationPoint);
+                        }
+                        mBinding.navigationView.setNavigationPoints(mNavigationPoints);
+                        mNavigationPointAdapter.notifyDataSetInvalidated();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        ToastUtils.showShort("获取点位列表失败");
+                    }
+                });
     }
 
     @Override

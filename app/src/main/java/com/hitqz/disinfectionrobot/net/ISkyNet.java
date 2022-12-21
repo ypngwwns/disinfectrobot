@@ -20,6 +20,7 @@ import com.hitqz.disinfectionrobot.data.MapPosAddResponse;
 import com.hitqz.disinfectionrobot.data.MapPosDeleteRequest;
 import com.hitqz.disinfectionrobot.data.MapPosGetRequest;
 import com.hitqz.disinfectionrobot.data.MapPosGetResponse;
+import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.MapUploadRequest;
 import com.hitqz.disinfectionrobot.data.ScheduleAddRequest;
 import com.hitqz.disinfectionrobot.data.ScheduleListResponse;
@@ -29,6 +30,8 @@ import com.hitqz.disinfectionrobot.data.SpeedRequest;
 import com.hitqz.disinfectionrobot.data.Token;
 import com.hitqz.disinfectionrobot.data.UrgentTaskRequest;
 import com.hitqz.disinfectionrobot.net.data.UserLoginData;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -187,4 +190,10 @@ public interface ISkyNet {
      */
     @GET("/robot/api/ctrl/mapCurGet")
     Observable<BaseRespond<MapDataResponse>> mapCurGet();
+
+    /**
+     * 获取地图上的点位
+     */
+    @POST("/robot/api/mapPos/mapPosListGet")
+    Observable<BaseRespond<List<MapPose>>> mapPosListGet();
 }
