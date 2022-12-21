@@ -71,7 +71,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
                 dialog.setOnClickListener(new DisinfectAreaNameDialog.OnClickListener() {
                     @Override
                     public void onConfirm(String text) {
-                        if (mList.contains(text)) {
+                        if (!isValid(text)) {
                             ToastUtils.showShort("已存在同名消毒区，请重新输入");
                             return;
                         }
@@ -101,5 +101,14 @@ public class DisinfectAreaListFragment extends BaseFragment {
                         ToastUtils.showShort("获取到区域列表失败");
                     }
                 });
+    }
+
+    private boolean isValid(String name) {
+        for (Area area : mList) {
+            if (name.equals(area.areaName)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
