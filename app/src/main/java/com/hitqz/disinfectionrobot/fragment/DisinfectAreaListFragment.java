@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
 import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
-import com.hitqz.disinfectionrobot.data.Area;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectAreaListBinding;
 import com.hitqz.disinfectionrobot.dialog.DisinfectAreaNameDialog;
@@ -27,7 +26,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
 
     FragmentDisinfectAreaListBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;
-    private List<Area> mList = new ArrayList<>();
+    private List<MapArea> mList = new ArrayList<>();
 
     private DisinfectAreaListFragment() {
         // Required empty public constructor
@@ -77,7 +76,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
                         }
                         dialog.dismiss();
                         MapArea mapArea = new MapArea();
-                        mapArea.setMapAreaName(text);
+                        mapArea.areaName = text;
                         ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea(mapArea);
                     }
                 });
@@ -87,9 +86,9 @@ public class DisinfectAreaListFragment extends BaseFragment {
 
         showDialog();
         getMSkyNet().areaListGet().compose(RxSchedulers.io_main())
-                .subscribeWith(new BaseDataObserver<List<Area>>() {
+                .subscribeWith(new BaseDataObserver<List<MapArea>>() {
                     @Override
-                    public void onSuccess(List<Area> model) {
+                    public void onSuccess(List<MapArea> model) {
                         mList.addAll(model);
                         mDisinfectAreaAdapter.notifyDataSetInvalidated();
                         dismissDialog();
@@ -104,8 +103,8 @@ public class DisinfectAreaListFragment extends BaseFragment {
     }
 
     private boolean isValid(String name) {
-        for (Area area : mList) {
-            if (name.equals(area.areaName)) {
+        for (MapArea mapArea : mList) {
+            if (name.equals(mapArea.areaName)) {
                 return false;
             }
         }

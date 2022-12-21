@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.data.Area;
+import com.hitqz.disinfectionrobot.data.MapArea;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import java.util.List;
 public class DisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = DisinfectAreaAdapter.class.getSimpleName();
 
-    private final List<Area> mList;
+    private final List<MapArea> mList;
     private View.OnClickListener mOnClickListener;
 
-    public DisinfectAreaAdapter(List<Area> list) {
+    public DisinfectAreaAdapter(List<MapArea> list) {
         this.mList = list;
     }
 

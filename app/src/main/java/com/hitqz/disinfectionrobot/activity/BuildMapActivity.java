@@ -25,10 +25,8 @@ import com.hitqz.disinfectionrobot.data.MapUploadRequest;
 import com.hitqz.disinfectionrobot.databinding.ActivityBuildMapBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.SaveMapDialog;
-import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClient;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
-import com.sonicers.commonlib.rx.RxSchedulers;
 
 @SuppressLint("CheckResult")
 public class BuildMapActivity extends BaseActivity {
@@ -93,20 +91,20 @@ public class BuildMapActivity extends BaseActivity {
                             showDialog();
                             String token = SPUtils.getInstance().getString(TokenKeys.token);
                             MapUploadRequest request = new MapUploadRequest(token, text);
-                            mISkyNet.map_upload(request).compose(RxSchedulers.io_main())
-                                    .subscribeWith(new BaseDataObserver<Object>() {
-                                        @Override
-                                        public void onSuccess(Object model) {
-                                            dismissDialog();
-                                            ToastUtils.showShort("保存地图成功");
-                                        }
-
-                                        @Override
-                                        public void onFailure(String msg) {
-                                            dismissDialog();
-                                            ToastUtils.showShort("保存地图失败:" + msg);
-                                        }
-                                    });
+//                            mISkyNet.map_upload(request).compose(RxSchedulers.io_main())
+//                                    .subscribeWith(new BaseDataObserver<Object>() {
+//                                        @Override
+//                                        public void onSuccess(Object model) {
+//                                            dismissDialog();
+//                                            ToastUtils.showShort("保存地图成功");
+//                                        }
+//
+//                                        @Override
+//                                        public void onFailure(String msg) {
+//                                            dismissDialog();
+//                                            ToastUtils.showShort("保存地图失败:" + msg);
+//                                        }
+//                                    });
                         }
                     });
                     dialog.show(getSupportFragmentManager(), SaveMapDialog.TAG);
@@ -122,21 +120,21 @@ public class BuildMapActivity extends BaseActivity {
                     String token = SPUtils.getInstance().getString(TokenKeys.token);
                     MapBuildRequest request = new MapBuildRequest(token, 0);
 
-                    mISkyNet.map_build(request).compose(RxSchedulers.io_main())
-                            .subscribeWith(new BaseDataObserver<Object>() {
-                                @Override
-                                public void onSuccess(Object model) {
-                                    mBinding.btnMapBuild.setText("保存地图");
-                                    dismissDialog();
-                                    ToastUtils.showShort("开始建图成功");
-                                }
-
-                                @Override
-                                public void onFailure(String msg) {
-                                    dismissDialog();
-                                    ToastUtils.showShort("开始建图失败:" + msg);
-                                }
-                            });
+//                    mISkyNet.map_build(request).compose(RxSchedulers.io_main())
+//                            .subscribeWith(new BaseDataObserver<Object>() {
+//                                @Override
+//                                public void onSuccess(Object model) {
+//                                    mBinding.btnMapBuild.setText("保存地图");
+//                                    dismissDialog();
+//                                    ToastUtils.showShort("开始建图成功");
+//                                }
+//
+//                                @Override
+//                                public void onFailure(String msg) {
+//                                    dismissDialog();
+//                                    ToastUtils.showShort("开始建图失败:" + msg);
+//                                }
+//                            });
                 }
             }
         });
@@ -150,21 +148,21 @@ public class BuildMapActivity extends BaseActivity {
                         String token = SPUtils.getInstance().getString(TokenKeys.token);
                         MapBuildRequest request = new MapBuildRequest(token, 1);
 
-                        mISkyNet.map_build(request).compose(RxSchedulers.io_main())
-                                .subscribeWith(new BaseDataObserver<Object>() {
-                                    @Override
-                                    public void onSuccess(Object model) {
-                                        mBinding.btnMapBuild.setText("开始建图");
-                                        dismissDialog();
-                                        ToastUtils.showShort("停止建图成功");
-                                    }
-
-                                    @Override
-                                    public void onFailure(String msg) {
-                                        dismissDialog();
-                                        ToastUtils.showShort("停止建图失败:" + msg);
-                                    }
-                                });
+//                        mISkyNet.map_build(request).compose(RxSchedulers.io_main())
+//                                .subscribeWith(new BaseDataObserver<Object>() {
+//                                    @Override
+//                                    public void onSuccess(Object model) {
+//                                        mBinding.btnMapBuild.setText("开始建图");
+//                                        dismissDialog();
+//                                        ToastUtils.showShort("停止建图成功");
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(String msg) {
+//                                        dismissDialog();
+//                                        ToastUtils.showShort("停止建图失败:" + msg);
+//                                    }
+//                                });
                     }
                 });
                 dialog.show(getSupportFragmentManager(), dialog.getTag());

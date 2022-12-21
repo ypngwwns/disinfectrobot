@@ -10,11 +10,10 @@ import androidx.annotation.Nullable;
 
 import com.hitqz.disinfectionrobot.adapter.DisinfectPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapArea;
-import com.hitqz.disinfectionrobot.data.MapData;
+import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditDisinfectAreaBinding;
 import com.hitqz.disinfectionrobot.util.DBHelper;
-import com.hitqz.disinfectionrobot.util.PathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +28,10 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
     public static final String TAG = EditDisinfectAreaFragment.class.getSimpleName();
     FragmentEditDisinfectAreaBinding mBinding;
-    private MapData mMapData;
     private List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     private DisinfectPointAdapter mDisinfectPointAdapter;
     private MapArea mMapArea;
+    private MapDataResponse mMapDataResponse;
 
     private EditDisinfectAreaFragment() {
         // Required empty public constructor
@@ -43,11 +42,6 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    private void initMap(String mapCode) {
-        mMapData = new MapData(PathUtil.getMapPGMFile(getContext(), mapCode),
-                PathUtil.getMapYmlFile(getContext(), mapCode));
     }
 
     @Override
@@ -63,22 +57,28 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         showDialog();
         Observable
                 .fromCallable(() -> {
-                    initMap("map0622");
-                    return 0;
+                    if (mChassisManager.mMapDataResponse == null) {
+                        mChassisManager.loadChassisData();
+                    }
+                    return true;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
+                .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Integer integer) {
+                    public void onNext(Boolean result) {
                         dismissDialog();
-                        mBinding.navigationView.setBitmap(mMapData.bitmap);
-                        mBinding.navigationView.setResolutionAndOrigin(mMapData.resolution, mMapData.originX, mMapData.originY);
+                        if (mChassisManager.mMapDataResponse != null) {
+                            mMapDataResponse = mChassisManager.mMapDataResponse;
+                            mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
+                            mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
+                                    mMapDataResponse.mapOriginy);
+                        }
                     }
 
                     @Override
@@ -108,7 +108,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         mBinding.navigationView.setPointAdapter(mDisinfectPointAdapter);
         mBinding.dpll.setNavigationPointAdapter(mDisinfectPointAdapter);
         if (mMapArea != null) {
-            mBinding.dpll.setName(mMapArea.getMapAreaName());
+            mBinding.dpll.setName(mMapArea.areaName);
         }
     }
 
