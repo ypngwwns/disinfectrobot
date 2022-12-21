@@ -21,6 +21,7 @@ import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.i.IDialog;
 import com.hitqz.disinfectionrobot.net.ISkyNet;
 import com.hitqz.disinfectionrobot.net.RetrofitManager;
+import com.hitqz.disinfectionrobot.singleton.ChassisManager;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 @SuppressLint("Registered")
@@ -34,6 +35,7 @@ public class BaseActivity extends RxAppCompatActivity implements IDialog {
     private static float sNoncompatScaledDensity;
     protected LoadingDailog mLoadingDailog;
     protected ISkyNet mISkyNet;
+    protected ChassisManager mChassisManager;
 
     private static void setCustomDensity(@NonNull Activity activity) {
         Application application = activity.getApplication();
@@ -78,6 +80,7 @@ public class BaseActivity extends RxAppCompatActivity implements IDialog {
         setCustomDensity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mISkyNet = RetrofitManager.getInstance(this).create(ISkyNet.class);
+        mChassisManager = ChassisManager.getInstance(this);
     }
 
     protected void replaceFragment(Fragment fragment) {

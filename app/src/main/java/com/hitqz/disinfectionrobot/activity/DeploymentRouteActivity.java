@@ -1,17 +1,12 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
@@ -28,6 +23,12 @@ import com.sonicers.commonlib.rx.RxSchedulers;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 @SuppressLint("CheckResult")
 public class DeploymentRouteActivity extends BaseActivity {
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
@@ -41,36 +42,41 @@ public class DeploymentRouteActivity extends BaseActivity {
         mBinding = ActivityDeployRouteBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         showDialog();
-
-        mISkyNet.mapCurGet().compose(RxSchedulers.io_main())
-                .subscribeWith(new BaseDataObserver<MapDataResponse>() {
+        Observable
+                .fromCallable(() -> {
+                    if (mChassisManager.mMapDataResponse == null) {
+                        mChassisManager.loadChassisData();
+                    }
+                    return true;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
                     @Override
-                    public void onSuccess(MapDataResponse model) {
-                        if (model != null) {
-                            mMapDataResponse = model;
-                            Glide.with(DeploymentRouteActivity.this)
-                                    .asBitmap()
-                                    .load(model.uri)
-                                    .into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            mMapDataResponse.bitmap = resource;
-                                            mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
-                                            mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
-                                                    mMapDataResponse.mapOriginy);
-                                            getMapPose();
-                                            dismissDialog();
-                                        }
-                                    });
-                        } else {
-                            dismissDialog();
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean result) {
+                        dismissDialog();
+                        if (mChassisManager.mMapDataResponse != null) {
+                            mMapDataResponse = mChassisManager.mMapDataResponse;
+                            mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
+                            mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
+                                    mMapDataResponse.mapOriginy);
+                            getMapPose();
                         }
                     }
 
                     @Override
-                    public void onFailure(String msg) {
+                    public void onError(Throwable e) {
                         dismissDialog();
-                        ToastUtils.showShort("获取地图失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
 
@@ -122,11 +128,11 @@ public class DeploymentRouteActivity extends BaseActivity {
     }
 
     private void getMapPose() {
+        showDialog();
         mISkyNet.mapPosListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<MapPose>>() {
                     @Override
                     public void onSuccess(List<MapPose> model) {
-//                        mBinding.navigationView.setNavigationPoints(model);
                         for (MapPose mapPose : model) {
                             NavigationPoint navigationPoint = new NavigationPoint();
                             navigationPoint.mapCode = mapPose.mapCode;
@@ -138,11 +144,13 @@ public class DeploymentRouteActivity extends BaseActivity {
                         }
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         mNavigationPointAdapter.notifyDataSetInvalidated();
+                        dismissDialog();
                     }
 
                     @Override
                     public void onFailure(String msg) {
                         ToastUtils.showShort("获取点位列表失败");
+                        dismissDialog();
                     }
                 });
     }
