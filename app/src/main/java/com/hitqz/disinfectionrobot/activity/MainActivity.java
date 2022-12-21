@@ -151,37 +151,7 @@ public class MainActivity extends BaseActivity implements IGo {
         setContentView(mBinding.getRoot());
         checkPermission();
         mHandler = new Handler();
-//        String passwd = MD5Util.string2MD5("123456");
         showDialog();
-//        mISkyNet.oauthToken(
-//                        "web-app",
-//                        "123456",
-//                        "password",
-//                        "admin",
-//                        passwd,
-//                        null
-//                ).compose(RxSchedulers.io_main())
-//                .subscribeWith(new BaseDataObserver<UserLoginData>() {
-//                    @Override
-//                    public void onSuccess(UserLoginData model) {
-//                        dismissDialog();
-//                        ToastUtils.showShort("登录成功");
-//                        SPUtils.getInstance().put(
-//                                TokenKeys.expiresIn,
-//                                System.currentTimeMillis() + (model.getExpiresIn() - 10) * 1000
-//                        );
-//                        SPUtils.getInstance().put(TokenKeys.tokenHead, model.getTokenHead());
-//                        SPUtils.getInstance().put(TokenKeys.token, model.getToken());
-//                        go2Main();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String msg) {
-//                        dismissDialog();
-//                        go2Main();
-//                        ToastUtils.showShort("登录失败");
-//                    }
-//                });
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.username = "admin";
         loginRequest.password = "hgd2022";

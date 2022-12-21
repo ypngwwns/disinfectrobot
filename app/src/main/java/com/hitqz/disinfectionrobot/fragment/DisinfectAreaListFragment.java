@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +12,22 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
 import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
+import com.hitqz.disinfectionrobot.data.Area;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectAreaListBinding;
 import com.hitqz.disinfectionrobot.dialog.DisinfectAreaNameDialog;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("CheckResult")
 public class DisinfectAreaListFragment extends BaseFragment {
 
     FragmentDisinfectAreaListBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;
-    private List<String> mList;
+    private List<Area> mList = new ArrayList<>();
 
     private DisinfectAreaListFragment() {
         // Required empty public constructor
@@ -45,11 +50,6 @@ public class DisinfectAreaListFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mList = new ArrayList<>();
-        mList.add("大厅");
-        mList.add("会议室1");
-        mList.add("会议室2");
-        mList.add("会议室2");
         mDisinfectAreaAdapter = new DisinfectAreaAdapter(mList);
         mBinding.lvTimedTask.setAdapter(mDisinfectAreaAdapter);
         mDisinfectAreaAdapter.setOnClickListener(new View.OnClickListener() {
@@ -84,5 +84,22 @@ public class DisinfectAreaListFragment extends BaseFragment {
                 dialog.show(getFragmentManager(), DisinfectAreaNameDialog.TAG);
             }
         });
+
+        showDialog();
+        getMSkyNet().areaListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<Area>>() {
+                    @Override
+                    public void onSuccess(List<Area> model) {
+                        mList.addAll(model);
+                        mDisinfectAreaAdapter.notifyDataSetInvalidated();
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        dismissDialog();
+                        ToastUtils.showShort("获取到区域列表失败");
+                    }
+                });
     }
 }

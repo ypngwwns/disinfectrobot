@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.data.Area;
 
 import java.util.List;
 
@@ -15,10 +16,10 @@ import java.util.List;
 public class DisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = DisinfectAreaAdapter.class.getSimpleName();
 
-    private final List<String> mList;
+    private final List<Area> mList;
     private View.OnClickListener mOnClickListener;
 
-    public DisinfectAreaAdapter(List<String> list) {
+    public DisinfectAreaAdapter(List<Area> list) {
         this.mList = list;
     }
 
@@ -47,8 +48,7 @@ public class DisinfectAreaAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_disinfect_area, parent, false);
         TextView tv1 = convertView.findViewById(R.id.tv1);
-        String name = mList.get(position);
-        tv1.setText(name);
+        tv1.setText(mList.get(position).areaName);
         convertView.setTag(position);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

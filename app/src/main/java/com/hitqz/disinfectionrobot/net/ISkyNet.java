@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.net;
 
+import com.hitqz.disinfectionrobot.data.Area;
 import com.hitqz.disinfectionrobot.data.Cmd;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
@@ -196,4 +197,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/mapPos/mapPosListGet")
     Observable<BaseRespond<List<MapPose>>> mapPosListGet();
+
+    /**
+     * 获取到区域列表
+     */
+    @POST("/robot/api/mapArea/areaListGet")
+    Observable<BaseRespond<List<Area>>> areaListGet();
 }
