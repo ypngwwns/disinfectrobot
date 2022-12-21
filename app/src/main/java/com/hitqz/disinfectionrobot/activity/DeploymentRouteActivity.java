@@ -1,41 +1,39 @@
 package com.hitqz.disinfectionrobot.activity;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
-import com.hitqz.disinfectionrobot.data.MapData;
+import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.ActivityDeployRouteBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
 import com.hitqz.disinfectionrobot.dialog.PointEditDialog;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 import com.hitqz.disinfectionrobot.util.DBHelper;
-import com.hitqz.disinfectionrobot.util.PathUtil;
 import com.hitqz.disinfectionrobot.widget.NavigationView;
+import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
+@SuppressLint("CheckResult")
 public class DeploymentRouteActivity extends BaseActivity {
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     ActivityDeployRouteBinding mBinding;
-    private MapData mMapData;
     private NavigationPointAdapter mNavigationPointAdapter;
-
-    private void initMap(String mapCode) {
-        mMapData = new MapData(PathUtil.getMapPGMFile(getApplicationContext(), mapCode),
-                PathUtil.getMapYmlFile(getApplicationContext(), mapCode));
-    }
+    private MapDataResponse mMapDataResponse;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,34 +41,35 @@ public class DeploymentRouteActivity extends BaseActivity {
         mBinding = ActivityDeployRouteBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         showDialog();
-        Observable
-                .fromCallable(() -> {
-                    initMap("map0622");
-                    return 0;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
+        mISkyNet.mapCurGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<MapDataResponse>() {
+                    @Override
+                    public void onSuccess(MapDataResponse model) {
+                        if (model != null) {
+                            mMapDataResponse = model;
+                            Glide.with(DeploymentRouteActivity.this)
+                                    .asBitmap()
+                                    .load(model.uri)
+                                    .into(new SimpleTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                            mMapDataResponse.bitmap = resource;
+                                            mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
+                                            mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
+                                                    mMapDataResponse.mapOriginy);
+                                            dismissDialog();
+                                        }
+                                    });
+                        } else {
+                            dismissDialog();
+                        }
                     }
 
                     @Override
-                    public void onNext(Integer integer) {
+                    public void onFailure(String msg) {
                         dismissDialog();
-                        mBinding.navigationView.setBitmap(mMapData.bitmap);
-                        mBinding.navigationView.setResolutionAndOrigin(mMapData.resolution, mMapData.originX, mMapData.originY);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        dismissDialog();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        ToastUtils.showShort("获取地图失败");
                     }
                 });
 

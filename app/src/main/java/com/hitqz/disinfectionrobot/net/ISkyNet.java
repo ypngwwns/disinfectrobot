@@ -12,6 +12,7 @@ import com.hitqz.disinfectionrobot.data.MapBuildRequest;
 import com.hitqz.disinfectionrobot.data.MapChangeRequest;
 import com.hitqz.disinfectionrobot.data.MapDataGetRequest;
 import com.hitqz.disinfectionrobot.data.MapDataGetResponse;
+import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapListGetRequest;
 import com.hitqz.disinfectionrobot.data.MapListGetResponse;
 import com.hitqz.disinfectionrobot.data.MapPosAddRequest;
@@ -33,6 +34,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ISkyNet {
@@ -179,4 +181,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/ctrl/disinfectCmd")
     Observable<BaseRespond<Object>> disinfectCmd(@Body Cmd cmd);
+
+    /**
+     * 获取当前使用地图
+     */
+    @GET("/robot/api/ctrl/mapCurGet")
+    Observable<BaseRespond<MapDataResponse>> mapCurGet();
 }

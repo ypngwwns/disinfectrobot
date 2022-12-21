@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import java.lang.ref.WeakReference;
 
 @SuppressLint("CheckResult")
 public class ManualControlActivity extends BaseActivity {
+    public static final int TIMING_SPEED_MESSAGE_ID = 10000;
 
     public final static float MAX_LINE_SPEED_VALUE = 0.25f;
     public final static float MAX_RADIUS_SPEED_VALUE = 0.4f;
@@ -49,7 +51,7 @@ public class ManualControlActivity extends BaseActivity {
                 } else {
                     mSpeedRequest.angleSpeed = yPercent * MAX_RADIUS_SPEED_VALUE;
                 }
-                mHandler.sendEmptyMessage(10000);
+                mHandler.sendEmptyMessage(TIMING_SPEED_MESSAGE_ID);
             }
 
             @Override
@@ -103,7 +105,7 @@ public class ManualControlActivity extends BaseActivity {
     }
 
     private void postSpeed() {
-//        Log.d("postSpeed", "mSpeedRequest.linearSpeed:" + mSpeedRequest.linearSpeed + "  mSpeedRequest.angleSpeed:" + mSpeedRequest.angleSpeed);
+        Log.d("postSpeed", "mSpeedRequest.linearSpeed:" + mSpeedRequest.linearSpeed + "  mSpeedRequest.angleSpeed:" + mSpeedRequest.angleSpeed);
         mISkyNet.ctrlMove(mSpeedRequest).compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<Object>() {
                     @Override
@@ -132,9 +134,10 @@ public class ManualControlActivity extends BaseActivity {
             if (activity != null) {
                 //处理handler消息
                 switch (msg.what) {
-                    case 10000:
+                    case ManualControlActivity.TIMING_SPEED_MESSAGE_ID:
+                        removeMessages(TIMING_SPEED_MESSAGE_ID);
                         activity.postSpeed();
-                        sendEmptyMessageDelayed(10000, 100);
+                        sendEmptyMessageDelayed(TIMING_SPEED_MESSAGE_ID, 100);
                 }
             }
         }
