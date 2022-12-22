@@ -29,37 +29,18 @@
         android:textColor="@color/textgray"
         android:text="请将机器人推到相应位置添加导航点" />
 
-    <com.hitqz.disinfectionrobot.widget.NavigationPointListLayout
-        android:id="@+id/npll"
+    <com.hitqz.disinfectionrobot.widget.AddRechargePointLayout
+        android:id="@+id/arpl"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="265dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gv_center_horizon"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+    <com.hitqz.disinfectionrobot.widget.NavigationPointListLayout
+        android:id="@+id/npll"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="265dp" />
 
-    <Button
-        android:id="@+id/btn_add_navigation_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="导航点"
-        app:layout_constraintEnd_toStartOf="@id/gv_center_horizon"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toTopOf="@id/npll" />
-
-    <Button
-        android:id="@+id/btn_add_recharge_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="充电点"
-        android:layout_marginStart="10dp"
-        app:layout_constraintStart_toEndOf="@id/gv_center_horizon"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toTopOf="@id/npll" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -155,9 +155,10 @@ public class DeploymentRouteActivity extends BaseActivity {
         });
         mBinding.navigationView.setPointAdapter(mNavigationPointAdapter);
         mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
-        mBinding.btnAddNavigationPoint.setOnClickListener(new View.OnClickListener() {
+        mBinding.npll.setAddNavigationPointListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showDialog();
                 PointData pointData = new PointData("导航点" + System.currentTimeMillis(), "1");
                 mISkyNet.addMapPos(pointData).compose(RxSchedulers.io_main())
                         .subscribeWith(new BaseDataObserver<MapPose>() {
@@ -177,9 +178,10 @@ public class DeploymentRouteActivity extends BaseActivity {
                         });
             }
         });
-        mBinding.btnAddRechargePoint.setOnClickListener(new View.OnClickListener() {
+        mBinding.arpl.setAddRechargePointListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showDialog();
                 PointData pointData = new PointData("充电点" + System.currentTimeMillis(), "2");
                 mISkyNet.addMapPos(pointData).compose(RxSchedulers.io_main())
                         .subscribeWith(new BaseDataObserver<MapPose>() {
@@ -192,12 +194,14 @@ public class DeploymentRouteActivity extends BaseActivity {
                                 mNavigationPoints.add(0, navigationPoint);
                                 mNavigationPointAdapter.notifyDataSetChanged();
                                 mBinding.navigationView.postInvalidate();
+                                mBinding.npll.setVisibility(View.VISIBLE);
                                 dismissDialog();
                             }
 
                             @Override
                             public void onFailure(String msg) {
                                 ToastUtils.showShort("添加充电点失败:%s", msg);
+                                mBinding.npll.setVisibility(View.VISIBLE);
                                 dismissDialog();
                             }
                         });
