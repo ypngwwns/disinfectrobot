@@ -209,6 +209,7 @@ public class NavigationView extends View {
                     bitmap = naviPointBitmap;
                 }
                 mBitmapMatrix.setTranslate(-bitmap.getWidth() / 2f, -bitmap.getHeight() / 2f);
+                mBitmapMatrix.postScale(1f / mScaleSum, 1f / mScaleSum);
                 canvas.drawBitmap(bitmap, mBitmapMatrix, null);
                 canvas.restore();
             }
