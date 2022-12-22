@@ -43,15 +43,17 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <Button
+        android:id="@+id/btn_add_navigation_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="路径点"
+        android:text="导航点"
         app:layout_constraintEnd_toStartOf="@id/gv_center_horizon"
         android:layout_marginBottom="30dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toTopOf="@id/npll" />
 
     <Button
+        android:id="@+id/btn_add_recharge_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="充电点"

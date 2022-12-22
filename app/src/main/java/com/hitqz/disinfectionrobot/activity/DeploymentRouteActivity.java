@@ -11,6 +11,7 @@ import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
+import com.hitqz.disinfectionrobot.data.PointData;
 import com.hitqz.disinfectionrobot.databinding.ActivityDeployRouteBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
@@ -154,6 +155,54 @@ public class DeploymentRouteActivity extends BaseActivity {
         });
         mBinding.navigationView.setPointAdapter(mNavigationPointAdapter);
         mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
+        mBinding.btnAddNavigationPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PointData pointData = new PointData("导航点" + System.currentTimeMillis(), "1");
+                mISkyNet.addMapPos(pointData).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<MapPose>() {
+                            @Override
+                            public void onSuccess(MapPose model) {
+                                mNavigationPoints.add(NavigationPoint.convertFromMapPose(model));
+                                mNavigationPointAdapter.notifyDataSetChanged();
+                                mBinding.navigationView.postInvalidate();
+                                dismissDialog();
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                ToastUtils.showShort("添加导航点位失败:%s", msg);
+                                dismissDialog();
+                            }
+                        });
+            }
+        });
+        mBinding.btnAddRechargePoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PointData pointData = new PointData("充电点" + System.currentTimeMillis(), "2");
+                mISkyNet.addMapPos(pointData).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<MapPose>() {
+                            @Override
+                            public void onSuccess(MapPose model) {
+                                if ("2".equals(mNavigationPoints.get(0).type)) {//已有充电点，覆盖
+                                    mNavigationPoints.remove(0);
+                                }
+                                NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(model);
+                                mNavigationPoints.add(0, navigationPoint);
+                                mNavigationPointAdapter.notifyDataSetChanged();
+                                mBinding.navigationView.postInvalidate();
+                                dismissDialog();
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                ToastUtils.showShort("添加充电点失败:%s", msg);
+                                dismissDialog();
+                            }
+                        });
+            }
+        });
     }
 
     private void getMapPose() {

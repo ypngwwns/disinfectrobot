@@ -6,6 +6,7 @@ import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
+import com.hitqz.disinfectionrobot.data.PointData;
 import com.hitqz.disinfectionrobot.data.SpeedRequest;
 
 import java.util.List;
@@ -62,4 +63,10 @@ public interface ISkyNet {
      */
     @DELETE("/robot/api/mapPos/deleteById")
     Observable<BaseRespond<Object>> deleteById(@Query("id") int id);
+
+    /**
+     * 添加点位
+     */
+    @POST("/robot/api/mapPos/addMapPos")
+    Observable<BaseRespond<MapPose>> addMapPos(@Body PointData pointData);
 }
