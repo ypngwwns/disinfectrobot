@@ -12,8 +12,10 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ISkyNet {
 
@@ -54,4 +56,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/mapArea/areaListGet")
     Observable<BaseRespond<List<MapArea>>> areaListGet();
+
+    /**
+     * 删除点位
+     */
+    @DELETE("/robot/api/mapPos/deleteById")
+    Observable<BaseRespond<Object>> deleteById(@Query("id") int id);
 }

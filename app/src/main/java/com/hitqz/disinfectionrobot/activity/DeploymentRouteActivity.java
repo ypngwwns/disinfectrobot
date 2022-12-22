@@ -123,6 +123,35 @@ public class DeploymentRouteActivity extends BaseActivity {
 
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
         mNavigationPointAdapter = new NavigationPointAdapter(this, mNavigationPoints);
+        mNavigationPointAdapter.setDeleteClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                CommonDialog deleteConfirmDialog = new CommonDialog();
+                deleteConfirmDialog.setOnClickListener(new CommonDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        mISkyNet.deleteById(mNavigationPoints.get(position).id).compose(RxSchedulers.io_main())
+                                .subscribeWith(new BaseDataObserver<Object>() {
+                                    @Override
+                                    public void onSuccess(Object model) {
+                                        mNavigationPoints.remove(position);
+                                        mNavigationPointAdapter.notifyDataSetChanged();
+                                        mBinding.navigationView.postInvalidate();
+                                        dismissDialog();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String msg) {
+                                        ToastUtils.showShort("删除点位失败:%s", msg);
+                                        dismissDialog();
+                                    }
+                                });
+                    }
+                });
+                deleteConfirmDialog.show(getSupportFragmentManager(), CommonDialog.TAG);
+            }
+        });
         mBinding.navigationView.setPointAdapter(mNavigationPointAdapter);
         mBinding.npll.setNavigationPointAdapter(mNavigationPointAdapter);
     }
@@ -140,6 +169,7 @@ public class DeploymentRouteActivity extends BaseActivity {
                             navigationPoint.rawX = mapPose.posx;
                             navigationPoint.rawY = mapPose.posy;
                             navigationPoint.radian = mapPose.yaw;
+                            navigationPoint.id = mapPose.id;
                             mNavigationPoints.add(navigationPoint);
                         }
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);

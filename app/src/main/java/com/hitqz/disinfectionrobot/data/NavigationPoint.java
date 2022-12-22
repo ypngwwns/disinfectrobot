@@ -4,6 +4,7 @@ import org.litepal.crud.LitePalSupport;
 
 public class NavigationPoint extends LitePalSupport {
 
+    public int id;
     public String mapCode;
     public String name;
 
