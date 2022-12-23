@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.net;
 
+import com.hitqz.disinfectionrobot.data.AreaId;
 import com.hitqz.disinfectionrobot.data.Cmd;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
@@ -82,4 +83,10 @@ public interface ISkyNet {
      */
     @DELETE("/robot/api/mapArea/delete")
     Observable<BaseRespond<Object>> mapAreaDelete(@Query("id") int id);
+
+    /**
+     * 获取地图区域上的点位
+     */
+    @POST("/robot/api/areaPos/areaPosList")
+    Observable<BaseRespond<Object>> areaPosList(@Body AreaId areaId);
 }

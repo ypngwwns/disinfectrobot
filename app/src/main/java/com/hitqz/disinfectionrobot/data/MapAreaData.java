@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MapAreaData {
 
-    public List<Action> mActions;
+    public List<Action> actions;
     public String areaName;
 
     public static class Action {

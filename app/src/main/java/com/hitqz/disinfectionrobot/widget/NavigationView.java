@@ -529,6 +529,10 @@ public class NavigationView extends View {
         return mSelectedNavigationPoints;
     }
 
+    public void setSelectedNavigationPoints(List<NavigationPoint> selectedNavigationPoints) {
+        mSelectedNavigationPoints = selectedNavigationPoints;
+    }
+
     public interface OnLongPressListener {
         void onLongPress(float x, float y);
     }

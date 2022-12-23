@@ -2,6 +2,7 @@ package com.hitqz.disinfectionrobot.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,10 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
         mBinding.navigationView.setSelectable(true);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
+        if (!TextUtils.isEmpty(mMapArea.mapCode)) {
+            getAreaPosList();
+        }
+
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +139,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 }
                 MapAreaData mapAreaData = new MapAreaData();
                 mapAreaData.areaName = mMapArea.areaName;
-                mapAreaData.mActions = actions;
+                mapAreaData.actions = actions;
 
                 mSkyNet.areaPosAdd(mapAreaData).compose(RxSchedulers.io_main())
                         .subscribeWith(new BaseDataObserver<Object>() {
@@ -179,6 +184,11 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 dialog.show(getFragmentManager(), CommonDialog.TAG);
             }
         });
+    }
+
+    private void getAreaPosList() {
+        showDialog();
+        mBinding.navigationView.setSelectedNavigationPoints(mNavigationPoints);
     }
 
     public void setMapArea(MapArea mapArea) {
