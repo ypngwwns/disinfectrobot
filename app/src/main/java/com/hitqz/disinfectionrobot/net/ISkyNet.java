@@ -4,6 +4,7 @@ import com.hitqz.disinfectionrobot.data.Cmd;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.data.MapArea;
+import com.hitqz.disinfectionrobot.data.MapAreaData;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.PointData;
@@ -69,4 +70,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/mapPos/addMapPos")
     Observable<BaseRespond<MapPose>> addMapPos(@Body PointData pointData);
+
+    /**
+     * 点位添加到区域上
+     */
+    @POST("/robot/api/areaPos/add")
+    Observable<BaseRespond<Object>> areaPosAdd(@Body MapAreaData mapAreaData);
 }

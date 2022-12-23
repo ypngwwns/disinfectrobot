@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.adapter.DisinfectPointAdapter;
 import com.hitqz.disinfectionrobot.data.MapArea;
+import com.hitqz.disinfectionrobot.data.MapAreaData;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
@@ -113,6 +114,43 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         if (mMapArea != null) {
             mBinding.dpll.setName(mMapArea.areaName);
         }
+        mBinding.dpll.setSaveListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<MapAreaData.Action> actions = new ArrayList<>();
+                List<NavigationPoint> selectedPoints = mBinding.navigationView.getSelectedNavigationPoints();
+
+                if (selectedPoints.size() == 0) {
+                    ToastUtils.showShort("请至少选中一个消毒点");
+                    return;
+                }
+
+                for (int i = 0; i < selectedPoints.size(); i++) {
+                    MapAreaData.Action action = new MapAreaData.Action();
+                    action.id = selectedPoints.get(i).id;
+                    action.cmd = 1;
+                    actions.add(action);
+                }
+                MapAreaData mapAreaData = new MapAreaData();
+                mapAreaData.areaName = mMapArea.areaName;
+                mapAreaData.mActions = actions;
+
+                mSkyNet.areaPosAdd(mapAreaData).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object model) {
+                                ToastUtils.showShort("保存消毒区域成功");
+                                dismissDialog();
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                ToastUtils.showShort("保存消毒区域失败");
+                                dismissDialog();
+                            }
+                        });
+            }
+        });
     }
 
     public void setMapArea(MapArea mapArea) {
@@ -126,12 +164,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     @Override
                     public void onSuccess(List<MapPose> model) {
                         for (MapPose mapPose : model) {
-                            NavigationPoint navigationPoint = new NavigationPoint();
-                            navigationPoint.mapCode = mapPose.mapCode;
-                            navigationPoint.name = mapPose.name;
-                            navigationPoint.rawX = mapPose.posx;
-                            navigationPoint.rawY = mapPose.posy;
-                            navigationPoint.radian = mapPose.yaw;
+                            NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(mapPose);
                             mNavigationPoints.add(navigationPoint);
                         }
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
