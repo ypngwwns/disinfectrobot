@@ -19,7 +19,6 @@ public class DisinfectPointListLayout extends LinearLayout {
     private DisinfectPointAdapter mDisinfectPointAdapter;
 
     private INavigationPointListListener mListener;
-    private View.OnClickListener mSaveListener;
 
     public DisinfectPointListLayout(Context context) {
         super(context);
@@ -61,6 +60,10 @@ public class DisinfectPointListLayout extends LinearLayout {
 
     public void setSaveListener(OnClickListener onClickListener) {
         mBinding.tvSave.setOnClickListener(onClickListener);
+    }
+
+    public void setDeleteListener(OnClickListener onClickListener) {
+        mBinding.tvDelete.setOnClickListener(onClickListener);
     }
 
     public interface INavigationPointListListener {

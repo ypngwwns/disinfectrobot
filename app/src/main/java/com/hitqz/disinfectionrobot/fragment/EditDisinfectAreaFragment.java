@@ -17,6 +17,7 @@ import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditDisinfectAreaBinding;
+import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
@@ -149,6 +150,33 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                                 dismissDialog();
                             }
                         });
+            }
+        });
+        mBinding.dpll.setDeleteListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonDialog dialog = new CommonDialog();
+                dialog.setOnClickListener(new CommonDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        showDialog();
+                        mSkyNet.mapAreaDelete(mMapArea.id).compose(RxSchedulers.io_main())
+                                .subscribeWith(new BaseDataObserver<Object>() {
+                                    @Override
+                                    public void onSuccess(Object model) {
+                                        ToastUtils.showShort("删除消毒区域成功");
+                                        dismissDialog();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String msg) {
+                                        ToastUtils.showShort("删除消毒区域失败");
+                                        dismissDialog();
+                                    }
+                                });
+                    }
+                });
+                dialog.show(getFragmentManager(), CommonDialog.TAG);
             }
         });
     }

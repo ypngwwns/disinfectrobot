@@ -54,7 +54,8 @@ public class DisinfectAreaListFragment extends BaseFragment {
         mDisinfectAreaAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea(new MapArea());
+                int position = (int) v.getTag();
+                ((SetDisinfectAreaActivity) getActivity()).go2EditDisinfectArea(mList.get(position));
             }
         });
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
