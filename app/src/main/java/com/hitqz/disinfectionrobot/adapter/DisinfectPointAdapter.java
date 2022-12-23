@@ -105,7 +105,7 @@ public class DisinfectPointAdapter extends DragAdapter {
             holder.dragView.setVisibility(View.INVISIBLE);
             holder.pointName.setClickable(true);
         }
-        holder.pointName.setText(data.get(position).name);
+        holder.pointName.setText("消毒点" + (position + 1));
 
         if (deleteClickListener != null) {
             holder.deletePoint.setOnClickListener(deleteClickListener);

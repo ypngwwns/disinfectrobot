@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -32,8 +33,11 @@ public class NavigationView extends View {
 
     public static final float MAX_SCALE_FACTER = 5f;
     public static final float MIN_SCALE_FACTER = 0.5f;
+    public static final float DEFAULT_TEXT_SIZE = 70f;
     private final PointF mStart = new PointF();
     private final Matrix mBitmapMatrix = new Matrix();
+    private Paint mTextPaint;
+    private Paint mLinePaint;
     private Paint mPointPaint;
     private Paint mRobotPaint;
     private Paint mSelectedPaint;
@@ -91,6 +95,16 @@ public class NavigationView extends View {
     }
 
     private void init() {
+        mTextPaint = new Paint();             // 创建画笔
+        mTextPaint.setColor(getResources().getColor(R.color.black));           // 画笔颜色 - 黑色
+        mTextPaint.setStyle(Paint.Style.FILL);
+        mTextPaint.setStrokeWidth(1);
+
+        mLinePaint = new Paint();
+        mLinePaint.setAntiAlias(true);
+        mLinePaint.setStrokeWidth(5f);
+        mLinePaint.setColor(Color.parseColor("#F6BD16"));
+
         mRobotPaint = new Paint();             // 创建画笔
         mRobotPaint.setColor(getResources().getColor(R.color.colorAccent));           // 画笔颜色 - 黑色
         mRobotPaint.setStyle(Paint.Style.FILL);    // 填充模式 - 填充
@@ -121,6 +135,8 @@ public class NavigationView extends View {
         naviPointBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.navi_point);
 
         selectedPointBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.select_point);
+
+        Log.d(TAG, "naviPointBitmap.getWidth() / 2f:" + naviPointBitmap.getWidth() / 2f);
 
         mGestureDetector = new GestureDetector(getContext(), new MapViewGestureListener(this));
     }
@@ -167,10 +183,31 @@ public class NavigationView extends View {
         drawLaserScan(canvas);
         //3.绘制机器人位置
         drawRobotPosition(canvas);
-        //3.绘制导航点位
+        //4.绘制消毒路径
+        drawPath(canvas);
+        //5.绘制导航点位
         drawNavPosition(canvas);
-        //3.绘制充电点
+        //6.绘制充电点
         drawRechargePosition(canvas);
+    }
+
+    private void drawPath(Canvas canvas) {
+        if (mSelectedNavigationPoints != null && mSelectedNavigationPoints.size() > 0) {
+            for (int i = 0; i < mSelectedNavigationPoints.size(); i++) {
+                if (i > 0) {
+                    NavigationPoint drawPoint = mSelectedNavigationPoints.get(i);
+                    NavigationPoint lastPoint = mSelectedNavigationPoints.get(i - 1);
+                    canvas.save();
+                    canvas.setMatrix(mMatrix);
+//                    canvas.translate(drawPoint.drawX, drawPoint.drawY);
+                    canvas.drawLine(lastPoint.drawX, lastPoint.drawY, drawPoint.drawX, drawPoint.drawY, mLinePaint);
+                    //绘制箭头
+                    drawTriangle(canvas, mLinePaint, lastPoint.drawX, lastPoint.drawY, drawPoint.drawX, drawPoint.drawY,
+                            40, 20);
+                    canvas.restore();
+                }
+            }
+        }
     }
 
     private void drawRechargePosition(Canvas canvas) {
@@ -192,27 +229,68 @@ public class NavigationView extends View {
     private void drawNavPosition(Canvas canvas) {
         if (mNavigationPoints != null && mBitmap != null && mNavigationPoints.size() > 0) {
             List<NavigationPoint> navigationPoints = mNavigationPoints;
+            mTextPaint.setTextSize(DEFAULT_TEXT_SIZE / mScaleSum);
             for (int i = 0; i < navigationPoints.size(); i++) {
                 NavigationPoint navigationPoint = navigationPoints.get(i);
                 canvas.save();
                 canvas.setMatrix(mMatrix);
                 NavigationPoint drawPoint = getDrawPoint(navigationPoint);
+
                 canvas.translate(drawPoint.drawX, drawPoint.drawY);
-                // 绘制图形时角度要取负数
-                // 安卓是以顺时针为坐标系
-                canvas.rotate(-drawPoint.angle);
-                mBitmapMatrix.reset();
                 Bitmap bitmap = null;
-                if (mSelectedNavigationPoints.contains(navigationPoint)) {
+                if (mSelectedNavigationPoints.contains(drawPoint)) {
+//                    String value = String.valueOf(mSelectedNavigationPoints.indexOf(navigationPoint) + 1);
+//                    canvas.drawText(value, -15, -50, mTextPaint);
                     bitmap = selectedPointBitmap;
                 } else {
                     bitmap = naviPointBitmap;
                 }
+
+                // 绘制图形时角度要取负数
+                // 安卓是以顺时针为坐标系
+                canvas.rotate(-drawPoint.angle);
+                mBitmapMatrix.reset();
+
                 mBitmapMatrix.setTranslate(-bitmap.getWidth() / 2f, -bitmap.getHeight() / 2f);
                 mBitmapMatrix.postScale(1f / mScaleSum, 1f / mScaleSum);
                 canvas.drawBitmap(bitmap, mBitmapMatrix, null);
                 canvas.restore();
             }
+        }
+    }
+
+    /**
+     * 绘制三角
+     *
+     * @param canvas
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @param height
+     * @param bottom
+     */
+    private void drawTriangle(Canvas canvas, Paint paintLine, float fromX, float fromY, float toX, float toY, int height, int bottom) {
+        try {
+            float juli = (float) Math.sqrt((toX - fromX) * (toX - fromX)
+                    + (toY - fromY) * (toY - fromY));// 获取线段距离
+            float juliX = toX - fromX;// 有正负，不要取绝对值
+            float juliY = toY - fromY;// 有正负，不要取绝对值
+            float dianX = toX - (height / juli * juliX);
+            float dianY = toY - (height / juli * juliY);
+            float dian2X = fromX + (height / juli * juliX);
+            float dian2Y = fromY + (height / juli * juliY);
+            //终点的箭头
+            Path path = new Path();
+            path.moveTo(toX, toY);// 此点为三边形的起点
+            path.lineTo(dianX + (bottom / juli * juliY), dianY
+                    - (bottom / juli * juliX));
+            path.lineTo(dianX - (bottom / juli * juliY), dianY
+                    + (bottom / juli * juliX));
+            path.close(); // 使这些点构成封闭的三边形
+            canvas.drawPath(path, paintLine);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -473,7 +551,7 @@ public class NavigationView extends View {
             float y = e.getY();
             float[] mapXY = mMapView.getDrawMapAxis(new float[]{x, y});
 
-            float size = 10f * mMapView.mScaleSum;
+            float size = 50f;
             for (int i = 0; i < mMapView.mNavigationPoints.size(); i++) {
                 NavigationPoint navigationPoint = mMapView.mNavigationPoints.get(i);
 

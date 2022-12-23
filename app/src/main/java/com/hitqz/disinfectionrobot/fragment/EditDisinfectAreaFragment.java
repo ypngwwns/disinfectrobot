@@ -17,7 +17,6 @@ import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditDisinfectAreaBinding;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
-import com.hitqz.disinfectionrobot.util.DBHelper;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.util.ArrayList;
@@ -99,11 +98,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     }
                 });
 
-        List<NavigationPoint> list = DBHelper.findAllNavigationPoint("map0622");
-        mNavigationPoints.clear();
-        mNavigationPoints.addAll(list);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
-
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
