@@ -137,8 +137,14 @@ public class NavigationView extends View {
         selectedPointBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.select_point);
 
         Log.d(TAG, "naviPointBitmap.getWidth() / 2f:" + naviPointBitmap.getWidth() / 2f);
+    }
 
-        mGestureDetector = new GestureDetector(getContext(), new MapViewGestureListener(this));
+    public void setSelectable(boolean selectable) {
+        if (selectable) {
+            mGestureDetector = new GestureDetector(getContext(), new MapViewGestureListener(this));
+        } else {
+            mGestureDetector = null;
+        }
     }
 
     public void setBitmap(Bitmap bitmap) {
@@ -403,7 +409,9 @@ public class NavigationView extends View {
             return false;
         }
 
-        mGestureDetector.onTouchEvent(event);
+        if (mGestureDetector != null) {
+            mGestureDetector.onTouchEvent(event);
+        }
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {//多点要带 ACTION_MASK
             case MotionEvent.ACTION_DOWN: {
@@ -536,12 +544,12 @@ public class NavigationView extends View {
         @Override
         public void onLongPress(MotionEvent e) {
 
-            if (mMapView != null && mMapView.getOnLongPressListener() != null) {
-                float x = e.getX();
-                float y = e.getY();
-                float[] mapXY = mMapView.getRawMapAxis(new float[]{x, y});
-                mMapView.getOnLongPressListener().onLongPress(mapXY[0], mapXY[1]);
-            }
+//            if (mMapView != null && mMapView.getOnLongPressListener() != null) {
+//                float x = e.getX();
+//                float y = e.getY();
+//                float[] mapXY = mMapView.getRawMapAxis(new float[]{x, y});
+//                mMapView.getOnLongPressListener().onLongPress(mapXY[0], mapXY[1]);
+//            }
         }
 
         @Override
