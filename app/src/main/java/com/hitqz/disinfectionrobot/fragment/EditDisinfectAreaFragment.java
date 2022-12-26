@@ -172,7 +172,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
                                 @Override
                                 public void onFailure(String msg) {
-                                    ToastUtils.showShort("更新消毒区域失败");
+                                    ToastUtils.showShort("更新消毒区域失败%s:", msg);
                                     dismissDialog();
                                 }
                             });
@@ -188,7 +188,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
                                 @Override
                                 public void onFailure(String msg) {
-                                    ToastUtils.showShort("保存消毒区域失败");
+                                    ToastUtils.showShort("保存消毒区域失败%s:", msg);
                                     dismissDialog();
                                 }
                             });
@@ -214,7 +214,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
                                     @Override
                                     public void onFailure(String msg) {
-                                        ToastUtils.showShort("删除消毒区域失败");
+                                        ToastUtils.showShort("删除消毒区域失败%s:", msg);
                                         dismissDialog();
                                     }
                                 });
@@ -245,7 +245,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(String msg) {
-                        ToastUtils.showShort("获取点位列表失败");
+                        ToastUtils.showShort("获取区域点位列表失败%s:", msg);
                         dismissDialog();
                     }
                 });
@@ -275,7 +275,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(String msg) {
-                        ToastUtils.showShort("获取点位列表失败");
+                        ToastUtils.showShort("获取点位列表失败%s:", msg);
                         dismissDialog();
                     }
                 });

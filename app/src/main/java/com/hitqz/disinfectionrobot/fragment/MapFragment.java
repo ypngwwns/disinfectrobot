@@ -8,9 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
-import com.hitqz.disinfectionrobot.data.MapData;
+import com.blankj.utilcode.util.ToastUtils;
+import com.hitqz.disinfectionrobot.data.MapDataResponse;
+import com.hitqz.disinfectionrobot.data.MapPose;
+import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentMapBinding;
-import com.hitqz.disinfectionrobot.util.PathUtil;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.sonicers.commonlib.rx.RxSchedulers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -21,8 +28,9 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressLint("CheckResult")
 public class MapFragment extends BaseFragment {
 
+    private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     FragmentMapBinding mBinding;
-    private MapData mMapData;
+    private MapDataResponse mMapDataResponse;
 
     private MapFragment() {
         // Required empty public constructor
@@ -42,35 +50,35 @@ public class MapFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
-    private void initMap(String mapCode) {
-        mMapData = new MapData(PathUtil.getMapPGMFile(getMContext().getApplicationContext(), mapCode),
-                PathUtil.getMapYmlFile(getMContext().getApplicationContext(), mapCode));
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         showDialog();
-
         Observable
                 .fromCallable(() -> {
-                    initMap("map0622");
-                    return 0;
+                    if (mChassisManager.mMapDataResponse == null) {
+                        mChassisManager.loadChassisData();
+                    }
+                    return true;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
+                .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Integer integer) {
+                    public void onNext(Boolean result) {
                         dismissDialog();
-                        mBinding.navigationView.setBitmap(mMapData.bitmap);
-                        mBinding.navigationView.setResolutionAndOrigin(mMapData.resolution, mMapData.originX, mMapData.originY);
-                        initGoalList();
+                        if (mChassisManager.mMapDataResponse != null) {
+                            mMapDataResponse = mChassisManager.mMapDataResponse;
+                            mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
+                            mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
+                                    mMapDataResponse.mapOriginy);
+                            getMapPose();
+                        }
                     }
 
                     @Override
@@ -85,7 +93,25 @@ public class MapFragment extends BaseFragment {
                 });
     }
 
-    private void initGoalList() {
+    private void getMapPose() {
+        showDialog();
+        mSkyNet.mapPosListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<MapPose>>() {
+                    @Override
+                    public void onSuccess(List<MapPose> model) {
+                        for (MapPose mapPose : model) {
+                            NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(mapPose);
+                            mNavigationPoints.add(navigationPoint);
+                        }
+                        mBinding.navigationView.setNavigationPoints(mNavigationPoints);
+                        dismissDialog();
+                    }
 
+                    @Override
+                    public void onFailure(String msg) {
+                        ToastUtils.showShort("获取点位列表失败%s:", msg);
+                        dismissDialog();
+                    }
+                });
     }
 }
