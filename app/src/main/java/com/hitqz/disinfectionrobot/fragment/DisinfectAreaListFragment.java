@@ -121,7 +121,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
                     @Override
                     public void onFailure(String msg) {
                         dismissDialog();
-                        ToastUtils.showShort("获取到区域列表失败");
+                        ToastUtils.showShort("获取到区域列表失败%s", msg);
                     }
                 });
     }

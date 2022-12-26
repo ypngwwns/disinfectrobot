@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,21 +8,29 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
 import com.hitqz.disinfectionrobot.adapter.TimedTaskAdapter;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
+import com.hitqz.disinfectionrobot.event.RefreshEvent;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.sonicers.commonlib.rx.RxSchedulers;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisinfectRegularlyFragment extends Fragment {
+@SuppressLint("CheckResult")
+public class DisinfectRegularlyFragment extends BaseFragment {
     public static final String TAG = DisinfectRegularlyFragment.class.getSimpleName();
 
     FragmentDisinfectRegularlyBinding mBinding;
     private TimedTaskAdapter mTimedTaskAdapter;
-    private List<Object> mList;
+    private List<Object> mList = new ArrayList<>();
 
     private DisinfectRegularlyFragment() {
         // Required empty public constructor
@@ -35,6 +44,18 @@ public class DisinfectRegularlyFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = FragmentDisinfectRegularlyBinding.inflate(getLayoutInflater());
@@ -44,11 +65,6 @@ public class DisinfectRegularlyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mList = new ArrayList<>();
-        mList.add(new Object());
-        mList.add(new Object());
-        mList.add(new Object());
-        mList.add(new Object());
         mTimedTaskAdapter = new TimedTaskAdapter(getContext(), mList);
         mBinding.lvTimedTask.setAdapter(mTimedTaskAdapter);
         mTimedTaskAdapter.setOnClickListener(new View.OnClickListener() {
@@ -69,5 +85,30 @@ public class DisinfectRegularlyFragment extends Fragment {
                 ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void oRefresh(RefreshEvent event) {
+        refreshList();
+    }
+
+    private void refreshList() {
+        showDialog();
+        getMSkyNet().taskListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<Object>>() {
+                    @Override
+                    public void onSuccess(List<Object> model) {
+                        mList.clear();
+                        mList.addAll(model);
+                        mTimedTaskAdapter.notifyDataSetInvalidated();
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        dismissDialog();
+                        ToastUtils.showShort("获取到任务列表失败%s", msg);
+                    }
+                });
     }
 }

@@ -112,7 +112,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
+        android:id="@+id/fab_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,6 +122,19 @@
         app:backgroundTint="#E92B2B"
         android:backgroundTint="#E92B2B"
         android:src="@mipmap/delete"
+        android:layout_margin="16dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="add"
+        app:tint="@null"
+        app:backgroundTint="#0178FF"
+        android:backgroundTint="#0178FF"
+        android:src="@mipmap/save"
         android:layout_margin="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

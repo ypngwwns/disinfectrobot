@@ -3,6 +3,7 @@ package com.hitqz.disinfectionrobot.net;
 import com.hitqz.disinfectionrobot.data.AreaId;
 import com.hitqz.disinfectionrobot.data.AreaPose;
 import com.hitqz.disinfectionrobot.data.Cmd;
+import com.hitqz.disinfectionrobot.data.DisinfectTask;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.data.MapArea;
@@ -110,4 +111,16 @@ public interface ISkyNet {
      */
     @POST("/robot/api/ctrl/navSwitchMap")
     Observable<BaseRespond<Object>> navSwitchMap(@Body MapCode mapCode);
+
+    /**
+     * 获取到任务列表
+     */
+    @POST("/robot/api/taskListGet")
+    Observable<BaseRespond<List<Object>>> taskListGet();
+
+    /**
+     * 获取到任务列表
+     */
+    @POST("/robot/api/add")
+    Observable<BaseRespond<Object>> addTask(@Body DisinfectTask disinfectTask);
 }
