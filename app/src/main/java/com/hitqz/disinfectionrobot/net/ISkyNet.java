@@ -123,4 +123,16 @@ public interface ISkyNet {
      */
     @POST("/robot/api/add")
     Observable<BaseRespond<Object>> addTask(@Body DisinfectTask disinfectTask);
+
+    /**
+     * 建图指令
+     */
+    @POST("/robot/api/ctrl/buildMap")
+    Observable<BaseRespond<Object>> buildMap();
+
+    /**
+     * 结束建图
+     */
+    @POST("/robot/api/ctrl/finishBuildMap")
+    Observable<BaseRespond<Object>> finishBuildMap(@Body MapCode mapCode);
 }

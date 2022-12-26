@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.BuildMap;
-import com.hitqz.disinfectionrobot.data.OccupancyGrid;
 import com.hitqz.disinfectionrobot.data.Pose;
+import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 
 public class BuildMapView extends View {
@@ -167,7 +167,7 @@ public class BuildMapView extends View {
         }
     }
 
-    public void setMapData(OccupancyGrid map) {
+    public void setMapData(RobotoCreateMapIncrementDataDto map) {
         mBuildMap.reloadMap(map);
         mBuildMap.setImageShowOrigin(mViewWidth, mViewHeight);
     }

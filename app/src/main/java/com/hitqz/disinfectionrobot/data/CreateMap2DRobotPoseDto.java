@@ -1,7 +1,5 @@
 package com.hitqz.disinfectionrobot.data;
 
-import org.jetbrains.annotations.NotNull;
-
 public class CreateMap2DRobotPoseDto {
 
     private double x;
