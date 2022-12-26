@@ -125,6 +125,7 @@ public class DisinfectPointAdapter extends DragAdapter {
                 notifyDataSetChanged();
             }
         });
+        //必须设置在监听器后面
         holder.switchCompat.setChecked(data.get(position).action == 1);
 
         if (deleteClickListener != null) {

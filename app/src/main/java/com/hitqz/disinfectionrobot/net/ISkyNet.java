@@ -7,7 +7,9 @@ import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.data.MapAreaData;
+import com.hitqz.disinfectionrobot.data.MapCode;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
+import com.hitqz.disinfectionrobot.data.MapListData;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.PointData;
 import com.hitqz.disinfectionrobot.data.SpeedRequest;
@@ -96,4 +98,16 @@ public interface ISkyNet {
      */
     @POST("/robot/api/areaPos/areaPosList")
     Observable<BaseRespond<List<AreaPose>>> areaPosList(@Body AreaId areaId);
+
+    /**
+     * 获取机器人地图列表
+     */
+    @POST("/robot/api/ctrl/mapListGet")
+    Observable<BaseRespond<MapListData>> mapListGet();
+
+    /**
+     * 切换地图
+     */
+    @POST("/robot/api/ctrl/navSwitchMap")
+    Observable<BaseRespond<Object>> navSwitchMap(@Body MapCode mapCode);
 }
