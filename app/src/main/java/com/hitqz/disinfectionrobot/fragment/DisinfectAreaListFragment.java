@@ -23,6 +23,7 @@ import java.util.List;
 
 @SuppressLint("CheckResult")
 public class DisinfectAreaListFragment extends BaseFragment {
+    public static final String TAG = DisinfectAreaListFragment.class.getSimpleName();
 
     FragmentDisinfectAreaListBinding mBinding;
     private DisinfectAreaAdapter mDisinfectAreaAdapter;

@@ -63,8 +63,18 @@ public class SetDisinfectAreaActivity extends BaseActivity {
 
         if (mEditDisinfectAreaFragment != null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.hide(mEditDisinfectAreaFragment);
+            fragmentTransaction.remove(mEditDisinfectAreaFragment);
+            mEditDisinfectAreaFragment = null;
             fragmentTransaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDisinfectAreaListFragment != null && !mDisinfectAreaListFragment.isVisible()) {
+            go2DisinfectAreaList();
+        } else {
+            super.onBackPressed();
         }
     }
 }
