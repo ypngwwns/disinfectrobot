@@ -2,6 +2,8 @@ package com.hitqz.disinfectionrobot.data;
 
 import org.litepal.crud.LitePalSupport;
 
+import java.util.List;
+
 public class NavigationPoint extends LitePalSupport {
 
     public int id;
@@ -27,5 +29,14 @@ public class NavigationPoint extends LitePalSupport {
         navigationPoint.id = mapPose.id;
         navigationPoint.type = mapPose.type;
         return navigationPoint;
+    }
+
+    public static NavigationPoint convertFromAreaPose(List<NavigationPoint> navigationPoints, AreaPose areaPose) {
+        for (NavigationPoint n : navigationPoints) {
+            if (n.id == areaPose.id) {
+                return n;
+            }
+        }
+        return null;
     }
 }

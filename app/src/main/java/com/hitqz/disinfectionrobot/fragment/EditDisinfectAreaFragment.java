@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.adapter.DisinfectPointAdapter;
+import com.hitqz.disinfectionrobot.data.AreaId;
+import com.hitqz.disinfectionrobot.data.AreaPose;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.data.MapAreaData;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
@@ -35,8 +37,9 @@ import io.reactivex.schedulers.Schedulers;
 public class EditDisinfectAreaFragment extends BaseFragment {
 
     public static final String TAG = EditDisinfectAreaFragment.class.getSimpleName();
+    private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     FragmentEditDisinfectAreaBinding mBinding;
-    private List<NavigationPoint> mNavigationPoints = new ArrayList<>();
+    private List<NavigationPoint> mSelectedNavigationPoints;
     private DisinfectPointAdapter mDisinfectPointAdapter;
     private MapArea mMapArea;
     private MapDataResponse mMapDataResponse;
@@ -101,11 +104,9 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     }
                 });
 
+        mSelectedNavigationPoints = mBinding.navigationView.getSelectedNavigationPoints();
         mBinding.navigationView.setSelectable(true);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
-        if (!TextUtils.isEmpty(mMapArea.mapCode)) {
-            getAreaPosList();
-        }
 
         mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +115,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
             }
         });
 
-        mDisinfectPointAdapter = new DisinfectPointAdapter(getContext(), mBinding.navigationView.getSelectedNavigationPoints());
+        mDisinfectPointAdapter = new DisinfectPointAdapter(getContext(), mSelectedNavigationPoints);
         mBinding.navigationView.setPointAdapter(mDisinfectPointAdapter);
         mBinding.dpll.setNavigationPointAdapter(mDisinfectPointAdapter);
         if (mMapArea != null) {
@@ -124,16 +125,15 @@ public class EditDisinfectAreaFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 List<MapAreaData.Action> actions = new ArrayList<>();
-                List<NavigationPoint> selectedPoints = mBinding.navigationView.getSelectedNavigationPoints();
 
-                if (selectedPoints.size() == 0) {
+                if (mSelectedNavigationPoints.size() == 0) {
                     ToastUtils.showShort("请至少选中一个消毒点");
                     return;
                 }
 
-                for (int i = 0; i < selectedPoints.size(); i++) {
+                for (int i = 0; i < mSelectedNavigationPoints.size(); i++) {
                     MapAreaData.Action action = new MapAreaData.Action();
-                    action.id = selectedPoints.get(i).id;
+                    action.id = mSelectedNavigationPoints.get(i).id;
                     action.cmd = 1;
                     actions.add(action);
                 }
@@ -188,7 +188,28 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
     private void getAreaPosList() {
         showDialog();
-        mBinding.navigationView.setSelectedNavigationPoints(mNavigationPoints);
+        AreaId areaId = new AreaId();
+        areaId.areaId = mMapArea.id;
+        mSkyNet.areaPosList(areaId).compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<AreaPose>>() {
+                    @Override
+                    public void onSuccess(List<AreaPose> model) {
+                        for (AreaPose areaPose : model) {
+                            NavigationPoint navigationPoint = NavigationPoint.convertFromAreaPose(mNavigationPoints, areaPose);
+                            mSelectedNavigationPoints.add(navigationPoint);
+                        }
+                        mBinding.navigationView.setSelectedNavigationPoints(mSelectedNavigationPoints);
+                        mDisinfectPointAdapter.notifyDataSetInvalidated();
+                        mBinding.navigationView.postInvalidate();
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        ToastUtils.showShort("获取点位列表失败");
+                        dismissDialog();
+                    }
+                });
     }
 
     public void setMapArea(MapArea mapArea) {
@@ -207,6 +228,9 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                         }
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         mDisinfectPointAdapter.notifyDataSetInvalidated();
+                        if (!TextUtils.isEmpty(mMapArea.mapCode)) {
+                            getAreaPosList();
+                        }
                         dismissDialog();
                     }
 
