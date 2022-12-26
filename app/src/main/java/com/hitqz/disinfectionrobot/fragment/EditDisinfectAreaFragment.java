@@ -119,6 +119,22 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         });
 
         mDisinfectPointAdapter = new DisinfectPointAdapter(getContext(), mSelectedNavigationPoints);
+        mDisinfectPointAdapter.setDeleteClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonDialog dialog = new CommonDialog();
+                dialog.setOnClickListener(new CommonDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        int position = (int) v.getTag();
+                        mSelectedNavigationPoints.remove(position);
+                        mDisinfectPointAdapter.notifyDataSetChanged();
+                        mBinding.navigationView.postInvalidate();
+                    }
+                });
+                dialog.show(getFragmentManager(), CommonDialog.TAG);
+            }
+        });
         mBinding.navigationView.setPointAdapter(mDisinfectPointAdapter);
         mBinding.dpll.setNavigationPointAdapter(mDisinfectPointAdapter);
         if (mMapArea != null) {
