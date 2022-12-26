@@ -21,8 +21,11 @@ import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditDisinfectAreaBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
+import com.hitqz.disinfectionrobot.event.RefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,6 +149,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                             @Override
                             public void onSuccess(Object model) {
                                 ToastUtils.showShort("保存消毒区域成功");
+                                EventBus.getDefault().post(new RefreshEvent());
                                 dismissDialog();
                             }
 
@@ -169,6 +173,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                                 .subscribeWith(new BaseDataObserver<Object>() {
                                     @Override
                                     public void onSuccess(Object model) {
+                                        EventBus.getDefault().post(new RefreshEvent());
                                         ToastUtils.showShort("删除消毒区域成功");
                                         dismissDialog();
                                     }

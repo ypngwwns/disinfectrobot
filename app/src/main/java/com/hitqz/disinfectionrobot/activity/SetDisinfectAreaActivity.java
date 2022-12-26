@@ -9,8 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.ActivitySetDisinfectAreaBinding;
+import com.hitqz.disinfectionrobot.event.RefreshEvent;
 import com.hitqz.disinfectionrobot.fragment.DisinfectAreaListFragment;
 import com.hitqz.disinfectionrobot.fragment.EditDisinfectAreaFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 @SuppressLint("CheckResult")
 public class SetDisinfectAreaActivity extends BaseActivity {
@@ -52,6 +57,13 @@ public class SetDisinfectAreaActivity extends BaseActivity {
         mBinding = ActivitySetDisinfectAreaBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         go2DisinfectAreaList();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void hideOther() {
@@ -76,5 +88,10 @@ public class SetDisinfectAreaActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void oRefresh(RefreshEvent event) {
+        go2DisinfectAreaList();
     }
 }

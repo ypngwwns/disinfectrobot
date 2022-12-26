@@ -15,8 +15,13 @@ import com.hitqz.disinfectionrobot.adapter.DisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectAreaListBinding;
 import com.hitqz.disinfectionrobot.dialog.DisinfectAreaNameDialog;
+import com.hitqz.disinfectionrobot.event.RefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,18 @@ public class DisinfectAreaListFragment extends BaseFragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -86,11 +103,16 @@ public class DisinfectAreaListFragment extends BaseFragment {
             }
         });
 
+        refreshAreaList();
+    }
+
+    private void refreshAreaList() {
         showDialog();
         getMSkyNet().areaListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<MapArea>>() {
                     @Override
                     public void onSuccess(List<MapArea> model) {
+                        mList.clear();
                         mList.addAll(model);
                         mDisinfectAreaAdapter.notifyDataSetInvalidated();
                         dismissDialog();
@@ -111,5 +133,10 @@ public class DisinfectAreaListFragment extends BaseFragment {
             }
         }
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void oRefresh(RefreshEvent event) {
+        refreshAreaList();
     }
 }
