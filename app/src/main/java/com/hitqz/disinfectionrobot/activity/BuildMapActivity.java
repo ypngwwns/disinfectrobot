@@ -168,7 +168,7 @@ public class BuildMapActivity extends BaseActivity {
                 dialog.show(getSupportFragmentManager(), dialog.getTag());
             }
         });
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();

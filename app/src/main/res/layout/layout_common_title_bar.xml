@@ -19,6 +19,8 @@
             android:id="@+id/ib_back"
             android:layout_width="14.5dp"
             android:layout_height="28dp"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
             android:layout_gravity="center"
             android:background="@drawable/selector_back" />
     </FrameLayout>

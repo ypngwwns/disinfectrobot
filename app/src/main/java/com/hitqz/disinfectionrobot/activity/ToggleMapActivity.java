@@ -40,7 +40,7 @@ public class ToggleMapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = ActivityToggleMapBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

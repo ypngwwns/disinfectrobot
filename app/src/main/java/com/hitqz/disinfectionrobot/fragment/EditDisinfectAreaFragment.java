@@ -111,7 +111,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         mBinding.navigationView.setSelectable(true);
         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
 
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();

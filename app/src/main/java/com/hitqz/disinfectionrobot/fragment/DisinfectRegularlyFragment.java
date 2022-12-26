@@ -57,7 +57,7 @@ public class DisinfectRegularlyFragment extends Fragment {
                 ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
             }
         });
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();

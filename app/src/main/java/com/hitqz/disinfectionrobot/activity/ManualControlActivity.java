@@ -35,7 +35,7 @@ public class ManualControlActivity extends BaseActivity {
         mBinding = ActivityManualControlBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mHandler = new MyHandler(this);
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

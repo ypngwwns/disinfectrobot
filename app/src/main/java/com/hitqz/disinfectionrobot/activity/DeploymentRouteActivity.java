@@ -94,7 +94,7 @@ public class DeploymentRouteActivity extends BaseActivity {
             }
         });
         dialog.show(getSupportFragmentManager(), DeployAlertDialog.TAG);
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

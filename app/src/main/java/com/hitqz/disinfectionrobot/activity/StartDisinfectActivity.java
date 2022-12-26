@@ -34,7 +34,7 @@ public class StartDisinfectActivity extends BaseActivity {
         mList.add("二号会议室");
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
-        mBinding.includeLayoutCommonTitleBar.ibBack.setOnClickListener(new View.OnClickListener() {
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
