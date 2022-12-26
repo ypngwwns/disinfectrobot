@@ -8,6 +8,7 @@ public class NavigationPoint extends LitePalSupport {
 
     public int id;
     public String type;
+    public int action;
     public String mapCode;
     public String name;
 
@@ -34,6 +35,7 @@ public class NavigationPoint extends LitePalSupport {
     public static NavigationPoint convertFromAreaPose(List<NavigationPoint> navigationPoints, AreaPose areaPose) {
         for (NavigationPoint n : navigationPoints) {
             if (n.id == areaPose.id) {
+                n.action = areaPose.action;
                 return n;
             }
         }

@@ -80,6 +80,12 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> areaPosAdd(@Body MapAreaData mapAreaData);
 
     /**
+     * 更新区域上点位
+     */
+    @POST("/robot/api/areaPos/update")
+    Observable<BaseRespond<Object>> areaPosUpdate(@Body MapAreaData mapAreaData);
+
+    /**
      * 删除消毒区域
      */
     @DELETE("/robot/api/mapArea/delete")

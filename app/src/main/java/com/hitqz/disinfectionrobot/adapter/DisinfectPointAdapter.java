@@ -1,11 +1,15 @@
 package com.hitqz.disinfectionrobot.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
@@ -94,6 +98,7 @@ public class DisinfectPointAdapter extends DragAdapter {
             holder.dragView = convertView.findViewById(R.id.list_drag);
             holder.pointName = convertView.findViewById(R.id.point_name);
             holder.deletePoint = convertView.findViewById(R.id.delete_point);
+            holder.switchCompat = convertView.findViewById(R.id.sc_disinfect);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -106,6 +111,21 @@ public class DisinfectPointAdapter extends DragAdapter {
             holder.pointName.setClickable(true);
         }
         holder.pointName.setText("消毒点" + (position + 1));
+        holder.switchCompat.setTag(position);
+        holder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int index = (int) buttonView.getTag();
+                Log.d(TAG, "index===" + index);
+                if (isChecked) {
+                    data.get(index).action = 1;
+                } else {
+                    data.get(index).action = 0;
+                }
+                notifyDataSetChanged();
+            }
+        });
+        holder.switchCompat.setChecked(data.get(position).action == 1);
 
         if (deleteClickListener != null) {
             holder.deletePoint.setOnClickListener(deleteClickListener);
@@ -129,5 +149,6 @@ public class DisinfectPointAdapter extends DragAdapter {
         public ImageView dragView;
         public TextView pointName;
         public ImageView deletePoint;
+        public SwitchCompat switchCompat;
     }
 }

@@ -6,6 +6,7 @@ public class MapAreaData {
 
     public List<Action> actions;
     public String areaName;
+    public int id;
 
     public static class Action {
         public Integer cmd;

@@ -153,28 +153,46 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 for (int i = 0; i < mSelectedNavigationPoints.size(); i++) {
                     MapAreaData.Action action = new MapAreaData.Action();
                     action.id = mSelectedNavigationPoints.get(i).id;
-                    action.cmd = 1;
+                    action.cmd = mSelectedNavigationPoints.get(i).action;
                     actions.add(action);
                 }
                 MapAreaData mapAreaData = new MapAreaData();
                 mapAreaData.areaName = mMapArea.areaName;
                 mapAreaData.actions = actions;
+                if (mMapArea.id != 0) {
+                    mapAreaData.id = mMapArea.id;
+                    mSkyNet.areaPosUpdate(mapAreaData).compose(RxSchedulers.io_main())
+                            .subscribeWith(new BaseDataObserver<Object>() {
+                                @Override
+                                public void onSuccess(Object model) {
+                                    ToastUtils.showShort("更新消毒区域成功");
+                                    EventBus.getDefault().post(new RefreshEvent());
+                                    dismissDialog();
+                                }
 
-                mSkyNet.areaPosAdd(mapAreaData).compose(RxSchedulers.io_main())
-                        .subscribeWith(new BaseDataObserver<Object>() {
-                            @Override
-                            public void onSuccess(Object model) {
-                                ToastUtils.showShort("保存消毒区域成功");
-                                EventBus.getDefault().post(new RefreshEvent());
-                                dismissDialog();
-                            }
+                                @Override
+                                public void onFailure(String msg) {
+                                    ToastUtils.showShort("更新消毒区域失败");
+                                    dismissDialog();
+                                }
+                            });
+                } else {
+                    mSkyNet.areaPosAdd(mapAreaData).compose(RxSchedulers.io_main())
+                            .subscribeWith(new BaseDataObserver<Object>() {
+                                @Override
+                                public void onSuccess(Object model) {
+                                    ToastUtils.showShort("保存消毒区域成功");
+                                    EventBus.getDefault().post(new RefreshEvent());
+                                    dismissDialog();
+                                }
 
-                            @Override
-                            public void onFailure(String msg) {
-                                ToastUtils.showShort("保存消毒区域失败");
-                                dismissDialog();
-                            }
-                        });
+                                @Override
+                                public void onFailure(String msg) {
+                                    ToastUtils.showShort("保存消毒区域失败");
+                                    dismissDialog();
+                                }
+                            });
+                }
             }
         });
         mBinding.dpll.setDeleteListener(new View.OnClickListener() {

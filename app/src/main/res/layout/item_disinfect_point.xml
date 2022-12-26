@@ -30,10 +30,20 @@
             android:textColor="@color/black"
             android:textSize="26dp" />
 
-        <View
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sc_disinfect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:theme="@style/SwitchStyle" />
+        </FrameLayout>
+
 
         <ImageView
             android:id="@+id/delete_point"
