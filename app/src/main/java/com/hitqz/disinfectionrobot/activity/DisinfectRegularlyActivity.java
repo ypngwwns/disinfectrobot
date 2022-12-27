@@ -42,6 +42,7 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mEditTasksFragment == null) {
             mEditTasksFragment = EditTasksFragment.newInstance();
+            mEditTasksFragment.setTask(task);
             fragmentTransaction.add(R.id.vp_content, mEditTasksFragment, EditTasksFragment.TAG);
             fragmentTransaction.addToBackStack(null);//后退时先移除，不销毁Activity
         } else {

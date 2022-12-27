@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -49,6 +50,7 @@ public class TimedTaskAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_record, parent, false);
         SwitchCompat switchCompat = convertView.findViewById(R.id.sc_task);
+        TextView tv1 = convertView.findViewById(R.id.tv_1);
         switchCompat.setTag(position);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -58,7 +60,8 @@ public class TimedTaskAdapter extends BaseAdapter {
                 }
             }
         });
-        switchCompat.setChecked(mData.get(position).taskType == 1);
+        tv1.setText(mData.get(position).areaName);
+        switchCompat.setChecked(mData.get(position).jobStatus == 0);
         convertView.setTag(position);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

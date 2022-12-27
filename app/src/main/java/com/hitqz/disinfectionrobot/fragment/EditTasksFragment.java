@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,8 @@ public class EditTasksFragment extends BaseFragment {
     private List<MapArea> mList = new ArrayList<>();
     private boolean mSelectedAllArea = true;
     private Task mTask;
+    private int mHour;
+    private int mMinute;
 
     private EditTasksFragment() {
         // Required empty public constructor
@@ -85,6 +88,7 @@ public class EditTasksFragment extends BaseFragment {
             }
         });
         onSelectChanged();
+        refreshAreaList();
 
         mBinding.fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,12 +117,23 @@ public class EditTasksFragment extends BaseFragment {
                 dialog.show(getFragmentManager(), CommonDialog.TAG);
             }
         });
+        mBinding.tpTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                mHour = hourOfDay;
+                mMinute = minute;
+            }
+        });
 
         mBinding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
                 DisinfectTask task = new DisinfectTask();
+//                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+//                Date date = new Date();
+//                date.setHours(mBinding.tpTime.);
+//                String time = format.format()
                 task.jobTime = "01:00";
                 if (mSelectedAllArea) {
                     task.taskType = 0;
@@ -180,5 +195,9 @@ public class EditTasksFragment extends BaseFragment {
                         ToastUtils.showShort("获取到区域列表失败%s", msg);
                     }
                 });
+    }
+
+    public void setTask(Task task) {
+        mTask = task;
     }
 }

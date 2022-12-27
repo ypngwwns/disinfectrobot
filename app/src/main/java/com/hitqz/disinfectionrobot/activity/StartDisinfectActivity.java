@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import androidx.annotation.Nullable;
 
 import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
+import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.ActivityStartDisinfectBinding;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class StartDisinfectActivity extends BaseActivity {
     ActivityStartDisinfectBinding mBinding;
 
     private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
-    private List<String> mList;
+    private List<MapArea> mList= new ArrayList<>();
 
     private boolean mSelectedAllArea = true;
 
@@ -28,10 +29,6 @@ public class StartDisinfectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = ActivityStartDisinfectBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-        mList = new ArrayList<>();
-        mList.add("大厅");
-        mList.add("一号会议室");
-        mList.add("二号会议室");
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
         mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
