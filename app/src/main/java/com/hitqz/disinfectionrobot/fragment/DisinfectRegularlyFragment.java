@@ -14,7 +14,7 @@ import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
 import com.hitqz.disinfectionrobot.adapter.TimedTaskAdapter;
 import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
-import com.hitqz.disinfectionrobot.event.RefreshEvent;
+import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
@@ -118,7 +118,7 @@ public class DisinfectRegularlyFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void oRefresh(RefreshEvent event) {
+    public void oRefresh(TaskRefreshEvent event) {
         refreshList();
     }
 

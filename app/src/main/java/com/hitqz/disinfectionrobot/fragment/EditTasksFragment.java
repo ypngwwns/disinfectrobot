@@ -151,7 +151,7 @@ public class EditTasksFragment extends BaseFragment {
                     task.workArea = mList.get(pos).id;
                 }
 
-                if (TextUtils.isEmpty(mTask.areaName)) {
+                if (!TextUtils.isEmpty(mTask.areaName)) {
                     task.id = mTask.id;
                     mSkyNet.updateTask(task).compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
@@ -165,6 +165,22 @@ public class EditTasksFragment extends BaseFragment {
                                 @Override
                                 public void onFailure(String msg) {
                                     ToastUtils.showShort("更新任务失败%s", msg);
+                                    dismissDialog();
+                                }
+                            });
+                } else {
+                    mSkyNet.addTask(task).compose(RxSchedulers.io_main())
+                            .subscribeWith(new BaseDataObserver<Object>() {
+                                @Override
+                                public void onSuccess(Object model) {
+                                    ToastUtils.showShort("新增任务成功");
+                                    EventBus.getDefault().post(new TaskRefreshEvent());
+                                    dismissDialog();
+                                }
+
+                                @Override
+                                public void onFailure(String msg) {
+                                    ToastUtils.showShort("新增任务失败%s", msg);
                                     dismissDialog();
                                 }
                             });

@@ -3,14 +3,18 @@ package com.hitqz.disinfectionrobot.activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.ActivityDisinfectRegularlyBinding;
+import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.fragment.DisinfectRegularlyFragment;
 import com.hitqz.disinfectionrobot.fragment.EditTasksFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class DisinfectRegularlyActivity extends BaseActivity {
     ActivityDisinfectRegularlyBinding mBinding;
@@ -23,9 +27,17 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         mBinding = ActivityDisinfectRegularlyBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         go2DisinfectRegularly();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     public void go2DisinfectRegularly() {
+        hideOther();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mDisinfectRegularlyFragment == null) {
             mDisinfectRegularlyFragment = DisinfectRegularlyFragment.newInstance();
@@ -44,7 +56,7 @@ public class DisinfectRegularlyActivity extends BaseActivity {
             mEditTasksFragment = EditTasksFragment.newInstance();
             mEditTasksFragment.setTask(task);
             fragmentTransaction.add(R.id.vp_content, mEditTasksFragment, EditTasksFragment.TAG);
-            fragmentTransaction.addToBackStack(null);//后退时先移除，不销毁Activity
+//            fragmentTransaction.addToBackStack(null);//后退时先移除，不销毁Activity
         } else {
             fragmentTransaction.show(mEditTasksFragment);
         }
@@ -58,18 +70,25 @@ public class DisinfectRegularlyActivity extends BaseActivity {
             fragmentTransaction.hide(mDisinfectRegularlyFragment);
             fragmentTransaction.commitAllowingStateLoss();
         }
+        if (mEditTasksFragment != null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.remove(mEditTasksFragment);
+            mEditTasksFragment = null;
+            fragmentTransaction.commitAllowingStateLoss();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        int backCount = fragmentManager.getBackStackEntryCount();
-        if (backCount == 0) {
-            finish();
-        } else if (backCount == 1) {
+        if (mDisinfectRegularlyFragment != null && !mDisinfectRegularlyFragment.isVisible()) {
             go2DisinfectRegularly();
+        } else {
             super.onBackPressed();
-            mEditTasksFragment = null;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void oRefresh(TaskRefreshEvent event) {
+        go2DisinfectRegularly();
     }
 }
