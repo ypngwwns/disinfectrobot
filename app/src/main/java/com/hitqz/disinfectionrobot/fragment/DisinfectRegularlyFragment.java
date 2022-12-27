@@ -70,6 +70,9 @@ public class DisinfectRegularlyFragment extends BaseFragment {
         mTimedTaskAdapter.setOnCheckChangeListener(new TimedTaskAdapter.IOnCheckChangeListener() {
             @Override
             public void onCheckChange(int position, boolean check) {
+                if (check == (mList.get(position).jobStatus == 0)) {
+                    return;
+                }
                 Task task = new Task();
                 task.id = mList.get(position).id;
                 task.jobStatus = check ? 0 : 1;

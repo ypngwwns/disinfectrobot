@@ -134,7 +134,7 @@ public interface ISkyNet {
     /**
      * 删除任务
      */
-    @POST("/robot/api/delete")
+    @DELETE("/robot/api/delete")
     Observable<BaseRespond<Object>> deleteTask(@Query("id") int id);
 
     /**
