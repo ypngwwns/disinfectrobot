@@ -7,9 +7,13 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.data.MapArea;
+import com.hitqz.disinfectionrobot.data.TempTask;
 import com.hitqz.disinfectionrobot.databinding.ActivityStartDisinfectBinding;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,7 @@ public class StartDisinfectActivity extends BaseActivity {
     ActivityStartDisinfectBinding mBinding;
 
     private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
-    private List<MapArea> mList= new ArrayList<>();
+    private List<MapArea> mList = new ArrayList<>();
 
     private boolean mSelectedAllArea = true;
 
@@ -58,6 +62,33 @@ public class StartDisinfectActivity extends BaseActivity {
                 onSelectChanged();
             }
         });
+        refreshAreaList();
+        mBinding.btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+                TempTask task = new TempTask();
+                task.taskType = mSelectedAllArea ? 0 : 1;
+                if (!mSelectedAllArea) {
+                    int pos = mSelectDisinfectAreaAdapter.getSelectedPos();
+                    task.workArea = mList.get(pos).id;
+                }
+                mISkyNet.addJobNow(task).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object model) {
+                                ToastUtils.showShort("添加任务，立即执行成功");
+                                dismissDialog();
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                dismissDialog();
+                                ToastUtils.showShort("添加任务，立即执行失败%s", msg);
+                            }
+                        });
+            }
+        });
     }
 
     private void onSelectChanged() {
@@ -74,5 +105,25 @@ public class StartDisinfectActivity extends BaseActivity {
             mBinding.lvDisinfectionArea.setVisibility(View.VISIBLE);
             mSelectDisinfectAreaAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void refreshAreaList() {
+        showDialog();
+        mISkyNet.areaListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<MapArea>>() {
+                    @Override
+                    public void onSuccess(List<MapArea> model) {
+                        mList.clear();
+                        mList.addAll(model);
+                        mSelectDisinfectAreaAdapter.notifyDataSetInvalidated();
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        dismissDialog();
+                        ToastUtils.showShort("获取到区域列表失败%s", msg);
+                    }
+                });
     }
 }
