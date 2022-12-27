@@ -5,8 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.data.Task;
 
 import java.util.List;
 
@@ -15,11 +20,12 @@ import java.util.List;
  */
 public class TimedTaskAdapter extends BaseAdapter {
 
-    private final List<Object> mData;
+    private final List<Task> mData;
     private final Context mContext;
     private View.OnClickListener mOnClickListener;
+    private IOnCheckChangeListener mIOnCheckChangeListener;
 
-    public TimedTaskAdapter(Context mContext, List<Object> mData) {
+    public TimedTaskAdapter(Context mContext, List<Task> mData) {
         this.mData = mData;
         this.mContext = mContext;
     }
@@ -42,6 +48,17 @@ public class TimedTaskAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_record, parent, false);
+        SwitchCompat switchCompat = convertView.findViewById(R.id.sc_task);
+        switchCompat.setTag(position);
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(mIOnCheckChangeListener!= null){
+                    mIOnCheckChangeListener.onCheckChange(position, isChecked);
+                }
+            }
+        });
+        switchCompat.setChecked(mData.get(position).taskType == 1);
         convertView.setTag(position);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,5 +73,13 @@ public class TimedTaskAdapter extends BaseAdapter {
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
+    }
+
+    public void setOnCheckChangeListener(IOnCheckChangeListener listener){
+        mIOnCheckChangeListener = listener;
+    }
+
+    public interface IOnCheckChangeListener{
+        void onCheckChange(int position, boolean check);
     }
 }

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
 import com.hitqz.disinfectionrobot.adapter.TimedTaskAdapter;
+import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
 import com.hitqz.disinfectionrobot.event.RefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
@@ -30,7 +31,7 @@ public class DisinfectRegularlyFragment extends BaseFragment {
 
     FragmentDisinfectRegularlyBinding mBinding;
     private TimedTaskAdapter mTimedTaskAdapter;
-    private List<Object> mList = new ArrayList<>();
+    private List<Task> mList = new ArrayList<>();
 
     private DisinfectRegularlyFragment() {
         // Required empty public constructor
@@ -70,7 +71,8 @@ public class DisinfectRegularlyFragment extends BaseFragment {
         mTimedTaskAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
+                int position = (int) v.getTag();
+                ((DisinfectRegularlyActivity) getActivity()).go2EditTask(mList.get(position));
             }
         });
         mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +84,11 @@ public class DisinfectRegularlyFragment extends BaseFragment {
         mBinding.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DisinfectRegularlyActivity) getActivity()).go2EditTask();
+                Task task = new Task();
+                ((DisinfectRegularlyActivity) getActivity()).go2EditTask(task);
             }
         });
+        refreshList();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -95,9 +99,9 @@ public class DisinfectRegularlyFragment extends BaseFragment {
     private void refreshList() {
         showDialog();
         getMSkyNet().taskListGet().compose(RxSchedulers.io_main())
-                .subscribeWith(new BaseDataObserver<List<Object>>() {
+                .subscribeWith(new BaseDataObserver<List<Task>>() {
                     @Override
-                    public void onSuccess(List<Object> model) {
+                    public void onSuccess(List<Task> model) {
                         mList.clear();
                         mList.addAll(model);
                         mTimedTaskAdapter.notifyDataSetInvalidated();

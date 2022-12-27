@@ -14,6 +14,7 @@ import com.hitqz.disinfectionrobot.data.MapListData;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.PointData;
 import com.hitqz.disinfectionrobot.data.SpeedRequest;
+import com.hitqz.disinfectionrobot.data.Task;
 
 import java.util.List;
 
@@ -116,13 +117,19 @@ public interface ISkyNet {
      * 获取到任务列表
      */
     @POST("/robot/api/taskListGet")
-    Observable<BaseRespond<List<Object>>> taskListGet();
+    Observable<BaseRespond<List<Task>>> taskListGet();
 
     /**
-     * 获取到任务列表
+     * 添加任务
      */
     @POST("/robot/api/add")
     Observable<BaseRespond<Object>> addTask(@Body DisinfectTask disinfectTask);
+
+    /**
+     * 删除任务
+     */
+    @POST("/robot/api/delete")
+    Observable<BaseRespond<Object>> deleteTask(@Query("id") int id);
 
     /**
      * 建图指令

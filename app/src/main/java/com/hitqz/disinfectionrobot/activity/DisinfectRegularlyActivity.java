@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.ActivityDisinfectRegularlyBinding;
 import com.hitqz.disinfectionrobot.fragment.DisinfectRegularlyFragment;
 import com.hitqz.disinfectionrobot.fragment.EditTasksFragment;
@@ -36,7 +37,7 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    public void go2EditTask() {
+    public void go2EditTask(Task task) {
         hideOther();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mEditTasksFragment == null) {

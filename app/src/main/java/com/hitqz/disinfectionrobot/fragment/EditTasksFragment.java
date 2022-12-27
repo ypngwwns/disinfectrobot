@@ -13,7 +13,10 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.data.DisinfectTask;
+import com.hitqz.disinfectionrobot.data.MapArea;
+import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
+import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
@@ -26,8 +29,9 @@ public class EditTasksFragment extends BaseFragment {
     public static final String TAG = EditTasksFragment.class.getSimpleName();
     FragmentEditTasksBinding mBinding;
     private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
-    private List<String> mList;
+    private List<MapArea> mList = new ArrayList<>();
     private boolean mSelectedAllArea = true;
+    private Task mTask;
 
     private EditTasksFragment() {
         // Required empty public constructor
@@ -50,10 +54,6 @@ public class EditTasksFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mList = new ArrayList<>();
-        mList.add("大厅");
-        mList.add("一号会议室");
-        mList.add("二号会议室");
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
 
@@ -86,13 +86,48 @@ public class EditTasksFragment extends BaseFragment {
         });
         onSelectChanged();
 
+        mBinding.fabDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonDialog dialog = new CommonDialog();
+                dialog.setOnClickListener(new CommonDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        showDialog();
+                        mSkyNet.deleteTask(mTask.id).compose(RxSchedulers.io_main())
+                                .subscribeWith(new BaseDataObserver<Object>() {
+                                    @Override
+                                    public void onSuccess(Object model) {
+                                        ToastUtils.showShort("删除任务成功");
+                                        dismissDialog();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String msg) {
+                                        ToastUtils.showShort("删除任务失败%s", msg);
+                                        dismissDialog();
+                                    }
+                                });
+                    }
+                });
+                dialog.show(getFragmentManager(), CommonDialog.TAG);
+            }
+        });
+
         mBinding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
                 DisinfectTask task = new DisinfectTask();
                 task.jobTime = "01:00";
-                task.taskType = 0;
+                if (mSelectedAllArea) {
+                    task.taskType = 0;
+                } else {
+                    task.taskType = 1;
+                    int pos = mSelectDisinfectAreaAdapter.getSelectedPos();
+                    task.workArea = mList.get(pos).id;
+                }
+
                 mSkyNet.addTask(task).compose(RxSchedulers.io_main())
                         .subscribeWith(new BaseDataObserver<Object>() {
                             @Override
@@ -125,5 +160,25 @@ public class EditTasksFragment extends BaseFragment {
             mBinding.lvDisinfectionArea.setVisibility(View.VISIBLE);
             mSelectDisinfectAreaAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void refreshAreaList() {
+        showDialog();
+        getMSkyNet().areaListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<MapArea>>() {
+                    @Override
+                    public void onSuccess(List<MapArea> model) {
+                        mList.clear();
+                        mList.addAll(model);
+                        mSelectDisinfectAreaAdapter.notifyDataSetInvalidated();
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        dismissDialog();
+                        ToastUtils.showShort("获取到区域列表失败%s", msg);
+                    }
+                });
     }
 }

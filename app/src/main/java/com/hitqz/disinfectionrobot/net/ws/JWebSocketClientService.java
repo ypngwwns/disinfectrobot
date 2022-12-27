@@ -201,7 +201,7 @@ public class JWebSocketClientService extends Service {
      * @param msg
      */
     public void sendMsg(String msg) {
-        if (null != client) {
+        if (null != client && client.isOpen()) {
             Log.e("JWebSocketClientService", "发送的消息：" + msg);
             client.send(msg);
         }

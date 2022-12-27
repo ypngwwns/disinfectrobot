@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.hitqz.disinfectionrobot.R;
+import com.hitqz.disinfectionrobot.data.MapArea;
 
 import java.util.List;
 
@@ -17,11 +18,17 @@ import java.util.List;
 public class SelectDisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = SelectDisinfectAreaAdapter.class.getSimpleName();
 
-    private final List<String> mList;
+    private final List<MapArea> mList;
+
+    public int getSelectedPos() {
+        return mSelectedPos;
+    }
+
     private int mSelectedPos = -1;
+
     private RadioButton mSelectedRadioButton = null;
 
-    public SelectDisinfectAreaAdapter(List<String> list) {
+    public SelectDisinfectAreaAdapter(List<MapArea> list) {
         this.mList = list;
     }
 
@@ -51,7 +58,7 @@ public class SelectDisinfectAreaAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_disinfect_area, parent, false);
         TextView tv1 = convertView.findViewById(R.id.tv1);
         RadioButton rb1 = convertView.findViewById(R.id.rb_selected);
-        String name = mList.get(position);
+        String name = mList.get(position).areaName;
         tv1.setText(name);
         if (position == mSelectedPos) {
             if (mSelectedRadioButton != null) {
