@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -55,7 +54,7 @@ public class TimedTaskAdapter extends BaseAdapter {
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(mIOnCheckChangeListener!= null){
+                if (mIOnCheckChangeListener != null) {
                     mIOnCheckChangeListener.onCheckChange(position, isChecked);
                 }
             }
@@ -78,11 +77,11 @@ public class TimedTaskAdapter extends BaseAdapter {
         mOnClickListener = onClickListener;
     }
 
-    public void setOnCheckChangeListener(IOnCheckChangeListener listener){
+    public void setOnCheckChangeListener(IOnCheckChangeListener listener) {
         mIOnCheckChangeListener = listener;
     }
 
-    public interface IOnCheckChangeListener{
+    public interface IOnCheckChangeListener {
         void onCheckChange(int position, boolean check);
     }
 }

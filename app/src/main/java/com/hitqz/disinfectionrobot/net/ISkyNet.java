@@ -126,6 +126,12 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> addTask(@Body DisinfectTask disinfectTask);
 
     /**
+     * 更新任务
+     */
+    @POST("/robot/api/update")
+    Observable<BaseRespond<Object>> updateTask(@Body DisinfectTask disinfectTask);
+
+    /**
      * 删除任务
      */
     @POST("/robot/api/delete")
@@ -148,4 +154,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/ctrl/cancelBuildMap")
     Observable<BaseRespond<Object>> cancelBuildMap();
+
+    /**
+     * 修改任务状态
+     */
+    @POST("/robot/api/activeJob")
+    Observable<BaseRespond<Object>> activeJob(@Body Task task);
 }

@@ -2,6 +2,7 @@ package com.hitqz.disinfectionrobot.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,11 @@ import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
+import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +63,9 @@ public class EditTasksFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
+        if (TextUtils.isEmpty(mTask.areaName)) {
+            mBinding.fabDelete.setVisibility(View.GONE);
+        }
 
         mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +110,7 @@ public class EditTasksFragment extends BaseFragment {
                                     @Override
                                     public void onSuccess(Object model) {
                                         ToastUtils.showShort("删除任务成功");
+                                        EventBus.getDefault().post(new TaskRefreshEvent());
                                         dismissDialog();
                                     }
 
@@ -143,20 +151,24 @@ public class EditTasksFragment extends BaseFragment {
                     task.workArea = mList.get(pos).id;
                 }
 
-                mSkyNet.addTask(task).compose(RxSchedulers.io_main())
-                        .subscribeWith(new BaseDataObserver<Object>() {
-                            @Override
-                            public void onSuccess(Object model) {
-                                ToastUtils.showShort("添加任务成功");
-                                dismissDialog();
-                            }
+                if (TextUtils.isEmpty(mTask.areaName)) {
+                    task.id = mTask.id;
+                    mSkyNet.updateTask(task).compose(RxSchedulers.io_main())
+                            .subscribeWith(new BaseDataObserver<Object>() {
+                                @Override
+                                public void onSuccess(Object model) {
+                                    ToastUtils.showShort("更新任务成功");
+                                    EventBus.getDefault().post(new TaskRefreshEvent());
+                                    dismissDialog();
+                                }
 
-                            @Override
-                            public void onFailure(String msg) {
-                                ToastUtils.showShort("添加任务失败%s", msg);
-                                dismissDialog();
-                            }
-                        });
+                                @Override
+                                public void onFailure(String msg) {
+                                    ToastUtils.showShort("更新任务失败%s", msg);
+                                    dismissDialog();
+                                }
+                            });
+                }
             }
         });
     }

@@ -67,6 +67,29 @@ public class DisinfectRegularlyFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTimedTaskAdapter = new TimedTaskAdapter(getContext(), mList);
+        mTimedTaskAdapter.setOnCheckChangeListener(new TimedTaskAdapter.IOnCheckChangeListener() {
+            @Override
+            public void onCheckChange(int position, boolean check) {
+                Task task = new Task();
+                task.id = mList.get(position).id;
+                task.jobStatus = check ? 0 : 1;
+                getMSkyNet().activeJob(task).compose(RxSchedulers.io_main())
+                        .subscribeWith(new BaseDataObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object model) {
+                                ToastUtils.showShort("修改任务状态成功");
+                                refreshList();
+                                dismissDialog();
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                dismissDialog();
+                                ToastUtils.showShort("修改任务状态失败%s", msg);
+                            }
+                        });
+            }
+        });
         mBinding.lvTimedTask.setAdapter(mTimedTaskAdapter);
         mTimedTaskAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
