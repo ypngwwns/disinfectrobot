@@ -135,4 +135,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/ctrl/finishBuildMap")
     Observable<BaseRespond<Object>> finishBuildMap(@Body MapCode mapCode);
+
+    /**
+     * 结束建图
+     */
+    @POST("/robot/api/ctrl/cancelBuildMap")
+    Observable<BaseRespond<Object>> cancelBuildMap();
 }

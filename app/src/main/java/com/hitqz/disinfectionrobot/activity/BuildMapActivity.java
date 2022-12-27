@@ -11,11 +11,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.constant.Constants;
-import com.hitqz.disinfectionrobot.constant.TokenKeys;
-import com.hitqz.disinfectionrobot.data.MapBuildRequest;
 import com.hitqz.disinfectionrobot.data.MapCode;
 import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
 import com.hitqz.disinfectionrobot.databinding.ActivityBuildMapBinding;
@@ -99,24 +96,22 @@ public class BuildMapActivity extends BaseActivity {
                 dialog.setOnClickListener(new CommonDialog.OnClickListener() {
                     @Override
                     public void onConfirm() {
-                        String token = SPUtils.getInstance().getString(TokenKeys.token);
-                        MapBuildRequest request = new MapBuildRequest(token, 1);
 
-//                        mISkyNet.map_build(request).compose(RxSchedulers.io_main())
-//                                .subscribeWith(new BaseDataObserver<Object>() {
-//                                    @Override
-//                                    public void onSuccess(Object model) {
-//                                        mBinding.btnMapBuild.setText("开始建图");
-//                                        dismissDialog();
-//                                        ToastUtils.showShort("停止建图成功");
-//                                    }
-//
-//                                    @Override
-//                                    public void onFailure(String msg) {
-//                                        dismissDialog();
-//                                        ToastUtils.showShort("停止建图失败:" + msg);
-//                                    }
-//                                });
+                        mISkyNet.cancelBuildMap().compose(RxSchedulers.io_main())
+                                .subscribeWith(new BaseDataObserver<Object>() {
+                                    @Override
+                                    public void onSuccess(Object model) {
+                                        mBinding.btnMapBuild.setText("开始建图");
+                                        dismissDialog();
+                                        ToastUtils.showShort("停止建图成功");
+                                    }
+
+                                    @Override
+                                    public void onFailure(String msg) {
+                                        dismissDialog();
+                                        ToastUtils.showShort("停止建图失败%s:", msg);
+                                    }
+                                });
                     }
                 });
                 dialog.show(getSupportFragmentManager(), dialog.getTag());
