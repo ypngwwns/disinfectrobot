@@ -107,11 +107,13 @@ public class NavigationPointAdapter extends DragAdapter {
             holder.pointName.setClickable(true);
         }
 
-        if ("2".equals(data.get(position).type)) {
-            holder.pointName.setText("充电点");
-        } else {
-            holder.pointName.setText("导航点" + (position + 1));
-        }
+        holder.pointName.setText(data.get(position).name);
+
+//        if ("2".equals(data.get(position).type)) {
+//            holder.pointName.setText("充电点");
+//        } else {
+//            holder.pointName.setText("导航点" + (position + 1));
+//        }
 
         if (deleteClickListener != null) {
             holder.deletePoint.setOnClickListener(deleteClickListener);

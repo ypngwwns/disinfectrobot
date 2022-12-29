@@ -14,10 +14,10 @@ public class MapPose {
     public Double posx;
     public Double posy;
     public Integer posz;
-    public Long createTime;
+    public String createTime;
     public String splitFlag;
     public String retsetPos;
-    public Long lastModifyTime;
+    public String lastModifyTime;
     public String closeSonar;
     public String name;
     public Integer id;

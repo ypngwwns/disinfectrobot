@@ -49,7 +49,7 @@ public class NavigationView extends View {
     // 机器人坐标
     private NavigationPoint mRobotPos;
     // 充电点
-    private NavigationPoint mRechargePos;
+    private List<NavigationPoint> mRechargePos;
     private List<NavigationPoint> mNavigationPoints;
     private List<NavigationPoint> mSelectedNavigationPoints = new ArrayList<>();
     private boolean mShowLaserScan = true;
@@ -218,17 +218,20 @@ public class NavigationView extends View {
 
     private void drawRechargePosition(Canvas canvas) {
         if (mBitmap != null && mRechargePos != null) {
-            canvas.save();
-            canvas.setMatrix(mMatrix);
-            NavigationPoint drawPoint = getDrawPoint(mRechargePos);
-            canvas.translate(drawPoint.drawX, drawPoint.drawY);
-            // 绘制图形时角度要取负数
-            // 安卓是以顺时针为坐标系
-            canvas.rotate(-drawPoint.angle);
-            mBitmapMatrix.reset();
-            mBitmapMatrix.setTranslate(-rechargeBitmap.getWidth() / 2f, -rechargeBitmap.getHeight() / 2f);
-            canvas.drawBitmap(rechargeBitmap, mBitmapMatrix, null);
-            canvas.restore();
+            for (NavigationPoint rechargePos : mRechargePos) {
+                canvas.save();
+                canvas.setMatrix(mMatrix);
+                NavigationPoint drawPoint = getDrawPoint(rechargePos);
+                canvas.translate(drawPoint.drawX, drawPoint.drawY);
+                // 绘制图形时角度要取负数
+                // 安卓是以顺时针为坐标系
+                canvas.rotate(-drawPoint.angle);
+                mBitmapMatrix.reset();
+                mBitmapMatrix.setTranslate(-rechargeBitmap.getWidth() / 2f, -rechargeBitmap.getHeight() / 2f);
+                canvas.drawBitmap(rechargeBitmap, mBitmapMatrix, null);
+                canvas.restore();
+            }
+
         }
     }
 
@@ -366,7 +369,17 @@ public class NavigationView extends View {
     }
 
     public void setNavigationPoints(List<NavigationPoint> navigationPoints) {
-        this.mNavigationPoints = navigationPoints;
+        this.mNavigationPoints = new ArrayList<>();
+        this.mRechargePos = new ArrayList<>();
+        for (NavigationPoint p :
+                navigationPoints) {
+            if (p.name.contains("充电点")) {
+                mRechargePos.add(p);
+            } else if (p.name.contains("导航点")) {
+                mNavigationPoints.add(p);
+            }
+        }
+
         postInvalidate();
     }
 
@@ -397,11 +410,11 @@ public class NavigationView extends View {
 
         return navigationPoint;
     }
-
-    public void setRechargePos(NavigationPoint rechargePos) {
-        mRechargePos = rechargePos;
-        postInvalidate();
-    }
+//
+//    public void setRechargePos(NavigationPoint rechargePos) {
+//        mRechargePos = rechargePos;
+//        postInvalidate();
+//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
