@@ -1,6 +1,7 @@
 package com.hitqz.disinfectionrobot.fragment;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,7 +26,9 @@ import com.sonicers.commonlib.rx.RxSchedulers;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SuppressLint("CheckResult")
@@ -138,11 +141,9 @@ public class EditTasksFragment extends BaseFragment {
             public void onClick(View v) {
                 showDialog();
                 DisinfectTask task = new DisinfectTask();
-//                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-//                Date date = new Date();
-//                date.setHours(mBinding.tpTime.);
-//                String time = format.format()
-                task.jobTime = "01:00";
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    task.jobTime = mBinding.tpTime.getHour() + ":" + mBinding.tpTime.getMinute();
+                }
                 if (mSelectedAllArea) {
                     task.taskType = 0;
                 } else {

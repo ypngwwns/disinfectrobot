@@ -49,6 +49,7 @@ public class TimedTaskAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_record, parent, false);
         SwitchCompat switchCompat = convertView.findViewById(R.id.sc_task);
+        TextView time = convertView.findViewById(R.id.tv_time);
         TextView tv1 = convertView.findViewById(R.id.tv_1);
         switchCompat.setTag(position);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -59,6 +60,7 @@ public class TimedTaskAdapter extends BaseAdapter {
                 }
             }
         });
+        time.setText(mData.get(position).jobTime);
         tv1.setText(mData.get(position).areaName);
         switchCompat.setChecked(mData.get(position).jobStatus == 0);
         convertView.setTag(position);
