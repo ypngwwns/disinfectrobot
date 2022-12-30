@@ -218,7 +218,8 @@ public class NavigationView extends View {
 
     private void drawRechargePosition(Canvas canvas) {
         if (mBitmap != null && mRechargePos != null) {
-            for (NavigationPoint rechargePos : mRechargePos) {
+            for (int i = 0; i < mRechargePos.size(); i++) {
+                NavigationPoint rechargePos = mRechargePos.get(i);
                 canvas.save();
                 canvas.setMatrix(mMatrix);
                 NavigationPoint drawPoint = getDrawPoint(rechargePos);
@@ -230,6 +231,8 @@ public class NavigationView extends View {
                 mBitmapMatrix.setTranslate(-rechargeBitmap.getWidth() / 2f, -rechargeBitmap.getHeight() / 2f);
                 mBitmapMatrix.postScale(2f / mScaleSum, 2f / mScaleSum);
                 canvas.drawBitmap(rechargeBitmap, mBitmapMatrix, null);
+                canvas.rotate(drawPoint.angle);
+                canvas.drawText(String.valueOf(i + 1), 0, 20, mTextPaint);
                 canvas.restore();
             }
         }
@@ -262,6 +265,8 @@ public class NavigationView extends View {
                 mBitmapMatrix.setTranslate(-bitmap.getWidth() / 2f, -bitmap.getHeight() / 2f);
                 mBitmapMatrix.postScale(2f / mScaleSum, 2f / mScaleSum);
                 canvas.drawBitmap(bitmap, mBitmapMatrix, null);
+                canvas.rotate(drawPoint.angle);
+                canvas.drawText(String.valueOf(i + 1), 0, 20, mTextPaint);
                 canvas.restore();
             }
         }
@@ -370,11 +375,12 @@ public class NavigationView extends View {
     public void setNavigationPoints(List<NavigationPoint> navigationPoints) {
         this.mNavigationPoints = new ArrayList<>();
         this.mRechargePos = new ArrayList<>();
-        for (NavigationPoint p :
-                navigationPoints) {
+        for (NavigationPoint p : navigationPoints) {
             if (p.name.contains("充电点")) {
+                p.name = "充电点" + (mRechargePos.size() + 1);
                 mRechargePos.add(p);
             } else if (p.name.contains("导航点")) {
+                p.name = "导航点" + (mNavigationPoints.size() + 1);
                 mNavigationPoints.add(p);
             }
         }

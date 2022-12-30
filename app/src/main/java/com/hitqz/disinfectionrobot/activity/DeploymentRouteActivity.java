@@ -139,6 +139,7 @@ public class DeploymentRouteActivity extends BaseActivity {
                                     public void onSuccess(Object model) {
                                         mNavigationPoints.remove(position);
                                         mNavigationPointAdapter.notifyDataSetChanged();
+                                        mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                                         mBinding.navigationView.postInvalidate();
                                         dismissDialog();
                                     }
