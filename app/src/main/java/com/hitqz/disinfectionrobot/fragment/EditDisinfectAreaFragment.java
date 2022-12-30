@@ -3,6 +3,7 @@ package com.hitqz.disinfectionrobot.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,9 +150,8 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     ToastUtils.showShort("请至少选中一个消毒点");
                     return;
                 }
-
+                MapAreaData.Action action = new MapAreaData.Action();
                 for (int i = 0; i < mSelectedNavigationPoints.size(); i++) {
-                    MapAreaData.Action action = new MapAreaData.Action();
                     action.id = mSelectedNavigationPoints.get(i).id;
                     action.cmd = mSelectedNavigationPoints.get(i).action;
                     actions.add(action);
@@ -159,7 +159,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 MapAreaData mapAreaData = new MapAreaData();
                 mapAreaData.areaName = mMapArea.areaName;
                 mapAreaData.actions = actions;
-                if (mMapArea.id != 0) {
+                if (null != mMapArea.id) {
                     mapAreaData.id = mMapArea.id;
                     mSkyNet.areaPosUpdate(mapAreaData).compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
@@ -188,6 +188,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
                                 @Override
                                 public void onFailure(String msg) {
+                                    Log.i(TAG, "onFailure: " + msg);
                                     ToastUtils.showShort("保存消毒区域失败%s:", msg);
                                     dismissDialog();
                                 }
