@@ -165,6 +165,7 @@ public class DeploymentRouteActivity extends BaseActivity {
                         public void onSuccess(MapPose model) {
                             mNavigationPoints.add(NavigationPoint.convertFromMapPose(model));
                             mNavigationPointAdapter.notifyDataSetChanged();
+                            mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                             mBinding.navigationView.postInvalidate();
                             dismissDialog();
                         }
@@ -188,6 +189,7 @@ public class DeploymentRouteActivity extends BaseActivity {
                                 NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(model);
                                 mNavigationPoints.add(0, navigationPoint);
                                 mNavigationPointAdapter.notifyDataSetChanged();
+                                mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                                 mBinding.navigationView.postInvalidate();
                                 dismissDialog();
                             }

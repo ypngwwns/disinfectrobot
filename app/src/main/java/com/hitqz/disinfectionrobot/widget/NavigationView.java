@@ -228,10 +228,10 @@ public class NavigationView extends View {
                 canvas.rotate(-drawPoint.angle);
                 mBitmapMatrix.reset();
                 mBitmapMatrix.setTranslate(-rechargeBitmap.getWidth() / 2f, -rechargeBitmap.getHeight() / 2f);
+                mBitmapMatrix.postScale(2f / mScaleSum, 2f / mScaleSum);
                 canvas.drawBitmap(rechargeBitmap, mBitmapMatrix, null);
                 canvas.restore();
             }
-
         }
     }
 
@@ -259,9 +259,8 @@ public class NavigationView extends View {
                 // 安卓是以顺时针为坐标系
                 canvas.rotate(-drawPoint.angle);
                 mBitmapMatrix.reset();
-
                 mBitmapMatrix.setTranslate(-bitmap.getWidth() / 2f, -bitmap.getHeight() / 2f);
-                mBitmapMatrix.postScale(1f / mScaleSum, 1f / mScaleSum);
+                mBitmapMatrix.postScale(2f / mScaleSum, 2f / mScaleSum);
                 canvas.drawBitmap(bitmap, mBitmapMatrix, null);
                 canvas.restore();
             }
