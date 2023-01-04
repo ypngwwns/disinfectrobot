@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
+import com.hitqz.disinfectionrobot.data.RobotStatus;
 import com.hitqz.disinfectionrobot.databinding.FragmentMapBinding;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.sonicers.commonlib.rx.RxSchedulers;
@@ -31,6 +32,7 @@ public class MapFragment extends BaseFragment {
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     FragmentMapBinding mBinding;
     private MapDataResponse mMapDataResponse;
+    private NavigationPoint mRobotPos = new NavigationPoint();
 
     private MapFragment() {
         // Required empty public constructor
@@ -113,5 +115,13 @@ public class MapFragment extends BaseFragment {
                         dismissDialog();
                     }
                 });
+    }
+
+    public void refresh(RobotStatus robotStatus) {
+        mRobotPos.rawX = robotStatus.getCurrentPos().getX();
+        mRobotPos.rawY = robotStatus.getCurrentPos().getY();
+        mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
+        mBinding.navigationView.setRobotPoint(mRobotPos);
+        mBinding.navigationView.postInvalidate();
     }
 }

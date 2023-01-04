@@ -117,7 +117,7 @@ public class JWebSocketClientService extends Service {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
 
                 Intent intent = new Intent();
-                intent.setAction("com.xch.servicecallback.content");
+                intent.setAction(Constants.WEB_SOCKET_ACTION);
                 intent.putExtra("message", message);
                 sendBroadcast(intent);
 
@@ -145,7 +145,7 @@ public class JWebSocketClientService extends Service {
                 Log.e("JWebSocketClientService", "收到的消息：" + message);
 
                 Intent intent = new Intent();
-                intent.setAction("com.xch.servicecallback.content");
+                intent.setAction(Constants.WEB_SOCKET_ACTION);
                 intent.putExtra("message", message);
                 sendBroadcast(intent);
 
