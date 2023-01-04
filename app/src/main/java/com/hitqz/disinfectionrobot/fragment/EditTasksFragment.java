@@ -63,6 +63,7 @@ public class EditTasksFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
+        mBinding.tpTime.setIs24HourView(true);
         if (TextUtils.isEmpty(mTask.areaName)) {
             mBinding.fabDelete.setVisibility(View.GONE);
         } else {
