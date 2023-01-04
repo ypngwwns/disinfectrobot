@@ -27,6 +27,7 @@ public class TimedTaskAdapter extends BaseAdapter {
     private final Context mContext;
     private View.OnClickListener mOnClickListener;
     private IOnCheckChangeListener mIOnCheckChangeListener;
+    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("HH:mm");
 
     public TimedTaskAdapter(Context mContext, List<Task> mData) {
         this.mData = mData;
@@ -63,12 +64,12 @@ public class TimedTaskAdapter extends BaseAdapter {
                 }
             }
         });
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+
 
         try {
-            Date date = simpleDateFormat.parse(mData.get(position).jobTime);
+            Date date = mSimpleDateFormat.parse(mData.get(position).jobTime);
             if (date != null) {
-                time.setText(simpleDateFormat.format(date));
+                time.setText(mSimpleDateFormat.format(date));
             }
         } catch (ParseException e) {
             e.printStackTrace();
