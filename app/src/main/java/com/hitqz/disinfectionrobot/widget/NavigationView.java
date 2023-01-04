@@ -260,7 +260,7 @@ public class NavigationView extends View {
 //                mBitmapMatrix.postScale(2f / mScaleSum, 2f / mScaleSum);
                 canvas.drawBitmap(bitmap, mBitmapMatrix, null);
                 canvas.rotate(drawPoint.angle);
-                canvas.drawText(String.valueOf(i + 1), 0, 20, mTextPaint);
+//                canvas.drawText(String.valueOf(i + 1), 0, 20, mTextPaint);
                 canvas.restore();
             }
         }
