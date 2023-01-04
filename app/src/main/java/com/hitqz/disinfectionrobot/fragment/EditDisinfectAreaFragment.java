@@ -150,8 +150,9 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     ToastUtils.showShort("请至少选中一个消毒点");
                     return;
                 }
-                MapAreaData.Action action = new MapAreaData.Action();
+
                 for (int i = 0; i < mSelectedNavigationPoints.size(); i++) {
+                    MapAreaData.Action action = new MapAreaData.Action();
                     action.id = mSelectedNavigationPoints.get(i).id;
                     action.cmd = mSelectedNavigationPoints.get(i).action;
                     actions.add(action);

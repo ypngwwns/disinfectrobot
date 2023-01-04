@@ -102,7 +102,7 @@ public class NavigationView extends View {
 
         mLinePaint = new Paint();
         mLinePaint.setAntiAlias(true);
-        mLinePaint.setStrokeWidth(1f);
+        mLinePaint.setStrokeWidth(2f);
         mLinePaint.setColor(Color.parseColor("#F6BD16"));
 
         mRobotPaint = new Paint();             // 创建画笔
@@ -245,8 +245,8 @@ public class NavigationView extends View {
                 canvas.translate(drawPoint.drawX, drawPoint.drawY);
                 Bitmap bitmap = null;
                 if (mSelectedNavigationPoints.contains(drawPoint)) {
-//                    String value = String.valueOf(mSelectedNavigationPoints.indexOf(navigationPoint) + 1);
-//                    canvas.drawText(value, -15, -50, mTextPaint);
+                    String value = String.valueOf(mSelectedNavigationPoints.indexOf(navigationPoint) + 1);
+                    canvas.drawText(value, -10, -10, mTextPaint);
                     bitmap = selectedPointBitmap;
                 } else {
                     bitmap = naviPointBitmap;
@@ -579,6 +579,7 @@ public class NavigationView extends View {
                     if (mMapView.mSelectedNavigationPoints.contains(navigationPoint)) {
                         mMapView.mSelectedNavigationPoints.remove(navigationPoint);
                     } else {
+                        navigationPoint.action = 1;
                         mMapView.mSelectedNavigationPoints.add(navigationPoint);
                     }
                     if (mMapView.mBaseAdapter != null) {
