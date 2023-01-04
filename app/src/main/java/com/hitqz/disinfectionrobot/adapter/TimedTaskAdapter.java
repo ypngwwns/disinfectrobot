@@ -13,6 +13,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.Task;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,7 +63,17 @@ public class TimedTaskAdapter extends BaseAdapter {
                 }
             }
         });
-        time.setText(mData.get(position).jobTime);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+
+        try {
+            Date date = simpleDateFormat.parse(mData.get(position).jobTime);
+            if (date != null) {
+                time.setText(simpleDateFormat.format(date));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         tv1.setText(mData.get(position).areaName);
         switchCompat.setChecked(mData.get(position).jobStatus == 0);
         convertView.setTag(position);
