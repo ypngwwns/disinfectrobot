@@ -2,6 +2,7 @@ package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +27,12 @@ public class ViewDirectionsActivity extends BaseActivity {
         mBinding = ActivityViewDirectionsBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mMapFragment == null) {
             mMapFragment = MapFragment.newInstance();
