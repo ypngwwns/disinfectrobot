@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -83,23 +82,23 @@ public class EditTasksFragment extends BaseFragment {
             }
         });
 
-        mBinding.rbAllArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.vp1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mSelectedAllArea == isChecked) {
+            public void onClick(View v) {
+                if (mSelectedAllArea) {
                     return;
                 }
-                mSelectedAllArea = isChecked;
+                mSelectedAllArea = true;
                 onSelectChanged();
             }
         });
-        mBinding.rbPartArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.vp2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mSelectedAllArea == !isChecked) {
+            public void onClick(View v) {
+                if (!mSelectedAllArea) {
                     return;
                 }
-                mSelectedAllArea = !isChecked;
+                mSelectedAllArea = false;
                 onSelectChanged();
             }
         });
@@ -211,6 +210,8 @@ public class EditTasksFragment extends BaseFragment {
                     public void onSuccess(List<MapArea> model) {
                         mList.clear();
                         mList.addAll(model);
+                        int index = findIndex(model);
+                        mSelectDisinfectAreaAdapter.setSelectedPos(index);
                         mSelectDisinfectAreaAdapter.notifyDataSetInvalidated();
                         dismissDialog();
                     }
@@ -221,6 +222,22 @@ public class EditTasksFragment extends BaseFragment {
                         ToastUtils.showShort("获取到区域列表失败%s", msg);
                     }
                 });
+    }
+
+    private int findIndex(List<MapArea> mapAreas) {
+        if (TextUtils.isEmpty(mTask.areaName)) {
+            return -1;
+        }
+        if (mTask.taskType == 0) {
+            return -1;
+        }
+
+        for (int i = 0; i < mapAreas.size(); i++) {
+            if (mapAreas.get(i).id.equals(mTask.workArea.id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void setTask(Task task) {

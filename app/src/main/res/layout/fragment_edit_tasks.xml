@@ -54,6 +54,9 @@
             android:id="@+id/rb_all_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:clickable="false"
             android:buttonTint="@color/colorPrimary"
             android:layout_marginEnd="20dp" />
     </LinearLayout>
@@ -85,6 +88,9 @@
             android:id="@+id/rb_part_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:clickable="false"
             android:buttonTint="@color/colorPrimary"
             android:layout_marginEnd="20dp" />
     </LinearLayout>
