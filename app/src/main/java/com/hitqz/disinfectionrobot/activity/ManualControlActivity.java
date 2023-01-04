@@ -49,7 +49,7 @@ public class ManualControlActivity extends BaseActivity {
                 if (Math.abs(yPercent) < 0.2) {
                     mSpeedRequest.angleSpeed = 0.0f;
                 } else {
-                    mSpeedRequest.angleSpeed = yPercent * MAX_RADIUS_SPEED_VALUE;
+                    mSpeedRequest.angleSpeed = -yPercent * MAX_RADIUS_SPEED_VALUE;
                 }
                 mHandler.sendEmptyMessage(TIMING_SPEED_MESSAGE_ID);
             }
