@@ -104,6 +104,7 @@ dependencies {
 
     // 数据库
     implementation 'org.litepal.android:java:3.0.0'
+    implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
 }
 repositories {
     mavenCentral()

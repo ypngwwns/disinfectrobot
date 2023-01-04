@@ -20,6 +20,12 @@
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.DisinfectionRobot">
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="540" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="960" />
 
         <service
             android:name=".net.ws.JWebSocketClientService"
