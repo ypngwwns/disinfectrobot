@@ -20,7 +20,6 @@ public class NavigationPointListLayout extends LinearLayout {
 
     private INavigationPointListListener mListener;
     private View.OnClickListener mAddNavigationPointListener;
-    private View.OnClickListener mAddRechargePointListener;
 
     public NavigationPointListLayout(Context context) {
         super(context);
@@ -55,11 +54,9 @@ public class NavigationPointListLayout extends LinearLayout {
         super.onVisibilityChanged(changedView, visibility);
     }
 
-    public void setAddNavigationPointListener(OnClickListener addNavigationPointListener, OnClickListener addRechargePointListener) {
+    public void setAddNavigationPointListener(OnClickListener addNavigationPointListener) {
         mAddNavigationPointListener = addNavigationPointListener;
-        mAddRechargePointListener = addRechargePointListener;
         mBinding.btnAddNavigationPoint.setOnClickListener(mAddNavigationPointListener);
-        mBinding.btnAddRechargePoint.setOnClickListener(mAddRechargePointListener);
     }
 
     public interface INavigationPointListListener {
