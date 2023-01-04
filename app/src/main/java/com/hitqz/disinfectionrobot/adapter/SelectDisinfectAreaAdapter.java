@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -19,17 +18,20 @@ public class SelectDisinfectAreaAdapter extends BaseAdapter {
     public static final String TAG = SelectDisinfectAreaAdapter.class.getSimpleName();
 
     private final List<MapArea> mList;
+    private int mSelectedPos = -1;
+    private RadioButton mSelectedRadioButton = null;
+
+    public SelectDisinfectAreaAdapter(List<MapArea> list) {
+        this.mList = list;
+    }
 
     public int getSelectedPos() {
         return mSelectedPos;
     }
 
-    private int mSelectedPos = -1;
-
-    private RadioButton mSelectedRadioButton = null;
-
-    public SelectDisinfectAreaAdapter(List<MapArea> list) {
-        this.mList = list;
+    public void setSelectedPos(int selectedPos) {
+        mSelectedPos = selectedPos;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -60,6 +62,20 @@ public class SelectDisinfectAreaAdapter extends BaseAdapter {
         RadioButton rb1 = convertView.findViewById(R.id.rb_selected);
         String name = mList.get(position).areaName;
         tv1.setText(name);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (position != mSelectedPos) {
+                    rb1.setChecked(true);
+                    mSelectedPos = position;
+                    if (mSelectedRadioButton != null) {
+                        mSelectedRadioButton.setChecked(false);
+                    }
+                    mSelectedRadioButton = rb1;
+                }
+            }
+        });
+
         if (position == mSelectedPos) {
             if (mSelectedRadioButton != null) {
                 mSelectedRadioButton.setChecked(false);
@@ -69,23 +85,6 @@ public class SelectDisinfectAreaAdapter extends BaseAdapter {
         } else {
             rb1.setChecked(false);
         }
-        rb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (mSelectedRadioButton != null) {
-                        mSelectedRadioButton.setChecked(false);
-                    }
-                    mSelectedRadioButton = rb1;
-                    mSelectedPos = position;
-                }
-            }
-        });
         return convertView;
-    }
-
-    public void setSelectedPos(int selectedPos) {
-        mSelectedPos = selectedPos;
-        notifyDataSetChanged();
     }
 }

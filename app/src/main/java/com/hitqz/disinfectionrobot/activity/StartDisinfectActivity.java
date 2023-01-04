@@ -3,7 +3,6 @@ package com.hitqz.disinfectionrobot.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
 
@@ -42,23 +41,23 @@ public class StartDisinfectActivity extends BaseActivity {
             }
         });
         onSelectChanged();
-        mBinding.rbAllArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.vp1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mSelectedAllArea == isChecked) {
+            public void onClick(View v) {
+                if (mSelectedAllArea) {
                     return;
                 }
-                mSelectedAllArea = isChecked;
+                mSelectedAllArea = true;
                 onSelectChanged();
             }
         });
-        mBinding.rbPartArea.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mBinding.vp2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mSelectedAllArea == !isChecked) {
+            public void onClick(View v) {
+                if (!mSelectedAllArea) {
                     return;
                 }
-                mSelectedAllArea = !isChecked;
+                mSelectedAllArea = false;
                 onSelectChanged();
             }
         });
