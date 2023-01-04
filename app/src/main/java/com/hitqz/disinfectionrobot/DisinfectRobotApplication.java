@@ -2,7 +2,6 @@ package com.hitqz.disinfectionrobot;
 
 import android.app.Application;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
@@ -13,7 +12,7 @@ import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
 import org.litepal.LitePal;
 
 public class DisinfectRobotApplication extends Application implements ServiceConnection {
-    public static Context instance;
+    public static DisinfectRobotApplication instance;
     public JWebSocketClientService jWebSClientService;
 
     @Override
@@ -29,7 +28,7 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
     public void onServiceConnected(ComponentName name, IBinder service) {
         JWebSocketClientService.JWebSocketClientBinder binder = (JWebSocketClientService.JWebSocketClientBinder) service;
         jWebSClientService = binder.getService();
-        jWebSClientService.sendMsg("{\"topic\": \"CREATE_2D_MAP_DATA\"}");
+
     }
 
     @Override

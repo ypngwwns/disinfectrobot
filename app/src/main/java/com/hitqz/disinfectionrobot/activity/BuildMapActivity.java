@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapCode;
 import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
@@ -71,10 +72,12 @@ public class BuildMapActivity extends BaseActivity {
                     dialog.show(getSupportFragmentManager(), SaveMapDialog.TAG);
                 } else {
                     showDialog();
+                    DisinfectRobotApplication.instance.jWebSClientService.sendMsg("{\"topic\": \"CREATE_2D_MAP_DATA\"}");
                     mISkyNet.buildMap().compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
+//                                    jWebSClientService.sendMsg("{\"topic\": \"CREATE_2D_MAP_DATA\"}");
                                     mBinding.btnMapBuild.setText("保存地图");
                                     dismissDialog();
                                     ToastUtils.showShort("开始建图成功");

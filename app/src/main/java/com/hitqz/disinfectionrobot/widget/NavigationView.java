@@ -102,7 +102,7 @@ public class NavigationView extends View {
 
         mLinePaint = new Paint();
         mLinePaint.setAntiAlias(true);
-        mLinePaint.setStrokeWidth(5f);
+        mLinePaint.setStrokeWidth(1f);
         mLinePaint.setColor(Color.parseColor("#F6BD16"));
 
         mRobotPaint = new Paint();             // 创建画笔
@@ -209,7 +209,7 @@ public class NavigationView extends View {
                     canvas.drawLine(lastPoint.drawX, lastPoint.drawY, drawPoint.drawX, drawPoint.drawY, mLinePaint);
                     //绘制箭头
                     drawTriangle(canvas, mLinePaint, lastPoint.drawX, lastPoint.drawY, drawPoint.drawX, drawPoint.drawY,
-                            40, 20);
+                            20, 10);
                     canvas.restore();
                 }
             }
