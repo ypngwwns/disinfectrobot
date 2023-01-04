@@ -33,6 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressLint("CheckResult")
 public class DeploymentRouteActivity extends BaseActivity {
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
+    private NavigationPoint mRechargePos;
     ActivityDeployRouteBinding mBinding;
     private NavigationPointAdapter mNavigationPointAdapter;
     private MapDataResponse mMapDataResponse;
@@ -226,8 +227,14 @@ public class DeploymentRouteActivity extends BaseActivity {
                             navigationPoint.rawY = mapPose.posy;
                             navigationPoint.radian = mapPose.yaw;
                             navigationPoint.id = mapPose.id;
-                            mNavigationPoints.add(navigationPoint);
+                            if ("2".equals(mapPose.type)) {
+                                mRechargePos = navigationPoint;
+                            } else {
+                                mNavigationPoints.add(navigationPoint);
+                            }
+
                         }
+                        mBinding.navigationView.setRechargePos(mRechargePos);
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         mNavigationPointAdapter.notifyDataSetInvalidated();
                         dismissDialog();
