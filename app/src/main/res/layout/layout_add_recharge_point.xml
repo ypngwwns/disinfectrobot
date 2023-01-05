@@ -54,6 +54,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp" />
 
+            <Button
+                android:id="@+id/btn_ignore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="忽略"
+                app:layout_constraintEnd_toStartOf="@id/btn_add_recharge_point"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

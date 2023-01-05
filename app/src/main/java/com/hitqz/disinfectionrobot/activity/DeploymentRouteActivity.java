@@ -245,15 +245,10 @@ public class DeploymentRouteActivity extends BaseActivity {
                         .subscribeWith(new BaseDataObserver<MapPose>() {
                             @Override
                             public void onSuccess(MapPose model) {
-//                                if ("2".equals(mNavigationPoints.get(0).type)) {//已有充电点，覆盖
-//                                    mNavigationPoints.remove(0);
-//                                }
-//                                NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(model);
-//                                mNavigationPoints.add(0, navigationPoint);
-//                                mNavigationPointAdapter.notifyDataSetChanged();
-//                                mBinding.navigationView.setNavigationPoints(mNavigationPoints);
-//                                mBinding.navigationView.postInvalidate();
-//                                mBinding.npll.setVisibility(View.VISIBLE);
+                                NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(model);
+                                mBinding.navigationView.setRechargePos(navigationPoint);
+                                mBinding.navigationView.postInvalidate();
+                                mBinding.npll.setVisibility(View.VISIBLE);
                                 dismissDialog();
                             }
 
@@ -294,6 +289,19 @@ public class DeploymentRouteActivity extends BaseActivity {
                         mBinding.navigationView.setRechargePos(mRechargePos);
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         mNavigationPointAdapter.notifyDataSetInvalidated();
+
+                        if (mRechargePos == null) {
+                            mBinding.arpl.mBinding.btnIgnore.setVisibility(View.GONE);
+                        } else {
+                            mBinding.arpl.mBinding.btnIgnore.setVisibility(View.VISIBLE);
+                            mBinding.arpl.mBinding.btnIgnore.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mBinding.npll.setVisibility(View.VISIBLE);
+                                    mBinding.arpl.setVisibility(View.GONE);
+                                }
+                            });
+                        }
                         dismissDialog();
                     }
 

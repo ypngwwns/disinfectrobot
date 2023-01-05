@@ -14,7 +14,7 @@ import com.hitqz.disinfectionrobot.databinding.LayoutAddRechargePointBinding;
 public class AddRechargePointLayout extends LinearLayout {
 
     public static final String TAG = AddRechargePointLayout.class.getSimpleName();
-    private LayoutAddRechargePointBinding mBinding;
+    public LayoutAddRechargePointBinding mBinding;
 
     private View.OnClickListener mAddRechargePointListener;
 
