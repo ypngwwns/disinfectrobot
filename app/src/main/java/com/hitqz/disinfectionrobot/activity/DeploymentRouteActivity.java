@@ -1,17 +1,25 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
+import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.data.PointData;
+import com.hitqz.disinfectionrobot.data.RobotStatus;
 import com.hitqz.disinfectionrobot.databinding.ActivityDeployRouteBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
@@ -20,6 +28,7 @@ import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 import com.hitqz.disinfectionrobot.widget.NavigationView;
 import com.sonicers.commonlib.rx.RxSchedulers;
+import com.sonicers.commonlib.singleton.GsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +41,57 @@ import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CheckResult")
 public class DeploymentRouteActivity extends BaseActivity {
+    public static final String TAG = "DeploymentRouteActivity";
+
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
     private NavigationPoint mRechargePos;
     ActivityDeployRouteBinding mBinding;
     private NavigationPointAdapter mNavigationPointAdapter;
     private MapDataResponse mMapDataResponse;
+
+    private NavigationPoint mRobotPos = new NavigationPoint();
+
+    private WebSocketMessageReceiver mWebSocketMessageReceiver;
+
+    private static class WebSocketMessageReceiver extends BroadcastReceiver {
+        private DeploymentRouteActivity mActivity;
+
+        public WebSocketMessageReceiver(DeploymentRouteActivity activity) {
+            mActivity = activity;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            Log.d(TAG, "收到：" + message);
+            RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
+            if (robotStatus == null || robotStatus.getLaserData() == null) {
+                return;
+            }
+            mActivity.mRobotPos.rawX = robotStatus.getCurrentPos().getX();
+            mActivity.mRobotPos.rawY = robotStatus.getCurrentPos().getY();
+            mActivity.mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
+            mActivity.mBinding.navigationView.setRobotPoint(mActivity.mRobotPos);
+            mActivity.mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
+            mActivity.mBinding.navigationView.postInvalidate();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mWebSocketMessageReceiver);
+    }
+
+    /**
+     * 动态注册广播
+     */
+    private void doRegisterReceiver() {
+        mWebSocketMessageReceiver = new WebSocketMessageReceiver(this);
+        IntentFilter filter = new IntentFilter(Constants.WEB_SOCKET_ACTION);
+        registerReceiver(mWebSocketMessageReceiver, filter);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -211,6 +266,8 @@ public class DeploymentRouteActivity extends BaseActivity {
                         });
             }
         });
+        DisinfectRobotApplication.instance.jWebSClientService.sendMsg("{\"topic\": \"ROBOT_STATUS_GET\"}");
+        doRegisterReceiver();
     }
 
     private void getMapPose() {
