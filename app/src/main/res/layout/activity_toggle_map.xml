@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="30dp"
         app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
         android:text="选择地图" />
 
@@ -26,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
         android:layout_width="wrap_content"
-        android:text="map0622"
+        android:text=""
         android:layout_margin="20dp"
         android:layout_height="wrap_content" />
 

@@ -152,6 +152,7 @@ public class ToggleMapActivity extends BaseActivity {
                             mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
                             mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
                                     mMapDataResponse.mapOriginy);
+                            mBinding.tvMapCode.setText(mMapDataResponse.mapName);
                         }
                     }
 
