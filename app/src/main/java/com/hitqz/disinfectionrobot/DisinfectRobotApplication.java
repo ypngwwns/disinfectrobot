@@ -28,7 +28,6 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
     public void onServiceConnected(ComponentName name, IBinder service) {
         JWebSocketClientService.JWebSocketClientBinder binder = (JWebSocketClientService.JWebSocketClientBinder) service;
         jWebSClientService = binder.getService();
-
     }
 
     @Override

@@ -18,12 +18,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.constant.TokenKeys;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
-import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
+import com.hitqz.disinfectionrobot.data.RobotStatus;
 import com.hitqz.disinfectionrobot.databinding.ActivityMainBinding;
 import com.hitqz.disinfectionrobot.fragment.DeployFragment;
 import com.hitqz.disinfectionrobot.fragment.MainFragment;
@@ -116,6 +117,12 @@ public class MainActivity extends BaseActivity implements IGo {
 
         setListener();
 
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DisinfectRobotApplication.instance.jWebSClientService.sendMsg("{\"topic\": \"ROBOT_STATUS_GET\"}");
+            }
+        }, 5000);
         doRegisterReceiver();
     }
 
@@ -212,19 +219,23 @@ public class MainActivity extends BaseActivity implements IGo {
     }
 
     private static class WebSocketMessageReceiver extends BroadcastReceiver {
-        private MainActivity mMainActivity;
+        private MainActivity mActivity;
 
-        public WebSocketMessageReceiver(MainActivity mainActivity) {
-            mMainActivity = mainActivity;
+        public WebSocketMessageReceiver(MainActivity activity) {
+            mActivity = activity;
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             Log.d(TAG, "收到：" + message);
-            RobotoCreateMapIncrementDataDto websocketBean = GsonUtil.getInstance().fromJson(message, RobotoCreateMapIncrementDataDto.class);
-            if (websocketBean == null || websocketBean.getBytes() == null) {
+            RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
+            if (robotStatus == null || robotStatus.getPowerInfo() == null) {
                 return;
+            }
+
+            if (mActivity.mMainFragment != null) {
+                mActivity.mMainFragment.refresh(robotStatus);
             }
         }
     }

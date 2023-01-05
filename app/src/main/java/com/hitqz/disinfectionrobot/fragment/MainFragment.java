@@ -14,6 +14,8 @@ import com.hitqz.disinfectionrobot.activity.DisinfectRegularlyActivity;
 import com.hitqz.disinfectionrobot.activity.ManualControlActivity;
 import com.hitqz.disinfectionrobot.activity.StartDisinfectActivity;
 import com.hitqz.disinfectionrobot.activity.ViewDirectionsActivity;
+import com.hitqz.disinfectionrobot.constant.RechargeStatusType;
+import com.hitqz.disinfectionrobot.data.RobotStatus;
 import com.hitqz.disinfectionrobot.databinding.FragmentMainBinding;
 
 public class MainFragment extends Fragment {
@@ -69,5 +71,11 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    public void refresh(RobotStatus robotStatus) {
+        mBinding.tvSsid.setText(robotStatus.getPowerInfo().getRobotSn());
+        mBinding.infoText.setText(robotStatus.getPowerInfo().getPower() + "");
+        mBinding.subInfoText.setText(RechargeStatusType.statusMap.get(robotStatus.getPowerInfo().getChargeStatus()));
     }
 }
