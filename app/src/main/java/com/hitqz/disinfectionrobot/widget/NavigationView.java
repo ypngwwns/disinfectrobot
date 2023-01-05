@@ -21,8 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.data.LaserScan;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
+import com.hitqz.disinfectionrobot.data.RobotStatus;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class NavigationView extends View {
     private float mOriginY;
     private Bitmap mBitmap;
     // 激光数据
-    private LaserScan mLaserScan;
+    private List<RobotStatus.LaserOriginDataDTO> mLaserScan;
     // 移动缩放缓存
     private int mTouchMode = 0;//1：缩放，2：移动
     private Matrix mMatrix;
@@ -303,24 +303,26 @@ public class NavigationView extends View {
 
     private void drawLaserScan(Canvas canvas) {
         if (mShowLaserScan && mLaserScan != null && mBitmap != null && mRobotPos != null) {
-            float angleMin = mLaserScan.getAngleMin();
-            float rangeMin = mLaserScan.getRangeMin();
-            float rangeMax = mLaserScan.getRangeMax();
-            List<Float> rangeList = mLaserScan.getRangesList();
+//            float angleMin = mLaserScan.getAngleMin();
+//            float rangeMin = mLaserScan.getRangeMin();
+//            float rangeMax = mLaserScan.getRangeMax();
+//            List<Float> rangeList = mLaserScan.getRangesList();
 
             canvas.save();
             canvas.setMatrix(mMatrix);
 
-            float curAngle = angleMin;
-            for (int i = 0; i < rangeList.size(); i++) {
-                float curRange = rangeList.get(i);
-                if (curRange < rangeMin || curRange > rangeMax) {
-                    curAngle += mLaserScan.getAngleIncrement();
-                    continue;
-                }
+//            float curAngle = angleMin;
+            for (int i = 0; i < mLaserScan.size(); i++) {
+//                float curRange = rangeList.get(i);
+//                if (curRange < rangeMin || curRange > rangeMax) {
+//                    curAngle += mLaserScan.getAngleIncrement();
+//                    continue;
+//                }
                 float robotRadius = (float) mRobotPos.radian;
-                float endX = (float) (mRobotPos.rawX + curRange * Math.cos(robotRadius + curAngle));
-                float endY = (float) (mRobotPos.rawY + curRange * Math.sin(robotRadius + curAngle));
+//                float endX = (float) (mRobotPos.rawX + curRange * Math.cos(robotRadius + curAngle));
+//                float endY = (float) (mRobotPos.rawY + curRange * Math.sin(robotRadius + curAngle));
+                float endX = (float) (mLaserScan.get(i).getX() * 1f);
+                float endY = (float) (mLaserScan.get(i).getY() * 1f);
 
                 float drawX = mRobotPos.drawX;
                 float drawY = mRobotPos.drawY;
@@ -330,7 +332,7 @@ public class NavigationView extends View {
                 canvas.drawLine(drawX, drawY, drawEndX, drawEndY, laserLinePaint);
                 canvas.drawPoint(drawEndX, drawEndY, laserPointPaint);
 
-                curAngle += mLaserScan.getAngleIncrement();
+//                curAngle += mLaserScan.getAngleIncrement();
             }
 
             canvas.restore();
@@ -378,7 +380,7 @@ public class NavigationView extends View {
         postInvalidate();
     }
 
-    public void setLaserScan(LaserScan laserScan) {
+    public void setLaserScan(List<RobotStatus.LaserOriginDataDTO> laserScan) {
         mLaserScan = laserScan;
         postInvalidate();
     }
