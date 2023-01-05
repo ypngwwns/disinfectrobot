@@ -12,6 +12,8 @@ public class RobotStatus {
     private CurrentPosDTO currentPos;
     @SerializedName("laserData")
     private List<LaserDataDTO> laserData;
+    @SerializedName("laserOriginData")
+    private List<LaserOriginDataDTO> laserOriginData;
     @SerializedName("powerInfo")
     private PowerInfoDTO powerInfo;
 
@@ -37,6 +39,14 @@ public class RobotStatus {
 
     public void setLaserData(List<LaserDataDTO> laserData) {
         this.laserData = laserData;
+    }
+
+    public List<LaserOriginDataDTO> getLaserOriginData() {
+        return laserOriginData;
+    }
+
+    public void setLaserOriginData(List<LaserOriginDataDTO> laserOriginData) {
+        this.laserOriginData = laserOriginData;
     }
 
     public PowerInfoDTO getPowerInfo() {
@@ -277,6 +287,49 @@ public class RobotStatus {
     }
 
     public static class LaserDataDTO {
+        @SerializedName("x")
+        private Double x;
+        @SerializedName("y")
+        private Double y;
+        @SerializedName("yaw")
+        private Double yaw;
+        @SerializedName("z")
+        private Integer z;
+
+        public Double getX() {
+            return x;
+        }
+
+        public void setX(Double x) {
+            this.x = x;
+        }
+
+        public Double getY() {
+            return y;
+        }
+
+        public void setY(Double y) {
+            this.y = y;
+        }
+
+        public Double getYaw() {
+            return yaw;
+        }
+
+        public void setYaw(Double yaw) {
+            this.yaw = yaw;
+        }
+
+        public Integer getZ() {
+            return z;
+        }
+
+        public void setZ(Integer z) {
+            this.z = z;
+        }
+    }
+
+    public static class LaserOriginDataDTO {
         @SerializedName("x")
         private Double x;
         @SerializedName("y")

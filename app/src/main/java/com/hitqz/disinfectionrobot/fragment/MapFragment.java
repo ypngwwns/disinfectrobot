@@ -122,6 +122,7 @@ public class MapFragment extends BaseFragment {
         mRobotPos.rawY = robotStatus.getCurrentPos().getY();
         mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
         mBinding.navigationView.setRobotPoint(mRobotPos);
+//        mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
         mBinding.navigationView.postInvalidate();
     }
 }

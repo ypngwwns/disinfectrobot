@@ -346,7 +346,7 @@ public class NavigationView extends View {
             // 安卓是以顺时针为坐标系
             canvas.rotate(-mRobotPos.angle);
 
-            float size = 5f;
+            float size = 15f;
             Path path = new Path();
             path.moveTo(size, 0);
             path.lineTo(-size, -size);
