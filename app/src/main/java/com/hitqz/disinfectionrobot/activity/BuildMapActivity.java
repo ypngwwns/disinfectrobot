@@ -17,6 +17,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapCode;
+import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
 import com.hitqz.disinfectionrobot.data.SpeedRequest;
 import com.hitqz.disinfectionrobot.databinding.ActivityBuildMapBinding;
@@ -42,6 +43,7 @@ public class BuildMapActivity extends BaseActivity {
     public final static float MAX_RADIUS_SPEED_VALUE = 0.4f;
     private final SpeedRequest mSpeedRequest = new SpeedRequest();
     private MyHandler mHandler;
+    private NavigationPoint mRobotPos = new NavigationPoint();
 
 
     private static class MyHandler extends Handler {
@@ -232,22 +234,26 @@ public class BuildMapActivity extends BaseActivity {
     }
 
     private static class WebSocketMessageReceiver extends BroadcastReceiver {
-        private BuildMapActivity mBuildMapActivity;
+        private BuildMapActivity mActivity;
 
         public WebSocketMessageReceiver(BuildMapActivity activity) {
-            mBuildMapActivity = activity;
+            mActivity = activity;
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             Log.d(TAG, "收到：" + message);
-            RobotoCreateMapIncrementDataDto websocketBean = GsonUtil.getInstance().fromJson(message, RobotoCreateMapIncrementDataDto.class);
-            if (websocketBean == null || websocketBean.getBytes() == null) {
+            RobotoCreateMapIncrementDataDto robotoCreateMapIncrementDataDto = GsonUtil.getInstance().fromJson(message, RobotoCreateMapIncrementDataDto.class);
+            if (robotoCreateMapIncrementDataDto == null || robotoCreateMapIncrementDataDto.getBytes() == null) {
                 return;
             }
-            mBuildMapActivity.mBinding.bmv.setBuildNow(true);
-            mBuildMapActivity.mBinding.bmv.setMapData(websocketBean);
+            mActivity.mBinding.bmv.setBuildNow(true);
+            mActivity.mBinding.bmv.setMapData(robotoCreateMapIncrementDataDto);
+            mActivity.mRobotPos.rawX = robotoCreateMapIncrementDataDto.getRobotInfoDto().getX();
+            mActivity.mRobotPos.rawY = robotoCreateMapIncrementDataDto.getRobotInfoDto().getY();
+            mActivity.mRobotPos.radian = robotoCreateMapIncrementDataDto.getRobotInfoDto().getYaw();
+            mActivity.mBinding.bmv.setRobotPos(mActivity.mRobotPos);
         }
     }
 }

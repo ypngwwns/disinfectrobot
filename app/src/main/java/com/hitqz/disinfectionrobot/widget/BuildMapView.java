@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.BuildMap;
-import com.hitqz.disinfectionrobot.data.Pose;
+import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 
@@ -25,7 +25,7 @@ public class BuildMapView extends View {
 
     private static final int POINT_SIZE = 8;
     private final Matrix mDragScaleMatrix = new Matrix();
-    public Pose mRobotoPos;
+    public NavigationPoint mRobotoPos;
     private int mViewWidth;
     private int mViewHeight;
     private Paint mRobotPaint;
@@ -172,7 +172,7 @@ public class BuildMapView extends View {
         mBuildMap.setImageShowOrigin(mViewWidth, mViewHeight);
     }
 
-    public void setRobotPos(Pose pose) {
+    public void setRobotPos(NavigationPoint pose) {
         mRobotoPos = pose;
     }
 
@@ -185,11 +185,10 @@ public class BuildMapView extends View {
             final int size = (int) (POINT_SIZE * mBuildMap.getShowScale());
 
             canvas.save();
-//            Log.i(TAG, "DrawRobotPoint: =====" + mRobotoPos.getPointF().toString());
-            PointF drawPoint = mBuildMap.getDrawPoint(new PointF((float) mRobotoPos.getPosition().getX(), (float) mRobotoPos.getPosition().getY()));
+
+            PointF drawPoint = mBuildMap.getDrawPoint(new PointF((float) mRobotoPos.rawX, (float) mRobotoPos.rawY));
             canvas.translate(drawPoint.x, drawPoint.y);
-            canvas.rotate((float) AngleUtil.radian2Angle(mRobotoPos.getOrientation().getYaw()));
-//            canvas.rotate((float) (mRobotoPos.getOrientation().getYaw() * 180 / Math.PI));
+            canvas.rotate((float) AngleUtil.radian2Angle(mRobotoPos.radian));
 
             Path path = new Path();
             path.moveTo(size, 0);
