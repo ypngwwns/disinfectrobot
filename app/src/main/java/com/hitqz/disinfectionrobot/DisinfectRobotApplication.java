@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 
+import com.hitqz.disinfectionrobot.log.CrashUtil;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
 
 import org.litepal.LitePal;
@@ -20,6 +21,7 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
         super.onCreate();
         instance = this;
         LitePal.initialize(this);
+        CrashUtil.getInstance().init(getApplicationContext(), "DisinfectRobot");
         startWebSocketService();
         bindService();
     }
