@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
@@ -16,12 +18,16 @@ import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapCode;
 import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
+import com.hitqz.disinfectionrobot.data.SpeedRequest;
 import com.hitqz.disinfectionrobot.databinding.ActivityBuildMapBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.SaveMapDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.widget.RockerView;
 import com.sonicers.commonlib.rx.RxSchedulers;
 import com.sonicers.commonlib.singleton.GsonUtil;
+
+import java.lang.ref.WeakReference;
 
 @SuppressLint("CheckResult")
 public class BuildMapActivity extends BaseActivity {
@@ -29,6 +35,54 @@ public class BuildMapActivity extends BaseActivity {
 
     ActivityBuildMapBinding mBinding;
     private WebSocketMessageReceiver mWebSocketMessageReceiver;
+
+    public static final int TIMING_SPEED_MESSAGE_ID = 10000;
+
+    public final static float MAX_LINE_SPEED_VALUE = 0.25f;
+    public final static float MAX_RADIUS_SPEED_VALUE = 0.4f;
+    private final SpeedRequest mSpeedRequest = new SpeedRequest();
+    private MyHandler mHandler;
+
+
+    private static class MyHandler extends Handler {
+
+        private WeakReference<BuildMapActivity> activityWeakReference;
+
+        public MyHandler(BuildMapActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            BuildMapActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                //处理handler消息
+                switch (msg.what) {
+                    case ManualControlActivity.TIMING_SPEED_MESSAGE_ID:
+                        removeMessages(TIMING_SPEED_MESSAGE_ID);
+                        activity.postSpeed();
+                        sendEmptyMessageDelayed(TIMING_SPEED_MESSAGE_ID, 100);
+                }
+            }
+        }
+    }
+
+
+    private void postSpeed() {
+        Log.d("postSpeed", "mSpeedRequest.linearSpeed:" + mSpeedRequest.linearSpeed + "  mSpeedRequest.angleSpeed:" + mSpeedRequest.angleSpeed);
+        mISkyNet.ctrlMove(mSpeedRequest).compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<Object>() {
+                    @Override
+                    public void onSuccess(Object model) {
+
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                    }
+                });
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,6 +178,28 @@ public class BuildMapActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        mHandler = new MyHandler(this);
+        mBinding.rockerViewBottom.setOnTouchPointListener(new RockerView.OnTouchPointListener() {
+            @Override
+            public void position(float xPercent, float yPercent) {
+                mSpeedRequest.linearSpeed = xPercent * MAX_LINE_SPEED_VALUE;
+
+                if (Math.abs(yPercent) < 0.2) {
+                    mSpeedRequest.angleSpeed = 0.0f;
+                } else {
+                    mSpeedRequest.angleSpeed = -yPercent * MAX_RADIUS_SPEED_VALUE;
+                }
+                mHandler.sendEmptyMessage(TIMING_SPEED_MESSAGE_ID);
+            }
+
+            @Override
+            public void onFinish() {
+                mHandler.removeCallbacksAndMessages(null);
+                mSpeedRequest.linearSpeed = 0d;
+                mSpeedRequest.angleSpeed = 0d;
+                postSpeed();
             }
         });
     }

@@ -67,6 +67,7 @@ public class EditTasksFragment extends BaseFragment {
         if (TextUtils.isEmpty(mTask.areaName)) {
             mBinding.fabDelete.setVisibility(View.GONE);
         } else {
+            mSelectedAllArea = mTask.taskType == 0;
             try {
                 Date date = mSimpleDateFormat.parse(mTask.jobTime);
                 mBinding.tpTime.setHour(date.getHours());

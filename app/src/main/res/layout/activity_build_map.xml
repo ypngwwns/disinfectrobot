@@ -31,6 +31,7 @@
         android:text="准备构图时请保持电量充足" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv"
         android:layout_width="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="265dp"
@@ -82,5 +83,16 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
+    <com.hitqz.disinfectionrobot.widget.RockerView
+        android:id="@+id/rockerView_bottom"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cv"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:areaBackground="@color/colorPrimaryLight"
+        app:rockerBackground="@color/colorPrimary"
+        app:rockerRadius="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

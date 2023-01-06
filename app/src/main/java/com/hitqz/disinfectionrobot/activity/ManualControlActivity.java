@@ -26,8 +26,9 @@ public class ManualControlActivity extends BaseActivity {
     public final static float MAX_LINE_SPEED_VALUE = 0.25f;
     public final static float MAX_RADIUS_SPEED_VALUE = 0.4f;
     private final SpeedRequest mSpeedRequest = new SpeedRequest();
-    ActivityManualControlBinding mBinding;
     private MyHandler mHandler;
+
+    ActivityManualControlBinding mBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
