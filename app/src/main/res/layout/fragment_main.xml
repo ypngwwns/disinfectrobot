@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
-        android:text="DST_123456"
+        android:text="test"
         android:textColor="#ffffff"
         android:textSize="20dp"
         card_view:layout_constraintStart_toStartOf="parent"
