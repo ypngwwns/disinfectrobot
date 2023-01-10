@@ -32,7 +32,7 @@ public class DeployFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = FragmentDeployBinding.inflate(getLayoutInflater());
         return mBinding.getRoot();

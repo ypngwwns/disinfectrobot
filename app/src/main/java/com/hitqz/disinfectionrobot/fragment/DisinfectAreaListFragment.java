@@ -58,7 +58,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = FragmentDisinfectAreaListBinding.inflate(getLayoutInflater());
         return mBinding.getRoot();
