@@ -46,7 +46,6 @@ public class MainActivity extends BaseActivity implements IGo {
      * 动态注册广播
      */
     private void doRegisterReceiver() {
-        Log.e(TAG, "JWebSocketClient doRegisterReceiver");
         mWebSocketMessageReceiver = new WebSocketMessageReceiver(this);
         DisinfectRobotApplication.instance.addWebSocketCallback(mWebSocketMessageReceiver);
     }

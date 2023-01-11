@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.log.CrashUtil;
@@ -40,11 +39,12 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
         for (JWebSocketClientService.WebSocketCallback webSocketCallback : mWebSocketCallbacks
         ) {
             if (!jWebSClientService.mWebSocketCallbacks.contains(webSocketCallback)) {
-                Log.e(TAG, "JWebSocketClient jWebSClientService.mWebSocketCallbacks.add(webSocketCallback);");
                 jWebSClientService.mWebSocketCallbacks.add(webSocketCallback);
+                if (jWebSClientService.client != null && jWebSClientService.client.isOpen()) {
+                    webSocketCallback.onConnectSuccess(jWebSClientService.client.getURI().toString());
+                }
             }
         }
-        Log.e(TAG, "JWebSocketClient.mWebSocketCallbacks.size:" + jWebSClientService.mWebSocketCallbacks.size());
     }
 
     @Override
@@ -67,14 +67,11 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
 
     public void addWebSocketCallback(JWebSocketClientService.WebSocketCallback webSocketMessageReceiver) {
         if (jWebSClientService != null) {
-            Log.e(TAG, "JWebSocketClient jWebSClientService != null");
             jWebSClientService.mWebSocketCallbacks.add(webSocketMessageReceiver);
             if (jWebSClientService.client != null && jWebSClientService.client.isOpen()) {
-                Log.e(TAG, "JWebSocketClient jWebSClientService onConnectSuccess");
                 webSocketMessageReceiver.onConnectSuccess(jWebSClientService.client.getURI().toString());
             }
         } else {
-            Log.e(TAG, "JWebSocketClient jWebSClientService == null");
             mWebSocketCallbacks.add(webSocketMessageReceiver);
         }
     }

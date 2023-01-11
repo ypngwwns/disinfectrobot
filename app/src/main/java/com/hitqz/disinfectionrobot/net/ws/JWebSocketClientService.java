@@ -109,7 +109,7 @@ public class JWebSocketClientService extends Service {
      * 初始化websocket连接
      */
     private void initSocketClient() {
-        URI uri = URI.create(Constants.WS_MAP_BUILD);
+        URI uri = URI.create(Constants.WS_ADDRESS);
         client = new JWebSocketClient(uri) {
             @Override
             public void onMessage(String message) {
@@ -222,6 +222,10 @@ public class JWebSocketClientService extends Service {
     public interface WebSocketCallback {
         void onMessage(String buildMap);
 
+        /**
+         * 三种情况需调用
+         * 1.
+         */
         void onConnectSuccess(String s);
     }
 
