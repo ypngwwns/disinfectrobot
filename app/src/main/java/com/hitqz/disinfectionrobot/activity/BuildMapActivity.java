@@ -232,16 +232,22 @@ public class BuildMapActivity extends BaseActivity {
 
         @Override
         public void onMessage(String message) {
-            RobotoCreateMapIncrementDataDto robotoCreateMapIncrementDataDto = GsonUtil.getInstance().fromJson(message, RobotoCreateMapIncrementDataDto.class);
-            if (robotoCreateMapIncrementDataDto == null || robotoCreateMapIncrementDataDto.getBytes() == null) {
-                return;
-            }
-            mActivity.mBinding.bmv.setBuildNow(true);
-            mActivity.mBinding.bmv.setMapData(robotoCreateMapIncrementDataDto);
-            mActivity.mRobotPos.rawX = robotoCreateMapIncrementDataDto.getRobotInfoDto().getX();
-            mActivity.mRobotPos.rawY = robotoCreateMapIncrementDataDto.getRobotInfoDto().getY();
-            mActivity.mRobotPos.radian = robotoCreateMapIncrementDataDto.getRobotInfoDto().getYaw();
-            mActivity.mBinding.bmv.setRobotPos(mActivity.mRobotPos);
+
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RobotoCreateMapIncrementDataDto robotoCreateMapIncrementDataDto = GsonUtil.getInstance().fromJson(message, RobotoCreateMapIncrementDataDto.class);
+                    if (robotoCreateMapIncrementDataDto == null || robotoCreateMapIncrementDataDto.getBytes() == null) {
+                        return;
+                    }
+                    mActivity.mBinding.bmv.setBuildNow(true);
+                    mActivity.mBinding.bmv.setMapData(robotoCreateMapIncrementDataDto);
+                    mActivity.mRobotPos.rawX = robotoCreateMapIncrementDataDto.getRobotInfoDto().getX();
+                    mActivity.mRobotPos.rawY = robotoCreateMapIncrementDataDto.getRobotInfoDto().getY();
+                    mActivity.mRobotPos.radian = robotoCreateMapIncrementDataDto.getRobotInfoDto().getYaw();
+                    mActivity.mBinding.bmv.setRobotPos(mActivity.mRobotPos);
+                }
+            });
         }
 
         @Override

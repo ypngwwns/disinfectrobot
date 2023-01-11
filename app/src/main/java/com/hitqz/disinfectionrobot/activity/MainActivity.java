@@ -215,14 +215,19 @@ public class MainActivity extends BaseActivity implements IGo {
 
         @Override
         public void onMessage(String message) {
-            RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
-            if (robotStatus == null || robotStatus.getPowerInfo() == null) {
-                return;
-            }
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
+                    if (robotStatus == null || robotStatus.getPowerInfo() == null) {
+                        return;
+                    }
 
-            if (mActivity.mMainFragment != null) {
-                mActivity.mMainFragment.refresh(robotStatus);
-            }
+                    if (mActivity.mMainFragment != null) {
+                        mActivity.mMainFragment.refresh(robotStatus);
+                    }
+                }
+            });
         }
 
         @Override

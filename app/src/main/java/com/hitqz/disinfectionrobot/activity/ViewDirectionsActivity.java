@@ -87,14 +87,19 @@ public class ViewDirectionsActivity extends BaseActivity {
 
         @Override
         public void onMessage(String message) {
-            RobotStatus websocketBean = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
-            if (websocketBean == null || websocketBean.getLaserData() == null) {
-                return;
-            }
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RobotStatus websocketBean = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
+                    if (websocketBean == null || websocketBean.getLaserData() == null) {
+                        return;
+                    }
 
-            if (mActivity.mMapFragment != null) {
-                mActivity.mMapFragment.refresh(websocketBean);
-            }
+                    if (mActivity.mMapFragment != null) {
+                        mActivity.mMapFragment.refresh(websocketBean);
+                    }
+                }
+            });
         }
 
         @Override
