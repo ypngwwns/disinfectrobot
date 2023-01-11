@@ -42,5 +42,14 @@
         android:layout_width="match_parent"
         android:layout_height="265dp" />
 
+    <TextView
+        android:id="@+id/tv_map_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
+        android:layout_width="wrap_content"
+        android:text=""
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

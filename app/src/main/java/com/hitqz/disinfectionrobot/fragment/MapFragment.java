@@ -81,6 +81,7 @@ public class MapFragment extends BaseFragment {
                             mBinding.navigationView.setBitmap(mMapDataResponse.bitmap);
                             mBinding.navigationView.setResolutionAndOrigin(mMapDataResponse.mapResolution, mMapDataResponse.mapOriginx,
                                     mMapDataResponse.mapOriginy);
+                            mBinding.tvMapCode.setText(mMapDataResponse.mapName);
                             getMapPose();
                         }
                     }
