@@ -1,12 +1,7 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -14,7 +9,6 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.adapter.NavigationPointAdapter;
-import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapDataResponse;
 import com.hitqz.disinfectionrobot.data.MapPose;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
@@ -25,6 +19,7 @@ import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.DeployAlertDialog;
 import com.hitqz.disinfectionrobot.dialog.PointEditDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
 import com.hitqz.disinfectionrobot.util.AngleUtil;
 import com.hitqz.disinfectionrobot.widget.NavigationView;
 import com.sonicers.commonlib.rx.RxSchedulers;
@@ -44,8 +39,8 @@ public class DeploymentRouteActivity extends BaseActivity {
     public static final String TAG = "DeploymentRouteActivity";
 
     private final List<NavigationPoint> mNavigationPoints = new ArrayList<>();
-    private NavigationPoint mRechargePos;
     ActivityDeployRouteBinding mBinding;
+    private NavigationPoint mRechargePos;
     private NavigationPointAdapter mNavigationPointAdapter;
     private MapDataResponse mMapDataResponse;
 
@@ -53,35 +48,10 @@ public class DeploymentRouteActivity extends BaseActivity {
 
     private WebSocketMessageReceiver mWebSocketMessageReceiver;
 
-    private static class WebSocketMessageReceiver extends BroadcastReceiver {
-        private DeploymentRouteActivity mActivity;
-
-        public WebSocketMessageReceiver(DeploymentRouteActivity activity) {
-            mActivity = activity;
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            Log.d(TAG, "收到：" + message);
-            RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
-            if (robotStatus == null || robotStatus.getLaserData() == null) {
-                return;
-            }
-            mActivity.mRobotPos.rawX = robotStatus.getCurrentPos().getX();
-            mActivity.mRobotPos.rawY = robotStatus.getCurrentPos().getY();
-            mActivity.mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
-            mActivity.mBinding.navigationView.setRobotPoint(mActivity.mRobotPos);
-            mActivity.mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
-            mActivity.mBinding.navigationView.postInvalidate();
-        }
-    }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mWebSocketMessageReceiver);
+        DisinfectRobotApplication.instance.removeWebSocketCallback(mWebSocketMessageReceiver);
     }
 
     /**
@@ -89,8 +59,7 @@ public class DeploymentRouteActivity extends BaseActivity {
      */
     private void doRegisterReceiver() {
         mWebSocketMessageReceiver = new WebSocketMessageReceiver(this);
-        IntentFilter filter = new IntentFilter(Constants.WEB_SOCKET_ACTION);
-        registerReceiver(mWebSocketMessageReceiver, filter);
+        DisinfectRobotApplication.instance.addWebSocketCallback(mWebSocketMessageReceiver);
     }
 
     @Override
@@ -284,7 +253,6 @@ public class DeploymentRouteActivity extends BaseActivity {
                             } else {
                                 mNavigationPoints.add(navigationPoint);
                             }
-
                         }
                         mBinding.navigationView.setRechargePos(mRechargePos);
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
@@ -323,5 +291,32 @@ public class DeploymentRouteActivity extends BaseActivity {
             }
         });
         dialog.show(getSupportFragmentManager(), dialog.getTag());
+    }
+
+    private static class WebSocketMessageReceiver implements JWebSocketClientService.WebSocketCallback {
+        private DeploymentRouteActivity mActivity;
+
+        public WebSocketMessageReceiver(DeploymentRouteActivity activity) {
+            mActivity = activity;
+        }
+
+        @Override
+        public void onMessage(String message) {
+            RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
+            if (robotStatus == null || robotStatus.getLaserData() == null) {
+                return;
+            }
+            mActivity.mRobotPos.rawX = robotStatus.getCurrentPos().getX();
+            mActivity.mRobotPos.rawY = robotStatus.getCurrentPos().getY();
+            mActivity.mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
+            mActivity.mBinding.navigationView.setRobotPoint(mActivity.mRobotPos);
+            mActivity.mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
+            mActivity.mBinding.navigationView.postInvalidate();
+        }
+
+        @Override
+        public void onConnectSuccess(String s) {
+
+        }
     }
 }
