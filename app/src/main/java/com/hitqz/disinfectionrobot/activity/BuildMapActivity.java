@@ -80,6 +80,9 @@ public class BuildMapActivity extends BaseActivity {
                                     .subscribeWith(new BaseDataObserver<Object>() {
                                         @Override
                                         public void onSuccess(Object model) {
+                                            mBinding.bmv.setBuildNow(false);
+                                            mBinding.bmv.reset();
+                                            mBinding.bmv.postInvalidate();
                                             dismissDialog();
                                             ToastUtils.showShort("保存地图成功");
                                         }
@@ -100,7 +103,7 @@ public class BuildMapActivity extends BaseActivity {
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
-//                                    jWebSClientService.sendMsg("{\"topic\": \"CREATE_2D_MAP_DATA\"}");
+                                    mBinding.bmv.setBuildNow(true);
                                     mBinding.btnMapBuild.setText("保存地图");
                                     dismissDialog();
                                     ToastUtils.showShort("开始建图成功");
@@ -127,6 +130,9 @@ public class BuildMapActivity extends BaseActivity {
                                 .subscribeWith(new BaseDataObserver<Object>() {
                                     @Override
                                     public void onSuccess(Object model) {
+                                        mBinding.bmv.setBuildNow(false);
+                                        mBinding.bmv.reset();
+                                        mBinding.bmv.postInvalidate();
                                         mBinding.btnMapBuild.setText("开始建图");
                                         dismissDialog();
                                         ToastUtils.showShort("停止建图成功");
@@ -240,12 +246,13 @@ public class BuildMapActivity extends BaseActivity {
                     if (robotoCreateMapIncrementDataDto == null || robotoCreateMapIncrementDataDto.getBytes() == null) {
                         return;
                     }
-                    mActivity.mBinding.bmv.setBuildNow(true);
+
                     mActivity.mBinding.bmv.setMapData(robotoCreateMapIncrementDataDto);
                     mActivity.mRobotPos.rawX = robotoCreateMapIncrementDataDto.getRobotInfoDto().getX();
                     mActivity.mRobotPos.rawY = robotoCreateMapIncrementDataDto.getRobotInfoDto().getY();
                     mActivity.mRobotPos.radian = robotoCreateMapIncrementDataDto.getRobotInfoDto().getYaw();
                     mActivity.mBinding.bmv.setRobotPos(mActivity.mRobotPos);
+                    mActivity.mBinding.bmv.postInvalidate();
                 }
             });
         }
