@@ -8,6 +8,6 @@ public class MapDataResponse {
     public String uri;
     public Bitmap bitmap;
     public float mapResolution;
-    public Integer mapOriginy;
-    public Integer mapOriginx;
+    public float mapOriginy;
+    public float mapOriginx;
 }
