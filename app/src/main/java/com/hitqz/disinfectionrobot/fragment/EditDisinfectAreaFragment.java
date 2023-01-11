@@ -264,8 +264,17 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     @Override
                     public void onSuccess(List<MapPose> model) {
                         for (MapPose mapPose : model) {
-                            NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(mapPose);
-                            mNavigationPoints.add(navigationPoint);
+                            NavigationPoint navigationPoint = new NavigationPoint();
+                            navigationPoint.mapCode = mapPose.mapCode;
+                            navigationPoint.name = mapPose.name;
+                            navigationPoint.rawX = mapPose.posx;
+                            navigationPoint.rawY = mapPose.posy;
+                            navigationPoint.radian = mapPose.yaw;
+                            navigationPoint.id = mapPose.id;
+                            if ("2".equals(mapPose.type)) {
+                            } else {
+                                mNavigationPoints.add(navigationPoint);
+                            }
                         }
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         mDisinfectPointAdapter.notifyDataSetInvalidated();

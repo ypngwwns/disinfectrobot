@@ -32,7 +32,7 @@ import com.sonicers.commonlib.singleton.GsonUtil;
 
 @SuppressLint("CheckResult")
 public class MainActivity extends BaseActivity implements IGo {
-    public static final String TAG = "MainActivity";
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     ActivityMainBinding mBinding;
     private MainFragment mMainFragment;

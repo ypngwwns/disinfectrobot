@@ -83,6 +83,7 @@ public class BuildMapActivity extends BaseActivity {
                                             mBinding.bmv.setBuildNow(false);
                                             mBinding.bmv.reset();
                                             mBinding.bmv.postInvalidate();
+                                            mChassisManager.mMapDataResponse = null;
                                             dismissDialog();
                                             ToastUtils.showShort("保存地图成功");
                                         }

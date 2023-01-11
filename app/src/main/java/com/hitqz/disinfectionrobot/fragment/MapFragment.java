@@ -34,6 +34,7 @@ public class MapFragment extends BaseFragment {
     FragmentMapBinding mBinding;
     private MapDataResponse mMapDataResponse;
     private NavigationPoint mRobotPos = new NavigationPoint();
+    private NavigationPoint mRechargePos;
 
     private MapFragment() {
         // Required empty public constructor
@@ -103,9 +104,21 @@ public class MapFragment extends BaseFragment {
                     @Override
                     public void onSuccess(List<MapPose> model) {
                         for (MapPose mapPose : model) {
-                            NavigationPoint navigationPoint = NavigationPoint.convertFromMapPose(mapPose);
-                            mNavigationPoints.add(navigationPoint);
+                            NavigationPoint navigationPoint = new NavigationPoint();
+                            navigationPoint.mapCode = mapPose.mapCode;
+                            navigationPoint.name = mapPose.name;
+                            navigationPoint.rawX = mapPose.posx;
+                            navigationPoint.rawY = mapPose.posy;
+                            navigationPoint.radian = mapPose.yaw;
+                            navigationPoint.id = mapPose.id;
+                            if ("2".equals(mapPose.type)) {
+                                mRechargePos = navigationPoint;
+                            } else {
+                                mNavigationPoints.add(navigationPoint);
+                            }
                         }
+                        mBinding.navigationView.setRechargePos(mRechargePos);
+                        mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         mBinding.navigationView.setNavigationPoints(mNavigationPoints);
                         dismissDialog();
                     }
