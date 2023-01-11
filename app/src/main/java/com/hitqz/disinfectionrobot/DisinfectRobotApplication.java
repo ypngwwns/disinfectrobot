@@ -7,14 +7,19 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.log.CrashUtil;
 import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
 
 import org.litepal.LitePal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DisinfectRobotApplication extends Application implements ServiceConnection {
     public static DisinfectRobotApplication instance;
     public JWebSocketClientService jWebSClientService;
+    private List<JWebSocketClientService.WebSocketCallback> mWebSocketCallbacks = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -30,6 +35,12 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
     public void onServiceConnected(ComponentName name, IBinder service) {
         JWebSocketClientService.JWebSocketClientBinder binder = (JWebSocketClientService.JWebSocketClientBinder) service;
         jWebSClientService = binder.getService();
+        for (JWebSocketClientService.WebSocketCallback webSocketCallback : mWebSocketCallbacks
+        ) {
+            if (!jWebSClientService.mWebSocketCallbacks.contains(webSocketCallback)) {
+                jWebSClientService.mWebSocketCallbacks.add(webSocketCallback);
+            }
+        }
     }
 
     @Override
@@ -48,5 +59,21 @@ public class DisinfectRobotApplication extends Application implements ServiceCon
     private void bindService() {
         Intent bindIntent = new Intent(this, JWebSocketClientService.class);
         bindService(bindIntent, this, BIND_AUTO_CREATE);
+    }
+
+    public void addWebSocketCallback(JWebSocketClientService.WebSocketCallback webSocketMessageReceiver) {
+        if (jWebSClientService != null) {
+            jWebSClientService.mWebSocketCallbacks.add(webSocketMessageReceiver);
+        } else {
+            mWebSocketCallbacks.add(webSocketMessageReceiver);
+        }
+    }
+
+    public void removeWebSocketCallback(JWebSocketClientService.WebSocketCallback webSocketMessageReceiver) {
+        if (jWebSClientService != null) {
+            jWebSClientService.mWebSocketCallbacks.remove(webSocketMessageReceiver);
+        } else {
+            ToastUtils.showShort("jWebSClientService为空！！");
+        }
     }
 }

@@ -2,10 +2,6 @@ package com.hitqz.disinfectionrobot.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +16,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.constant.TokenKeys;
 import com.hitqz.disinfectionrobot.data.LoginRequest;
 import com.hitqz.disinfectionrobot.data.LoginResponse;
@@ -31,6 +26,7 @@ import com.hitqz.disinfectionrobot.fragment.MainFragment;
 import com.hitqz.disinfectionrobot.fragment.SettingFragment;
 import com.hitqz.disinfectionrobot.i.IGo;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
 import com.sonicers.commonlib.rx.RxSchedulers;
 import com.sonicers.commonlib.singleton.GsonUtil;
 
@@ -51,15 +47,14 @@ public class MainActivity extends BaseActivity implements IGo {
      */
     private void doRegisterReceiver() {
         mWebSocketMessageReceiver = new WebSocketMessageReceiver(this);
-        IntentFilter filter = new IntentFilter(Constants.WEB_SOCKET_ACTION);
-        registerReceiver(mWebSocketMessageReceiver, filter);
+        DisinfectRobotApplication.instance.addWebSocketCallback(mWebSocketMessageReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
-        unregisterReceiver(mWebSocketMessageReceiver);
+        DisinfectRobotApplication.instance.removeWebSocketCallback(mWebSocketMessageReceiver);
     }
 
     //动态访问权限弹窗
@@ -116,13 +111,6 @@ public class MainActivity extends BaseActivity implements IGo {
                 });
 
         setListener();
-
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                DisinfectRobotApplication.instance.jWebSClientService.sendMsg("{\"topic\": \"ROBOT_STATUS_GET\"}");
-            }
-        }, 5000);
         doRegisterReceiver();
     }
 
@@ -218,7 +206,7 @@ public class MainActivity extends BaseActivity implements IGo {
         }
     }
 
-    private static class WebSocketMessageReceiver extends BroadcastReceiver {
+    private static class WebSocketMessageReceiver implements JWebSocketClientService.WebSocketCallback {
         private MainActivity mActivity;
 
         public WebSocketMessageReceiver(MainActivity activity) {
@@ -226,9 +214,7 @@ public class MainActivity extends BaseActivity implements IGo {
         }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            Log.d(TAG, "收到：" + message);
+        public void onMessage(String message) {
             RobotStatus robotStatus = GsonUtil.getInstance().fromJson(message, RobotStatus.class);
             if (robotStatus == null || robotStatus.getPowerInfo() == null) {
                 return;
@@ -237,6 +223,11 @@ public class MainActivity extends BaseActivity implements IGo {
             if (mActivity.mMainFragment != null) {
                 mActivity.mMainFragment.refresh(robotStatus);
             }
+        }
+
+        @Override
+        public void onConnectSuccess(String s) {
+            DisinfectRobotApplication.instance.jWebSClientService.sendMsg("{\"topic\": \"ROBOT_STATUS_GET\"}");
         }
     }
 }

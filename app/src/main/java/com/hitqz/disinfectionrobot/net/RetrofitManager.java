@@ -31,7 +31,7 @@ public class RetrofitManager {
 
     public static final String TAG = "RetrofitManager";
 
-    public static final String SEVER_URL = "http://192.168.3.245:18080";
+    public static final String SEVER_URL = "http://192.168.2.99:18080";
 
     private static final int DEFAULT_TIME_OUT = 5;//超时时间 5s
     private static final int DEFAULT_READ_TIME_OUT = 10;

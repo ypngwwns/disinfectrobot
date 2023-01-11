@@ -1,10 +1,6 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +11,6 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
-import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapCode;
 import com.hitqz.disinfectionrobot.data.NavigationPoint;
 import com.hitqz.disinfectionrobot.data.RobotoCreateMapIncrementDataDto;
@@ -24,6 +19,7 @@ import com.hitqz.disinfectionrobot.databinding.ActivityBuildMapBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.SaveMapDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.net.ws.JWebSocketClientService;
 import com.hitqz.disinfectionrobot.widget.RockerView;
 import com.sonicers.commonlib.rx.RxSchedulers;
 import com.sonicers.commonlib.singleton.GsonUtil;
@@ -33,43 +29,14 @@ import java.lang.ref.WeakReference;
 @SuppressLint("CheckResult")
 public class BuildMapActivity extends BaseActivity {
     public static final String TAG = BuildMapActivity.class.getSimpleName();
-
-    ActivityBuildMapBinding mBinding;
-    private WebSocketMessageReceiver mWebSocketMessageReceiver;
-
     public static final int TIMING_SPEED_MESSAGE_ID = 10000;
-
     public final static float MAX_LINE_SPEED_VALUE = 0.25f;
     public final static float MAX_RADIUS_SPEED_VALUE = 0.4f;
     private final SpeedRequest mSpeedRequest = new SpeedRequest();
+    ActivityBuildMapBinding mBinding;
+    private WebSocketMessageReceiver mWebSocketMessageReceiver;
     private MyHandler mHandler;
     private NavigationPoint mRobotPos = new NavigationPoint();
-
-
-    private static class MyHandler extends Handler {
-
-        private WeakReference<BuildMapActivity> activityWeakReference;
-
-        public MyHandler(BuildMapActivity activity) {
-            activityWeakReference = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            BuildMapActivity activity = activityWeakReference.get();
-            if (activity != null) {
-                //处理handler消息
-                switch (msg.what) {
-                    case ManualControlActivity.TIMING_SPEED_MESSAGE_ID:
-                        removeMessages(TIMING_SPEED_MESSAGE_ID);
-                        activity.postSpeed();
-                        sendEmptyMessageDelayed(TIMING_SPEED_MESSAGE_ID, 100);
-                }
-            }
-        }
-    }
-
 
     private void postSpeed() {
         Log.d("postSpeed", "mSpeedRequest.linearSpeed:" + mSpeedRequest.linearSpeed + "  mSpeedRequest.angleSpeed:" + mSpeedRequest.angleSpeed);
@@ -223,17 +190,40 @@ public class BuildMapActivity extends BaseActivity {
      */
     private void doRegisterReceiver() {
         mWebSocketMessageReceiver = new WebSocketMessageReceiver(this);
-        IntentFilter filter = new IntentFilter(Constants.WEB_SOCKET_ACTION);
-        registerReceiver(mWebSocketMessageReceiver, filter);
+        DisinfectRobotApplication.instance.addWebSocketCallback(mWebSocketMessageReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mWebSocketMessageReceiver);
+        DisinfectRobotApplication.instance.removeWebSocketCallback(mWebSocketMessageReceiver);
     }
 
-    private static class WebSocketMessageReceiver extends BroadcastReceiver {
+    private static class MyHandler extends Handler {
+
+        private WeakReference<BuildMapActivity> activityWeakReference;
+
+        public MyHandler(BuildMapActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            BuildMapActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                //处理handler消息
+                switch (msg.what) {
+                    case ManualControlActivity.TIMING_SPEED_MESSAGE_ID:
+                        removeMessages(TIMING_SPEED_MESSAGE_ID);
+                        activity.postSpeed();
+                        sendEmptyMessageDelayed(TIMING_SPEED_MESSAGE_ID, 100);
+                }
+            }
+        }
+    }
+
+    private static class WebSocketMessageReceiver implements JWebSocketClientService.WebSocketCallback {
         private BuildMapActivity mActivity;
 
         public WebSocketMessageReceiver(BuildMapActivity activity) {
@@ -241,9 +231,7 @@ public class BuildMapActivity extends BaseActivity {
         }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            Log.d(TAG, "收到：" + message);
+        public void onMessage(String message) {
             RobotoCreateMapIncrementDataDto robotoCreateMapIncrementDataDto = GsonUtil.getInstance().fromJson(message, RobotoCreateMapIncrementDataDto.class);
             if (robotoCreateMapIncrementDataDto == null || robotoCreateMapIncrementDataDto.getBytes() == null) {
                 return;
@@ -254,6 +242,11 @@ public class BuildMapActivity extends BaseActivity {
             mActivity.mRobotPos.rawY = robotoCreateMapIncrementDataDto.getRobotInfoDto().getY();
             mActivity.mRobotPos.radian = robotoCreateMapIncrementDataDto.getRobotInfoDto().getYaw();
             mActivity.mBinding.bmv.setRobotPos(mActivity.mRobotPos);
+        }
+
+        @Override
+        public void onConnectSuccess(String s) {
+
         }
     }
 }
