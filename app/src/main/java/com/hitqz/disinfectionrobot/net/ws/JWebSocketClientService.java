@@ -126,7 +126,7 @@ public class JWebSocketClientService extends Service {
                 for (WebSocketCallback webSocketCallback : mWebSocketCallbacks) {
                     webSocketCallback.onConnectSuccess(client.getURI().toString());
                 }
-                Log.e("JWebSocketClientService", "websocket连接成功");
+                Log.e("JWebSocketClientService", "websocket连接成功,mWebSocketCallbacks.size():" + mWebSocketCallbacks.size());
             }
         };
         connect();
