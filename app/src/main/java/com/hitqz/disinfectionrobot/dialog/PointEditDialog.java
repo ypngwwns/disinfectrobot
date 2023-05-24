@@ -14,13 +14,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.DialogPointEditorBinding;
 
 @SuppressLint("CheckResult")
-public class PointEditDialog extends DialogFragment {
+public class PointEditDialog extends BaseDialogFragment {
 
     public static final String TAG = PointEditDialog.class.getSimpleName();
 

@@ -12,13 +12,12 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.DialogDisinfectAreaNameBinding;
 
 @SuppressLint("CheckResult")
-public class DisinfectAreaNameDialog extends DialogFragment {
+public class DisinfectAreaNameDialog extends BaseDialogFragment {
 
     public static final String TAG = DisinfectAreaNameDialog.class.getSimpleName();
 
@@ -30,7 +29,6 @@ public class DisinfectAreaNameDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Dialog_Alert);
     }
-
 
     @NonNull
     @Override

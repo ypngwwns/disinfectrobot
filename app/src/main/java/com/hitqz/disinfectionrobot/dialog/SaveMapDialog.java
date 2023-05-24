@@ -12,13 +12,12 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.DialogSaveMapBinding;
 
 @SuppressLint("CheckResult")
-public class SaveMapDialog extends DialogFragment {
+public class SaveMapDialog extends BaseDialogFragment {
 
     public static final String TAG = SaveMapDialog.class.getSimpleName();
 

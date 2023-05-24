@@ -10,13 +10,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.DialogCommonDialogBinding;
 
 @SuppressLint("CheckResult")
-public class CommonDialog extends DialogFragment {
+public class CommonDialog extends BaseDialogFragment {
 
     public static final String TAG = CommonDialog.class.getSimpleName();
 

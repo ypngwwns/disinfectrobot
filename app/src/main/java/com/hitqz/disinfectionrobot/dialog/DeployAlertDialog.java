@@ -9,12 +9,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 
 @SuppressLint("CheckResult")
-public class DeployAlertDialog extends DialogFragment {
+public class DeployAlertDialog extends BaseDialogFragment {
 
     public static final String TAG = DeployAlertDialog.class.getSimpleName();
 

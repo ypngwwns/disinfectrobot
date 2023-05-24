@@ -6,6 +6,8 @@
     android:layout_height="50dp"
     android:background="@color/white"
     android:padding="10dp"
+    android:focusable="true"
+    android:clickable="true"
     tools:showIn="@layout/fragment_setting">
 
     <ImageView

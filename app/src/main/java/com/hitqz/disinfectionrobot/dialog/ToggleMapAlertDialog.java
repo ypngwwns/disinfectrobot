@@ -9,12 +9,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 
 @SuppressLint("CheckResult")
-public class ToggleMapAlertDialog extends DialogFragment {
+public class ToggleMapAlertDialog extends BaseDialogFragment {
 
     public static final String TAG = ToggleMapAlertDialog.class.getSimpleName();
 

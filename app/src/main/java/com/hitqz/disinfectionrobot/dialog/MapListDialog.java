@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.adapter.MapListAdapter;
@@ -21,7 +20,7 @@ import com.hitqz.disinfectionrobot.databinding.DialogMapListBinding;
 import java.util.List;
 
 @SuppressLint("CheckResult")
-public class MapListDialog extends DialogFragment {
+public class MapListDialog extends BaseDialogFragment {
 
     public static final String TAG = MapListDialog.class.getSimpleName();
 

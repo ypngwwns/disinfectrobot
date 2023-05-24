@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.databinding.FragmentSettingBinding;
 
 public class SettingFragment extends BaseFragment {
@@ -29,5 +31,16 @@ public class SettingFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         mBinding = FragmentSettingBinding.inflate(getLayoutInflater());
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mBinding.btnTest.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showShort("test");
+            }
+        });
     }
 }
