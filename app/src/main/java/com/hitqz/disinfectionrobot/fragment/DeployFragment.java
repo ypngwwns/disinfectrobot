@@ -16,7 +16,7 @@ import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
 import com.hitqz.disinfectionrobot.activity.ToggleMapActivity;
 import com.hitqz.disinfectionrobot.databinding.FragmentDeployBinding;
 
-public class DeployFragment extends Fragment {
+public class DeployFragment extends BaseFragment {
 
     FragmentDeployBinding mBinding;
 

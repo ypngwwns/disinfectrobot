@@ -18,7 +18,7 @@ import com.hitqz.disinfectionrobot.constant.RechargeStatusType;
 import com.hitqz.disinfectionrobot.data.RobotStatus;
 import com.hitqz.disinfectionrobot.databinding.FragmentMainBinding;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseFragment {
 
     FragmentMainBinding mBinding;
 

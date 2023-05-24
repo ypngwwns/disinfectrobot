@@ -3,11 +3,15 @@ package com.hitqz.disinfectionrobot.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.hitqz.disinfectionrobot.i.IDialog
 import com.hitqz.disinfectionrobot.net.ISkyNet
 import com.hitqz.disinfectionrobot.net.RetrofitManager
 import com.hitqz.disinfectionrobot.singleton.ChassisManager
 import com.trello.rxlifecycle3.components.support.RxFragment
+import me.jessyan.autosize.AutoSize
 
 open class BaseFragment : RxFragment() {
 
@@ -32,6 +36,19 @@ open class BaseFragment : RxFragment() {
         mSkyNet = RetrofitManager.getInstance((context as Activity).applicationContext)
             .create(ISkyNet::class.java)
         mChassisManager = ChassisManager.getInstance(mContext)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        //由于某些原因, 屏幕旋转后 Fragment 的重建, 会导致框架对 Fragment 的自定义适配参数失去效果
+        //所以如果您的 Fragment 允许屏幕旋转, 则请在 onCreateView 手动调用一次 AutoSize.autoConvertDensity()
+        //如果您的 Fragment 不允许屏幕旋转, 则可以将下面调用 AutoSize.autoConvertDensity() 的代码删除掉
+        AutoSize.autoConvertDensity(activity, 540f, true)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     open fun isValidContext(): Boolean {
