@@ -1,6 +1,8 @@
 package com.hitqz.disinfectionrobot.net;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -9,6 +11,7 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.hitqz.disinfectionrobot.DisinfectRobotApplication;
+import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.constant.TokenKeys;
 import com.jeremy.retrofitmock.SimpleMockInterceptor;
 import com.sonicers.commonlib.net.HttpCommonInterceptor;
@@ -29,9 +32,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitManager {
 
-    public static final String TAG = "RetrofitManager";
+    public static final String TAG = RetrofitManager.class.getSimpleName();
 
-    public static final String SEVER_URL = "http://192.168.2.99:18080";
+//    public static final String SEVER_URL = "http://192.168.2.99:18080";
 
     private static final int DEFAULT_TIME_OUT = 5;//超时时间 5s
     private static final int DEFAULT_READ_TIME_OUT = 10;
@@ -62,6 +65,10 @@ public class RetrofitManager {
             builder.addNetworkInterceptor(loggingInterceptor);
             builder.addInterceptor(new SimpleMockInterceptor(false));
 //            //}
+
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+            String serverHost = pref.getString(Constants.KEY_SERVER_HOST, Constants.DEFAULT_SERVER_HOST);
+            String SEVER_URL = "http://" + serverHost + ":8080";
 
             // 创建Retrofit
             mRetrofit = new Retrofit.Builder()

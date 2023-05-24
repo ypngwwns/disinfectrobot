@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.databinding.FragmentSettingBinding;
+import com.hitqz.disinfectionrobot.dialog.ServerUrlDialog;
 
 public class SettingFragment extends BaseFragment {
 
@@ -39,7 +39,8 @@ public class SettingFragment extends BaseFragment {
         mBinding.btnTest.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShort("test");
+                ServerUrlDialog dialog = new ServerUrlDialog();
+                dialog.show(mContext.getSupportFragmentManager(), ServerUrlDialog.TAG);
             }
         });
     }

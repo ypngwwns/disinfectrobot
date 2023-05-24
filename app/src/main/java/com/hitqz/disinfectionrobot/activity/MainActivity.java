@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements IGo {
                     public void onFailure(String msg) {
                         dismissDialog();
                         go2Main();
-                        ToastUtils.showShort("登录失败");
+                        ToastUtils.showShort("登录失败%s", msg);
                     }
                 });
 

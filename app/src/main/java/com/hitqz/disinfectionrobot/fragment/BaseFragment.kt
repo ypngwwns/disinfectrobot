@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.hitqz.disinfectionrobot.activity.BaseActivity
 import com.hitqz.disinfectionrobot.i.IDialog
 import com.hitqz.disinfectionrobot.net.ISkyNet
 import com.hitqz.disinfectionrobot.net.RetrofitManager
@@ -17,7 +18,7 @@ open class BaseFragment : RxFragment() {
 
     protected lateinit var mIDialog: IDialog
     protected lateinit var mSkyNet: ISkyNet
-    protected lateinit var mContext: Context
+    protected lateinit var mContext: BaseActivity
     protected lateinit var mChassisManager: ChassisManager
 
     override fun onAttach(context: Context) {
@@ -28,7 +29,9 @@ open class BaseFragment : RxFragment() {
                         + " must implement IDialog")
             )
         }
-        mContext = context
+        if (activity is BaseActivity) {
+            mContext = activity as BaseActivity
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
