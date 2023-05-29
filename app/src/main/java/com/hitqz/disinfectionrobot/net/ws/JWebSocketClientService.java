@@ -8,11 +8,13 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -109,7 +111,11 @@ public class JWebSocketClientService extends Service {
      * 初始化websocket连接
      */
     private void initSocketClient() {
-        URI uri = URI.create(Constants.WS_ADDRESS);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String ip = pref.getString(Constants.KEY_SERVER_HOST, Constants.DEFAULT_SERVER_HOST);
+        String address = "ws://" + ip.trim() + ":18081/robot/api/topic";
+
+        URI uri = URI.create(address);
         client = new JWebSocketClient(uri) {
             @Override
             public void onMessage(String message) {

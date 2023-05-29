@@ -68,7 +68,7 @@ public class RetrofitManager {
 
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
             String serverHost = pref.getString(Constants.KEY_SERVER_HOST, Constants.DEFAULT_SERVER_HOST);
-            String SEVER_URL = "http://" + serverHost + ":8080";
+            String SEVER_URL = "http://" + serverHost.trim() + ":8080";
 
             // 创建Retrofit
             mRetrofit = new Retrofit.Builder()
