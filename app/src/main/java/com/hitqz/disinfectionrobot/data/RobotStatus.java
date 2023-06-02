@@ -59,205 +59,205 @@ public class RobotStatus {
 
     public static class AirDTO {
         @SerializedName("co")
-        private Integer co;
+        private int co;
         @SerializedName("co2")
-        private Integer co2;
+        private int co2;
         @SerializedName("formaldehyde")
-        private Integer formaldehyde;
+        private int formaldehyde;
         @SerializedName("humidity")
-        private Integer humidity;
+        private int humidity;
         @SerializedName("o2")
-        private Integer o2;
+        private int o2;
         @SerializedName("pm25")
-        private Integer pm25;
+        private int pm25;
         @SerializedName("temperature")
-        private Integer temperature;
+        private int temperature;
         @SerializedName("tvoc")
-        private Integer tvoc;
+        private int tvoc;
 
-        public Integer getCo() {
+        public int getCo() {
             return co;
         }
 
-        public void setCo(Integer co) {
+        public void setCo(int co) {
             this.co = co;
         }
 
-        public Integer getCo2() {
+        public int getCo2() {
             return co2;
         }
 
-        public void setCo2(Integer co2) {
+        public void setCo2(int co2) {
             this.co2 = co2;
         }
 
-        public Integer getFormaldehyde() {
+        public int getFormaldehyde() {
             return formaldehyde;
         }
 
-        public void setFormaldehyde(Integer formaldehyde) {
+        public void setFormaldehyde(int formaldehyde) {
             this.formaldehyde = formaldehyde;
         }
 
-        public Integer getHumidity() {
+        public int getHumidity() {
             return humidity;
         }
 
-        public void setHumidity(Integer humidity) {
+        public void setHumidity(int humidity) {
             this.humidity = humidity;
         }
 
-        public Integer getO2() {
+        public int getO2() {
             return o2;
         }
 
-        public void setO2(Integer o2) {
+        public void setO2(int o2) {
             this.o2 = o2;
         }
 
-        public Integer getPm25() {
+        public int getPm25() {
             return pm25;
         }
 
-        public void setPm25(Integer pm25) {
+        public void setPm25(int pm25) {
             this.pm25 = pm25;
         }
 
-        public Integer getTemperature() {
+        public int getTemperature() {
             return temperature;
         }
 
-        public void setTemperature(Integer temperature) {
+        public void setTemperature(int temperature) {
             this.temperature = temperature;
         }
 
-        public Integer getTvoc() {
+        public int getTvoc() {
             return tvoc;
         }
 
-        public void setTvoc(Integer tvoc) {
+        public void setTvoc(int tvoc) {
             this.tvoc = tvoc;
         }
     }
 
     public static class CurrentPosDTO {
         @SerializedName("pitch")
-        private Integer pitch;
+        private int pitch;
         @SerializedName("roll")
-        private Integer roll;
+        private int roll;
         @SerializedName("x")
-        private Double x;
+        private double x;
         @SerializedName("y")
-        private Double y;
+        private double y;
         @SerializedName("yaw")
-        private Double yaw;
+        private double yaw;
         @SerializedName("z")
-        private Integer z;
+        private int z;
 
-        public Integer getPitch() {
+        public int getPitch() {
             return pitch;
         }
 
-        public void setPitch(Integer pitch) {
+        public void setPitch(int pitch) {
             this.pitch = pitch;
         }
 
-        public Integer getRoll() {
+        public int getRoll() {
             return roll;
         }
 
-        public void setRoll(Integer roll) {
+        public void setRoll(int roll) {
             this.roll = roll;
         }
 
-        public Double getX() {
+        public double getX() {
             return x;
         }
 
-        public void setX(Double x) {
+        public void setX(double x) {
             this.x = x;
         }
 
-        public Double getY() {
+        public double getY() {
             return y;
         }
 
-        public void setY(Double y) {
+        public void setY(double y) {
             this.y = y;
         }
 
-        public Double getYaw() {
+        public double getYaw() {
             return yaw;
         }
 
-        public void setYaw(Double yaw) {
+        public void setYaw(double yaw) {
             this.yaw = yaw;
         }
 
-        public Integer getZ() {
+        public int getZ() {
             return z;
         }
 
-        public void setZ(Integer z) {
+        public void setZ(int z) {
             this.z = z;
         }
     }
 
     public static class PowerInfoDTO {
         @SerializedName("capacitance")
-        private Integer capacitance;
+        private int capacitance;
         @SerializedName("chargeStatus")
-        private Integer chargeStatus;
+        private int chargeStatus;
         @SerializedName("current")
-        private Double current;
+        private double current;
         @SerializedName("currentDirection")
-        private Integer currentDirection;
+        private int currentDirection;
         @SerializedName("power")
-        private Integer power;
+        private int power;
         @SerializedName("robotSn")
         private String robotSn;
         @SerializedName("template")
-        private Integer template;
+        private int template;
         @SerializedName("voltage")
-        private Double voltage;
+        private double voltage;
 
-        public Integer getCapacitance() {
+        public int getCapacitance() {
             return capacitance;
         }
 
-        public void setCapacitance(Integer capacitance) {
+        public void setCapacitance(int capacitance) {
             this.capacitance = capacitance;
         }
 
-        public Integer getChargeStatus() {
+        public int getChargeStatus() {
             return chargeStatus;
         }
 
-        public void setChargeStatus(Integer chargeStatus) {
+        public void setChargeStatus(int chargeStatus) {
             this.chargeStatus = chargeStatus;
         }
 
-        public Double getCurrent() {
+        public double getCurrent() {
             return current;
         }
 
-        public void setCurrent(Double current) {
+        public void setCurrent(double current) {
             this.current = current;
         }
 
-        public Integer getCurrentDirection() {
+        public int getCurrentDirection() {
             return currentDirection;
         }
 
-        public void setCurrentDirection(Integer currentDirection) {
+        public void setCurrentDirection(int currentDirection) {
             this.currentDirection = currentDirection;
         }
 
-        public Integer getPower() {
+        public int getPower() {
             return power;
         }
 
-        public void setPower(Integer power) {
+        public void setPower(int power) {
             this.power = power;
         }
 
@@ -269,105 +269,105 @@ public class RobotStatus {
             this.robotSn = robotSn;
         }
 
-        public Integer getTemplate() {
+        public int getTemplate() {
             return template;
         }
 
-        public void setTemplate(Integer template) {
+        public void setTemplate(int template) {
             this.template = template;
         }
 
-        public Double getVoltage() {
+        public double getVoltage() {
             return voltage;
         }
 
-        public void setVoltage(Double voltage) {
+        public void setVoltage(double voltage) {
             this.voltage = voltage;
         }
     }
 
     public static class LaserDataDTO {
         @SerializedName("x")
-        private Double x;
+        private double x;
         @SerializedName("y")
-        private Double y;
+        private double y;
         @SerializedName("yaw")
-        private Double yaw;
+        private double yaw;
         @SerializedName("z")
-        private Integer z;
+        private int z;
 
-        public Double getX() {
+        public double getX() {
             return x;
         }
 
-        public void setX(Double x) {
+        public void setX(double x) {
             this.x = x;
         }
 
-        public Double getY() {
+        public double getY() {
             return y;
         }
 
-        public void setY(Double y) {
+        public void setY(double y) {
             this.y = y;
         }
 
-        public Double getYaw() {
+        public double getYaw() {
             return yaw;
         }
 
-        public void setYaw(Double yaw) {
+        public void setYaw(double yaw) {
             this.yaw = yaw;
         }
 
-        public Integer getZ() {
+        public int getZ() {
             return z;
         }
 
-        public void setZ(Integer z) {
+        public void setZ(int z) {
             this.z = z;
         }
     }
 
     public static class LaserOriginDataDTO {
         @SerializedName("x")
-        private Double x;
+        private double x;
         @SerializedName("y")
-        private Double y;
+        private double y;
         @SerializedName("yaw")
-        private Double yaw;
+        private double yaw;
         @SerializedName("z")
-        private Integer z;
+        private int z;
 
-        public Double getX() {
+        public double getX() {
             return x;
         }
 
-        public void setX(Double x) {
+        public void setX(double x) {
             this.x = x;
         }
 
-        public Double getY() {
+        public double getY() {
             return y;
         }
 
-        public void setY(Double y) {
+        public void setY(double y) {
             this.y = y;
         }
 
-        public Double getYaw() {
+        public double getYaw() {
             return yaw;
         }
 
-        public void setYaw(Double yaw) {
+        public void setYaw(double yaw) {
             this.yaw = yaw;
         }
 
-        public Integer getZ() {
+        public int getZ() {
             return z;
         }
 
-        public void setZ(Integer z) {
+        public void setZ(int z) {
             this.z = z;
         }
     }
