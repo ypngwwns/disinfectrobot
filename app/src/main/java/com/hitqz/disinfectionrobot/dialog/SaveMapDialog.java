@@ -16,6 +16,8 @@ import androidx.appcompat.app.AlertDialog;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.databinding.DialogSaveMapBinding;
 
+import me.jessyan.autosize.AutoSize;
+
 @SuppressLint("CheckResult")
 public class SaveMapDialog extends BaseDialogFragment {
 
@@ -28,6 +30,7 @@ public class SaveMapDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Dialog_Alert);
+        AutoSize.autoConvertDensity(mBaseActivity, 960f, true);
     }
 
     @NonNull
