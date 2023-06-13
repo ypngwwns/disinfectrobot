@@ -76,7 +76,12 @@ public class EditMapActivity extends BaseActivity {
             mBinding.mapnameShowTv.setText(mCurrMapName);
         }
         Bitmap bitmap = AssetBitmapLoader.loadBitmapFromAsset(this, mCurrMapName);
-        mBinding.editMapView.setMap(bitmap);
+        mBinding.editMapView.post(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.editMapView.setMap(bitmap);
+            }
+        });
     }
 
     private void initMap(String mapCode) throws IOException {
