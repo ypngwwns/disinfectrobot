@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hitqz.disinfectionrobot">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.hitqz.disinfectionrobot"
+    tools:ignore="LockedOrientationActivity">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -48,42 +50,50 @@
         </activity>
         <activity
             android:name=".activity.BuildMapActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.ViewDirectionsActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.DeploymentRouteActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.DisinfectRegularlyActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.StartDisinfectActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.ManualControlActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.SetDisinfectAreaActivity"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".activity.ToggleMapActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".activity.EditMapActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>
     </application>

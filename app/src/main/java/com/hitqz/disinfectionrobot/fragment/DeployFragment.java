@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.hitqz.disinfectionrobot.activity.BuildMapActivity;
 import com.hitqz.disinfectionrobot.activity.DeploymentRouteActivity;
-import com.hitqz.disinfectionrobot.activity.SetDisinfectAreaActivity;
+import com.hitqz.disinfectionrobot.activity.EditMapActivity;
 import com.hitqz.disinfectionrobot.activity.ToggleMapActivity;
 import com.hitqz.disinfectionrobot.databinding.FragmentDeployBinding;
 
@@ -58,7 +57,7 @@ public class DeployFragment extends BaseFragment {
         mBinding.cvSetUpDisinfectionArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SetDisinfectAreaActivity.class);
+                Intent intent = new Intent(getActivity(), EditMapActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,15 +1,8 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Application;
-import android.content.ComponentCallbacks;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -37,48 +30,12 @@ public class BaseActivity extends RxAppCompatActivity implements IDialog {
     protected ISkyNet mISkyNet;
     protected ChassisManager mChassisManager;
 
-    private static void setCustomDensity(@NonNull Activity activity) {
-        Application application = activity.getApplication();
-        DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
-        if (sNoncompatDensity == 0) {
-            sNoncompatDensity = appDisplayMetrics.density;
-            sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
-            application.registerComponentCallbacks(new ComponentCallbacks() {
-                @Override
-                public void onConfigurationChanged(Configuration newConfig) {
-                    if (newConfig != null && newConfig.fontScale > 0) {
-                        sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
-                    }
-                }
-
-                @Override
-                public void onLowMemory() {
-
-                }
-            });
-        }
-        float targetDensity = appDisplayMetrics.widthPixels / 540f;
-        float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
-        int targetDensityDpi = (int) (160 * targetDensity);
-
-        appDisplayMetrics.density = targetDensity;
-        appDisplayMetrics.scaledDensity = targetScaledDensity;
-        appDisplayMetrics.densityDpi = targetDensityDpi;
-
-        DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
-        activityDisplayMetrics.density = targetDensity;
-        activityDisplayMetrics.scaledDensity = targetScaledDensity;
-        activityDisplayMetrics.densityDpi = targetDensityDpi;
-    }
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.transparent).statusBarDarkFont(true).init();
-//        setCustomDensity(this);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mISkyNet = RetrofitManager.getInstance(this).create(ISkyNet.class);
         mChassisManager = ChassisManager.getInstance(this);
     }
