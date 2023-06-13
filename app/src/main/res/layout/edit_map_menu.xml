@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -71,7 +70,7 @@
             app:layout_constraintTop_toBottomOf="@id/view" />
 
         <TextView
-            android:id="@+id/textView_copy"
+            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="5dp"
@@ -87,14 +86,14 @@
             app:layout_constraintTop_toBottomOf="@id/edit_map_delete_button" />
 
         <View
-            android:id="@+id/view_copy"
+            android:id="@+id/view1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="255"
             android:background="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_copy" />
+            app:layout_constraintTop_toBottomOf="@id/textView1" />
 
         <Button
             android:id="@+id/edit_map_touch_mode"
@@ -107,7 +106,7 @@
             android:textColor="@color/button_text_bg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/gl_middle"
-            app:layout_constraintTop_toBottomOf="@id/view_copy" />
+            app:layout_constraintTop_toBottomOf="@id/view1" />
 
 
         <Button
@@ -121,7 +120,60 @@
             android:textColor="@color/button_text_bg"
             app:layout_constraintStart_toEndOf="@id/gl_middle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_copy" />
+            app:layout_constraintTop_toBottomOf="@id/view1" />
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:alpha="221"
+            android:gravity="bottom"
+            android:text="线类型"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_map_touch_mode" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="255"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView2" />
+
+
+        <Button
+            android:id="@+id/edit_map_linetype_line_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/button_bg"
+            android:text="直线"
+            android:textColor="@color/button_text_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_middle"
+            app:layout_constraintTop_toBottomOf="@id/view2" />
+
+        <Button
+            android:id="@+id/edit_map_linetype_path_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/button_bg"
+            android:text="曲线"
+            android:textColor="@color/button_text_bg"
+            app:layout_constraintStart_toEndOf="@id/gl_middle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2" />
+
 
         <TextView
             android:id="@+id/textView3"
@@ -137,7 +189,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_map_touch_mode" />
+            app:layout_constraintTop_toBottomOf="@id/edit_map_linetype_path_button" />
 
         <View
             android:id="@+id/view3"
@@ -171,7 +223,6 @@
             android:text="灰色"
             android:textColor="@color/button_text_bg"
             app:layout_constraintEnd_toStartOf="@id/edit_map_color_white_button"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/edit_map_color_black_button"
             app:layout_constraintTop_toBottomOf="@+id/view3" />
 

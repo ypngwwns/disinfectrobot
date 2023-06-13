@@ -154,6 +154,24 @@ public class EditMapActivity extends BaseActivity {
             }
         });
 
+        mBinding.editMapMenu.editMapLinetypeLineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBinding.editMapMenu.editMapLinetypeLineButton.setEnabled(false);
+                mBinding.editMapMenu.editMapLinetypePathButton.setEnabled(true);
+                mBinding.editMapView.setLineType(EditMapView.PaintType.LINE);
+            }
+        });
+
+        mBinding.editMapMenu.editMapLinetypePathButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBinding.editMapMenu.editMapLinetypePathButton.setEnabled(false);
+                mBinding.editMapMenu.editMapLinetypeLineButton.setEnabled(true);
+                mBinding.editMapView.setLineType(EditMapView.PaintType.PATH);
+            }
+        });
+
         mBinding.editMapMenu.editMapDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -443,10 +461,13 @@ public class EditMapActivity extends BaseActivity {
             mBinding.editMapView.setLineColor(Color.BLACK);
             mBinding.editMapView.setDrawType(EditMapView.DrawType.DRAW);
             mBinding.editMapMenu.editMapColorBlackButton.setEnabled(false);
+            mBinding.editMapMenu.editMapLinetypeLineButton.performClick();
         }
     }
 
     private void setEditButtonEnable(boolean enable) {
+        mBinding.editMapMenu.editMapLinetypeLineButton.setEnabled(enable);
+        mBinding.editMapMenu.editMapLinetypePathButton.setEnabled(enable);
         mBinding.editMapMenu.editMapColorBlackButton.setEnabled(enable);
         mBinding.editMapMenu.editMapColorGrayButton.setEnabled(enable);
         mBinding.editMapMenu.editMapColorWhiteButton.setEnabled(enable);

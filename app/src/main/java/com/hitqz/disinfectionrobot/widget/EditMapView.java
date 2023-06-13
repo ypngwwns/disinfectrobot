@@ -15,11 +15,15 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.core.math.MathUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditMapView extends View {
-    private static final String TAG = "EditMapView";
+    public static final float MAX_SCALE_FACTER = 5f;
+    public static final float MIN_SCALE_FACTER = 0.5f;
+    private static final String TAG = EditMapView.class.getSimpleName();
     // 所有用户触发的缩放、平移等操作都通过下面的 Matrix 直接作用于画布上，
     // 将系统计算的一些初始缩放平移信息与用户操作的信息进行隔离，让操作更加直观
     private final Matrix mMatrix = new Matrix();
@@ -27,20 +31,20 @@ public class EditMapView extends View {
     /**
      * 两指的中心点
      */
-    private final PointF mid = new PointF();
-    private PaintType paintType = PaintType.LINE;
-    private int color = Color.BLACK;
-    private int stroke = 5;
-
+    private final PointF mMid = new PointF();
+    /**
+     * 平移缩放变化的计算值
+     */
+//    private final float[] mMatrixValues = new float[9];
+    private PaintType mPaintType = PaintType.LINE;
+    private int mBlack = Color.BLACK;
+    private int mStroke = 5;
     /**
      * 画布
      */
     private Canvas mCanvas;
-
     private Paint mPaint = new Paint();
-
     private Paint mEarsePaint = new Paint();
-
     /**
      * 原始地图
      */
@@ -49,12 +53,10 @@ public class EditMapView extends View {
      * 生成的地图
      */
     private Bitmap mChangeMap = null;
-
     /**
      * 最终滑动点
      */
     private float mLastX, mLastY;
-
     /**
      * 绘制虚拟墙曲线所需
      */
@@ -64,19 +66,16 @@ public class EditMapView extends View {
      */
     private List<LimitPath> mUndoList = new ArrayList<>();
     private List<LimitPath> mRedoList = new ArrayList<>();
-
     /**
      * 强力擦除模式
      */
-    private DrawType drawType = DrawType.DRAW;
-    private int isTouchMode = 0;//1：缩放，2：移动
-    private boolean isDrawMode = false;
-    private PointF start = new PointF();
+    private DrawType mDrawType = DrawType.DRAW;
+    private int mIsTouchMode = 0;//1：缩放，2：移动
+    private boolean mIsDrawMode = false;
+    private PointF mStart = new PointF();
     // 初始的两个手指按下的触摸点的距离
-    private float oriDis = 1f;
-    private float MAX_SCALE = 1f;
-    private float scaleSum = 1f;
-    private float oldScale = 1f;
+    private float mOriDis = 1f;
+    private float mScaleSum = 1f;
 
     public EditMapView(Context context) {
         super(context);
@@ -143,6 +142,12 @@ public class EditMapView extends View {
         canvas.restoreToCount(layerId);
     }
 
+    private float clampScale(float scale) {
+        float max = MAX_SCALE_FACTER / mScaleSum;
+        float min = MIN_SCALE_FACTER / mScaleSum;
+        return MathUtils.clamp(scale, min, max);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mOriginalMap == null) {
@@ -151,54 +156,45 @@ public class EditMapView extends View {
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {//多点要带 ACTION_MASK
             case MotionEvent.ACTION_DOWN: {
-                if (!isDrawMode) {
-                    start.set(event.getX(), event.getY());
-                    isTouchMode = 2;
+                if (!mIsDrawMode) {
+                    mStart.set(event.getX(), event.getY());
+                    mIsTouchMode = 2;
                 }
             }
             break;
             case MotionEvent.ACTION_POINTER_DOWN: {//第二个手指按下
-                if (!isDrawMode) {
-                    start = getMid(event);
+                if (!mIsDrawMode) {
+                    mStart = getMid(event);
                     //当两指间距大于10时，计算两指中心点
-                    oriDis = getDistance(event);
-                    if (oriDis > 10f) {
-                        isTouchMode = 1;
+                    mOriDis = getDistance(event);
+                    if (mOriDis > 10f) {
+                        mIsTouchMode = 1;
                     }
                 }
             }
             break;
             case MotionEvent.ACTION_MOVE: {
-                if (isTouchMode > 0) {
-                    if (isTouchMode == 1) {
+                if (mIsTouchMode > 0) {
+                    if (mIsTouchMode == 1) {
                         // 两个手指滑动
                         float newDist = getDistance(event);
                         Log.i(TAG, "onTouchEvent: newDist->" + newDist);
                         if (newDist > 10f) {
-                            float scale = newDist / oriDis;
-                            float temp = scaleSum * scale;
-
-                            if (temp < 0.5f) {
-                                scale = 0.5f / scaleSum;
-                                temp = 0.5f;
-                            }
-                            scaleSum = temp;
-                            if (Math.abs(oldScale - scale) / scale < 0.1f) {
-                                break;
-                            }
-                            oldScale = scale;
-                            mMatrix.postScale(scale, scale, mid.x, mid.y);
-//                            mMatrix.getValues(mMatrixValues);
+                            float scale = newDist / mOriDis;
+                            scale = clampScale(scale);
+                            mMatrix.postScale(scale, scale, mMid.x, mMid.y);
+                            mScaleSum *= scale;
+                            mOriDis = newDist;
                             Log.d(TAG, "onTouchEvent: scale=====" + scale);
                         }
-                    } else if (isTouchMode == 2) {
-                        mMatrix.postTranslate(event.getX() - start.x, event.getY()
-                                - start.y);
-                        start.x = event.getX();
-                        start.y = event.getY();
+                    } else if (mIsTouchMode == 2) {
+                        mMatrix.postTranslate(event.getX() - mStart.x, event.getY()
+                                - mStart.y);
+                        mStart.x = event.getX();
+                        mStart.y = event.getY();
                     }
                     postInvalidate();
-                } else if (isDrawMode) {
+                } else if (mIsDrawMode) {
                     float x = event.getX();
                     float y = event.getY();
                     float[] tempPoints = new float[]{x, y};
@@ -209,14 +205,14 @@ public class EditMapView extends View {
                     y = tempPoints[1];
                     if (mLimitPath == null) {
                         mLimitPath = new LimitPath();
-                        mLimitPath.color = color;
-                        mLimitPath.width = stroke;
-                        mLimitPath.drawType = drawType;
+                        mLimitPath.color = mBlack;
+                        mLimitPath.width = mStroke;
+                        mLimitPath.drawType = mDrawType;
                         mLastX = x;
                         mLastY = y;
                         mLimitPath.path.moveTo(x, y);
                     }
-                    if (paintType == PaintType.PATH) {
+                    if (mPaintType == PaintType.PATH) {
                         if (!mUndoList.contains(mLimitPath)) {
                             mUndoList.add(mLimitPath);
                             mRedoList.clear();
@@ -225,7 +221,7 @@ public class EditMapView extends View {
                         mLastX = x;
                         mLastY = y;
                     }
-                    if (paintType == PaintType.LINE) {
+                    if (mPaintType == PaintType.LINE) {
                         if (!mUndoList.contains(mLimitPath)) {
                             mUndoList.add(mLimitPath);
                             mRedoList.clear();
@@ -241,13 +237,13 @@ public class EditMapView extends View {
             }
             break;
             case MotionEvent.ACTION_UP: {
-                isTouchMode = 0;
+                mIsTouchMode = 0;
                 mLimitPath = null;
                 postInvalidate();
             }
             break;
             case MotionEvent.ACTION_POINTER_UP: {//第二个手指弹起
-                isTouchMode = 0;
+                mIsTouchMode = 0;
             }
             break;
         }
@@ -280,19 +276,19 @@ public class EditMapView extends View {
 
         mMatrix.reset();
         mCanvas = null;
-        scaleSum = 1f;
+        mScaleSum = 1f;
     }
 
     public void setLineType(PaintType type) {
-        paintType = type;
+        mPaintType = type;
     }
 
     public void setLineColor(int color) {
-        this.color = color;
+        this.mBlack = color;
     }
 
     public void setStroke(int number) {
-        stroke = number;
+        mStroke = number;
     }
 
     public void undo() {
@@ -347,15 +343,10 @@ public class EditMapView extends View {
         reset();
         float width = getWidth();
         float height = getHeight();
-        Log.d(TAG, "width===" + width);
-        Log.d(TAG, "height===" + height);
 
         this.mOriginalMap = map;
-        MAX_SCALE = Math.min(width * 1f / mOriginalMap.getWidth(), height * 1f / mOriginalMap.getHeight());
-        Log.d(TAG, "MAX_SCALE===" + MAX_SCALE);
-        mid.set(width / 2f, height / 2f);
+        mMid.set(width / 2f, height / 2f);
         mMatrix.setTranslate((width - mOriginalMap.getWidth()) / 2f, (height - mOriginalMap.getHeight()) / 2f);
-        mMatrix.postScale(MAX_SCALE, MAX_SCALE, width / 2f, height / 2f);
         postInvalidate();
     }
 
@@ -364,12 +355,12 @@ public class EditMapView extends View {
     }
 
     public void setMode(boolean drawMode) {
-        isDrawMode = drawMode;
-        isTouchMode = 0;
+        mIsDrawMode = drawMode;
+        mIsTouchMode = 0;
     }
 
     public void setDrawType(DrawType drawType) {
-        this.drawType = drawType;
+        this.mDrawType = drawType;
     }
 
     public boolean operated() {
