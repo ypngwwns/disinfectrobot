@@ -1,8 +1,10 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.hitqz.disinfectionrobot.databinding.ActivityEditMapBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.dialog.SaveMapDialog;
+import com.hitqz.disinfectionrobot.util.AssetBitmapLoader;
 import com.hitqz.disinfectionrobot.widget.EditMapView;
 
 import java.io.BufferedOutputStream;
@@ -28,7 +31,7 @@ public class EditMapActivity extends BaseActivity {
     public static final String TAG = EditMapActivity.class.getSimpleName();
     private ActivityEditMapBinding mBinding;
     private byte[] mCurrMapData;
-    private String mCurrMapName;
+    private String mCurrMapName = "5GCleaner01_map5f0522.png";
 //    private MapData mMapData;
 
     private static byte[] readBytesFromFile(String filePath) {
@@ -68,6 +71,12 @@ public class EditMapActivity extends BaseActivity {
         setListener();
         //默认缩放模式
         touchMode(true);
+
+        if (!TextUtils.isEmpty(mCurrMapName)) {
+            mBinding.mapnameShowTv.setText(mCurrMapName);
+        }
+        Bitmap bitmap = AssetBitmapLoader.loadBitmapFromAsset(this, mCurrMapName);
+        mBinding.editMapView.setMap(bitmap);
     }
 
     private void initMap(String mapCode) throws IOException {
