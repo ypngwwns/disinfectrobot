@@ -14,7 +14,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
 import com.hitqz.disinfectionrobot.data.DisinfectTask;
 import com.hitqz.disinfectionrobot.data.MapArea;
-import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
@@ -62,21 +61,22 @@ public class EditTasksFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        mBinding.includeLayoutCommonTitleBar.tvSsid.setText("");
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
-        mBinding.tpTime.setIs24HourView(true);
-        if (TextUtils.isEmpty(mItem.taskName)) {
-            mBinding.fabDelete.setVisibility(View.GONE);
-        } else {
-            mSelectedAllArea = mItem.jobStatus == 0;
-            try {
-                Date date = mSimpleDateFormat.parse(mItem.startTime);
-                mBinding.tpTime.setHour(date.getHours());
-                mBinding.tpTime.setMinute(date.getMinutes());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+//        mBinding.tpTime.setIs24HourView(true);
+//        if (TextUtils.isEmpty(mItem.taskName)) {
+//            mBinding.fabDelete.setVisibility(View.GONE);
+//        } else {
+//            mSelectedAllArea = mItem.jobStatus == 0;
+//            try {
+//                Date date = mSimpleDateFormat.parse(mItem.startTime);
+//                mBinding.tpTime.setHour(date.getHours());
+//                mBinding.tpTime.setMinute(date.getMinutes());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +142,7 @@ public class EditTasksFragment extends BaseFragment {
             public void onClick(View v) {
                 showDialog();
                 DisinfectTask task = new DisinfectTask();
-                task.jobTime = mBinding.tpTime.getHour() + ":" + mBinding.tpTime.getMinute();
+//                task.jobTime = mBinding.tpTime.getHour() + ":" + mBinding.tpTime.getMinute();
                 if (mSelectedAllArea) {
                     task.taskType = 0;
                 } else {

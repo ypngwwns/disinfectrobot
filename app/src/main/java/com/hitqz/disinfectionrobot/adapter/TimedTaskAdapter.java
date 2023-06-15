@@ -12,13 +12,9 @@ import android.widget.TextView;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.net.data.CleanTask;
 import com.hitqz.disinfectionrobot.util.HHmmUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +27,6 @@ public class TimedTaskAdapter extends BaseAdapter {
     private final Context mContext;
     private View.OnClickListener mOnClickListener;
     private IOnCheckChangeListener mIOnCheckChangeListener;
-    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("HH:mm");
 
     public TimedTaskAdapter(Context mContext, List<CleanTask> mData) {
         this.mData = mData;
