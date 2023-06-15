@@ -17,6 +17,7 @@ import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
+import com.hitqz.disinfectionrobot.dialog.TimePickDialog;
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.net.data.CleanTask;
@@ -184,10 +185,42 @@ public class EditTasksFragment extends BaseFragment {
                 }
             }
         });
+        mBinding.tvStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickDialog dialog = new TimePickDialog();
+                if (mItem != null) {
+                    dialog.setTime(mItem.startTime);
+                }
+                dialog.setOnClickListener(new TimePickDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        mBinding.tvStartTime.setText(dialog.getTime());
+                    }
+                });
+                dialog.show(getFragmentManager(), TimePickDialog.TAG);
+            }
+        });
+        mBinding.tvEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickDialog dialog = new TimePickDialog();
+                if (mItem != null) {
+                    dialog.setTime(mItem.endTime);
+                }
+                dialog.setOnClickListener(new TimePickDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        mBinding.tvEndTime.setText(dialog.getTime());
+                    }
+                });
+                dialog.show(getFragmentManager(), TimePickDialog.TAG);
+            }
+        });
     }
 
     private void refreshList() {
-
+        EventBus.getDefault().post(new TaskRefreshEvent());
     }
 
     private boolean checkInvalid() {
@@ -204,8 +237,14 @@ public class EditTasksFragment extends BaseFragment {
         mItem.taskName = (mBinding.et1.getText().toString());
         mItem.startTime = mBinding.tvStartTime.getText().toString();
         mItem.endTime = mBinding.tvEndTime.getText().toString();
-        mItem.circle = Integer.parseInt(mBinding.et3.getText().toString());
-        mItem.taskType = mBinding.es4.getText().equals("一次") ? 0 : 1;
+        if (!TextUtils.isEmpty(mBinding.et3.getText().toString())) {
+            mItem.circle = Integer.parseInt(mBinding.et3.getText().toString());
+        }
+        if ("一次".equals(mBinding.es4.getText())) {
+            mItem.taskType = 0;
+        } else {
+            mItem.taskType = 1;
+        }
     }
 
     private void onSelectChanged() {
