@@ -100,7 +100,7 @@ public class EditTasksFragment extends BaseFragment {
             mBinding.tvStartTime.setText(mItem.startTime);
             mBinding.tvEndTime.setText(mItem.endTime);
             mBinding.et3.setText(String.valueOf(mItem.circle));
-            mBinding.et4.setText(mItem.taskType == 0 ? "执行一次" : "每天");
+            mBinding.et4.setText(mItem.taskType == 0 ? "" : "每天");
             mBinding.fabDelete.setVisibility(View.VISIBLE);
         }
 

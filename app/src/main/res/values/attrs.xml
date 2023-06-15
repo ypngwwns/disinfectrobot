@@ -22,4 +22,11 @@
         <!--        左下圆角大小-->
         <attr name="rcv_bottomLeftRadiu" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="EditSpinner">
+        <attr name="editable" format="boolean" />
+        <attr name="hint" format="string" />
+        <attr name="rightImage" format="reference" />
+        <attr name="Background" format="reference" />
+        <attr name="maxLine" format="integer" />
+    </declare-styleable>
 </resources>

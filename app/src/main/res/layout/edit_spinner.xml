@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:toools="http://schemas.android.com/tools">
+
+    <EditText
+        android:id="@+id/edit_sipnner_edit"
+        style="@style/edit_main_bg"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:paddingStart="6dp"
+        toools:hint="请选择"
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:id="@+id/edit_spinner_expand"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/edit_sipnner_edit"
+        android:layout_alignEnd="@id/edit_sipnner_edit"
+        android:layout_alignTop="@id/edit_sipnner_edit"
+        android:src="@mipmap/ic_expand_more_black"
+        android:padding="8dp" />
+
+    <View
+        android:id="@+id/edit_spinner_expand_above"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/edit_sipnner_edit"
+        android:layout_alignLeft="@id/edit_spinner_expand"
+        android:layout_alignRight="@id/edit_spinner_expand"
+        android:layout_alignTop="@id/edit_sipnner_edit" />
+</RelativeLayout>

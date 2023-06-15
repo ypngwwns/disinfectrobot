@@ -53,6 +53,7 @@ public class TimedTaskAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_record, parent, false);
         SwitchCompat switchCompat = convertView.findViewById(R.id.sc_task);
         TextView time = convertView.findViewById(R.id.tv_time);
+        TextView tvTaskType = convertView.findViewById(R.id.tv_task_type);
         TextView tv1 = convertView.findViewById(R.id.tv_1);
         switchCompat.setTag(position);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -65,6 +66,7 @@ public class TimedTaskAdapter extends BaseAdapter {
         });
 
         tv1.setText(mData.get(position).taskName);
+        tvTaskType.setText(mData.get(position).taskType == 0 ? "" : "每天");
         time.setText(HHmmUtil.format(mData.get(position).startTime) + "-" + HHmmUtil.format(mData.get(position).endTime));
         switchCompat.setChecked(mData.get(position).jobStatus == 0);
         convertView.setTag(position);
