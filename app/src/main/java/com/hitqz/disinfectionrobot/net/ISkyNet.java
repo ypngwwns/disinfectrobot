@@ -92,7 +92,7 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> areaPosUpdate(@Body MapAreaData mapAreaData);
 
     /**
-     * 删除消毒区域
+     * 删除清洁区域
      */
     @DELETE("/robot/api/mapArea/delete")
     Observable<BaseRespond<Object>> mapAreaDelete(@Query("id") int id);

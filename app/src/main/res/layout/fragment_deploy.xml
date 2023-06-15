@@ -84,7 +84,7 @@
 
             <TextView
                 style="@style/DeployFragmentTextStyle"
-                android:text="设置消毒区" />
+                android:text="设置清洁区" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

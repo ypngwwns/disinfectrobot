@@ -57,11 +57,79 @@
         app:layout_constraintTop_toBottomOf="@id/tv2" />
 
 
+
+    <TextView
+        android:id="@+id/tv_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="12:30"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@id/tv_start_time"
+        app:layout_constraintTop_toBottomOf="@id/tv2" />
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray"
         app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
+
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="任务循环"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_background"
+        android:gravity="end"
+        android:hint="请输入循环次数"
+        android:padding="10dp"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tv3" />
+
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="任务排班"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv3" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_background"
+        android:gravity="end"
+        android:hint="请选择排班类型"
+        android:padding="10dp"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv3" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tv4" />
 
     <TextView
         android:id="@+id/tv_disinfect_range"
@@ -69,11 +137,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
-        android:text="消毒范围"
+        android:text="清洁范围"
         android:textColor="#999999"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
+        app:layout_constraintTop_toBottomOf="@id/tv4" />
 
     <LinearLayout
         android:id="@+id/vp_1"
@@ -87,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:text="全区消毒"
+            android:text="全区清洁"
             android:textColor="#323232"
             android:textSize="22.5dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +189,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:text="选区消毒"
+            android:text="选区清洁"
             android:textColor="#323232"
             android:textSize="22.5dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +216,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:text="选择消毒区"
+        android:text="选择清洁区"
         android:textColor="#999999"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"

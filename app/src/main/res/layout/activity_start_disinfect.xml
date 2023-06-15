@@ -19,7 +19,7 @@
         android:layout_marginTop="30dp"
         android:textColor="#999999"
         android:textSize="18dp"
-        android:text="消毒范围" />
+        android:text="清洁范围" />
 
     <LinearLayout
         android:id="@+id/vp_1"
@@ -37,7 +37,7 @@
             android:textSize="22.5dp"
             android:textColor="#323232"
             android:layout_marginStart="40dp"
-            android:text="全区消毒" />
+            android:text="全区清洁" />
 
         <View
             android:layout_weight="1"
@@ -71,7 +71,7 @@
             android:textSize="22.5dp"
             android:textColor="#323232"
             android:layout_marginStart="40dp"
-            android:text="选区消毒" />
+            android:text="选区清洁" />
 
         <View
             android:layout_weight="1"
@@ -98,7 +98,7 @@
         android:layout_marginStart="40dp"
         android:textColor="#999999"
         android:textSize="18dp"
-        android:text="选择消毒区" />
+        android:text="选择清洁区" />
 
     <ListView
         android:id="@+id/lv_disinfection_area"
@@ -115,7 +115,7 @@
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="开始消毒"
+        android:text="开始清洁"
         android:layout_marginBottom="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

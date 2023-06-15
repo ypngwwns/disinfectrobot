@@ -54,7 +54,7 @@ public class DisinfectAreaNameDialog extends BaseDialogFragment {
             }
         });
 
-        builder.setTitle("请输入消毒区域名称")
+        builder.setTitle("请输入清洁区域名称")
                 .setView(mBinding.getRoot())
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

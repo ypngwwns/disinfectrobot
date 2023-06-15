@@ -189,7 +189,7 @@ public class NavigationView extends View {
         drawLaserScan(canvas);
         //3.绘制机器人位置
         drawRobotPosition(canvas);
-        //4.绘制消毒路径
+        //4.绘制清洁路径
         drawPath(canvas);
         //5.绘制导航点位
         drawNavPosition(canvas);

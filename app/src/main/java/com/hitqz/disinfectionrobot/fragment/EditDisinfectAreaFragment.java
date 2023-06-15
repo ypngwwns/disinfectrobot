@@ -147,7 +147,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 List<MapAreaData.Action> actions = new ArrayList<>();
 
                 if (mSelectedNavigationPoints.size() == 0) {
-                    ToastUtils.showShort("请至少选中一个消毒点");
+                    ToastUtils.showShort("请至少选中一个清洁点");
                     return;
                 }
 
@@ -166,14 +166,14 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
-                                    ToastUtils.showShort("更新消毒区域成功");
+                                    ToastUtils.showShort("更新清洁区域成功");
                                     EventBus.getDefault().post(new RefreshEvent());
                                     dismissDialog();
                                 }
 
                                 @Override
                                 public void onFailure(String msg) {
-                                    ToastUtils.showShort("更新消毒区域失败%s:", msg);
+                                    ToastUtils.showShort("更新清洁区域失败%s:", msg);
                                     dismissDialog();
                                 }
                             });
@@ -182,7 +182,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
-                                    ToastUtils.showShort("保存消毒区域成功");
+                                    ToastUtils.showShort("保存清洁区域成功");
                                     EventBus.getDefault().post(new RefreshEvent());
                                     dismissDialog();
                                 }
@@ -190,7 +190,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                                 @Override
                                 public void onFailure(String msg) {
                                     Log.i(TAG, "onFailure: " + msg);
-                                    ToastUtils.showShort("保存消毒区域失败%s:", msg);
+                                    ToastUtils.showShort("保存清洁区域失败%s:", msg);
                                     dismissDialog();
                                 }
                             });
@@ -210,13 +210,13 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                                     @Override
                                     public void onSuccess(Object model) {
                                         EventBus.getDefault().post(new RefreshEvent());
-                                        ToastUtils.showShort("删除消毒区域成功");
+                                        ToastUtils.showShort("删除清洁区域成功");
                                         dismissDialog();
                                     }
 
                                     @Override
                                     public void onFailure(String msg) {
-                                        ToastUtils.showShort("删除消毒区域失败%s:", msg);
+                                        ToastUtils.showShort("删除清洁区域失败%s:", msg);
                                         dismissDialog();
                                     }
                                 });

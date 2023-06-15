@@ -74,7 +74,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="65dp"
-                android:text="开始消毒" />
+                android:text="开始清洁" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -136,7 +136,7 @@
                 android:layout_marginBottom="20dp" />
 
             <TextView
-                android:text="定时消毒"
+                android:text="定时清洁"
                 style="@style/MainFragmentTextStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

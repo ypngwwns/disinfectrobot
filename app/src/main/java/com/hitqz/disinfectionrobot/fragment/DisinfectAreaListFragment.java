@@ -90,7 +90,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
                     @Override
                     public void onConfirm(String text) {
                         if (!isValid(text)) {
-                            ToastUtils.showShort("已存在同名消毒区，请重新输入");
+                            ToastUtils.showShort("已存在同名清洁区，请重新输入");
                             return;
                         }
                         dialog.dismiss();

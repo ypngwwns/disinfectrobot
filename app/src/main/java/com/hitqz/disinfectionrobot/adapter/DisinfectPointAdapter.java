@@ -110,7 +110,7 @@ public class DisinfectPointAdapter extends DragAdapter {
             holder.dragView.setVisibility(View.INVISIBLE);
             holder.pointName.setClickable(true);
         }
-        holder.pointName.setText("消毒点" + (position + 1));
+        holder.pointName.setText("清洁点" + (position + 1));
         holder.switchCompat.setTag(position);
         holder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

@@ -15,7 +15,7 @@
         android:layout_height="29dp" />
 
     <TextView
-        android:text="消毒日志"
+        android:text="清洁日志"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="20.5dp"
         android:textColor="#323232"
