@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/include_layout_common_title_bar"
@@ -10,42 +10,70 @@
 
     <TextView
         android:id="@+id/tv1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
-        android:text="任务名称"
-        android:padding="10dp"
-        android:textSize="18dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="任务名称"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar" />
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:hint="请输入任务名称"
-        android:textSize="18dp"
+        android:background="@drawable/et_background"
         android:gravity="end"
-        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar"
+        android:hint="请输入任务名称"
         android:padding="10dp"
-        android:background="@drawable/et_background"/>
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray"
-        app:layout_constraintTop_toBottomOf="@id/tv1"/>
+        app:layout_constraintTop_toBottomOf="@id/tv1" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="执行时间"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv1" />
+
+
+    <TextView
+        android:id="@+id/tv_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="09:30"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv2" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
 
     <TextView
         android:id="@+id/tv_disinfect_range"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv1"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
+        android:text="消毒范围"
         android:textColor="#999999"
         android:textSize="18dp"
-        android:text="消毒范围" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
 
     <LinearLayout
         android:id="@+id/vp_1"
@@ -58,27 +86,27 @@
             android:id="@+id/tv_disinfect_range_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tp_time"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textSize="22.5dp"
-            android:textColor="#323232"
             android:layout_marginStart="40dp"
-            android:text="全区消毒" />
+            android:text="全区消毒"
+            android:textColor="#323232"
+            android:textSize="22.5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tp_time" />
 
         <View
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="1dp" />
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rb_all_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
-            android:focusable="false"
-            android:clickable="false"
+            android:layout_marginEnd="20dp"
             android:buttonTint="@color/colorPrimary"
-            android:layout_marginEnd="20dp" />
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
     </LinearLayout>
 
     <LinearLayout
@@ -92,76 +120,76 @@
             android:id="@+id/tv_disinfect_range_part"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tp_time"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textSize="22.5dp"
-            android:textColor="#323232"
             android:layout_marginStart="40dp"
-            android:text="选区消毒" />
+            android:text="选区消毒"
+            android:textColor="#323232"
+            android:textSize="22.5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tp_time" />
 
         <View
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="1dp" />
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <RadioButton
             android:id="@+id/rb_part_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
-            android:focusable="false"
-            android:clickable="false"
+            android:layout_marginEnd="20dp"
             android:buttonTint="@color/colorPrimary"
-            android:layout_marginEnd="20dp" />
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_select_disinfection_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/vp_2"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="40dp"
+        android:text="选择消毒区"
         android:textColor="#999999"
         android:textSize="18dp"
-        android:text="选择消毒区" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vp_2" />
 
     <ListView
         android:id="@+id/lv_disinfection_area"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:divider="@null"
-        app:layout_constraintTop_toBottomOf="@id/tv_select_disinfection_area"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:divider="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_select_disinfection_area" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="add"
-        app:tint="@null"
-        app:backgroundTint="#0178FF"
+        android:layout_margin="16dp"
         android:backgroundTint="#0178FF"
+        android:contentDescription="add"
         android:src="@mipmap/save"
-        android:layout_margin="16dp" />
+        app:backgroundTint="#0178FF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@null" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/fab_save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="add"
-        app:tint="@null"
-        app:backgroundTint="#E92B2B"
+        android:layout_margin="16dp"
         android:backgroundTint="#E92B2B"
+        android:contentDescription="add"
         android:src="@mipmap/delete"
-        android:layout_margin="16dp" />
+        app:backgroundTint="#E92B2B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fab_save"
+        app:tint="@null" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
