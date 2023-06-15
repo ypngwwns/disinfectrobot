@@ -98,6 +98,7 @@ public class EditTasksFragment extends BaseFragment {
         mBinding.es4.setAdapter(simpAdapter);
         if (mItem == null) {
             mBinding.fabDelete.setVisibility(View.GONE);
+            mBinding.et3.setText("1");
             mBinding.es4.setText("一次");
         } else {
             mBinding.et1.setText(mItem.taskName);
@@ -228,6 +229,17 @@ public class EditTasksFragment extends BaseFragment {
         if (TextUtils.isEmpty(mBinding.et1.getText().toString())) {
             mBinding.et1.setHintTextColor(Color.parseColor("#ff0000"));
             invalid = true;
+        }
+
+        if (TextUtils.isEmpty(mBinding.et3.getText().toString())) {
+            mBinding.et3.setHintTextColor(Color.parseColor("#ff0000"));
+            invalid = true;
+        } else {
+            int circle = Integer.parseInt(mBinding.et3.getText().toString());
+            if (circle < 1 || circle > 100) {
+                ToastUtils.showShort("循环次数必须在1-100之间");
+                invalid = true;
+            }
         }
 
         return invalid;
