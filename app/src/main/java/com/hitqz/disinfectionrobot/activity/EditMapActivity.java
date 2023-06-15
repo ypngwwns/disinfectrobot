@@ -1,7 +1,6 @@
 package com.hitqz.disinfectionrobot.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,7 +16,6 @@ import com.hitqz.disinfectionrobot.data.SaveUtil;
 import com.hitqz.disinfectionrobot.databinding.ActivityEditMapBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
-import com.hitqz.disinfectionrobot.util.AssetBitmapLoader;
 import com.hitqz.disinfectionrobot.widget.EditMapView;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
@@ -29,7 +27,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
@@ -72,6 +72,58 @@ public class EditMapActivity extends BaseActivity {
         return bytesArray;
     }
 
+    private void loadmap() {
+        showDialog();
+        Observable
+                .fromCallable(() -> {
+                    if (mChassisManager.mMapDataResponse == null) {
+                        mChassisManager.loadChassisData();
+                    }
+                    return true;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean result) {
+                        dismissDialog();
+                        if (mChassisManager.mMapDataResponse != null) {
+                            mBinding.editMapView.post(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    mCurrMapName = mChassisManager.mMapDataResponse.mapName;
+                                    if (!TextUtils.isEmpty(mCurrMapName)) {
+                                        mBinding.mapnameShowTv.setText(mCurrMapName);
+                                    }
+                                    mBinding.editMapView.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mBinding.editMapView.setMap(mChassisManager.mMapDataResponse.bitmap);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,22 +133,13 @@ public class EditMapActivity extends BaseActivity {
         //默认缩放模式
         touchMode(true);
 
-        if (!TextUtils.isEmpty(mCurrMapName)) {
-            mBinding.mapnameShowTv.setText(mCurrMapName);
-        }
-        Bitmap bitmap = AssetBitmapLoader.loadBitmapFromAsset(this, mCurrMapName);
-        mBinding.editMapView.post(new Runnable() {
-            @Override
-            public void run() {
-                mBinding.editMapView.setMap(bitmap);
-            }
-        });
         mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        loadmap();
     }
 
     private void initMap(String mapCode) throws IOException {
