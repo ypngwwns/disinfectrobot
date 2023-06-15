@@ -23,10 +23,8 @@ import com.sonicers.commonlib.rx.RxSchedulers;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @SuppressLint("CheckResult")
@@ -64,19 +62,6 @@ public class EditTasksFragment extends BaseFragment {
 //        mBinding.includeLayoutCommonTitleBar.tvSsid.setText("");
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
-//        mBinding.tpTime.setIs24HourView(true);
-//        if (TextUtils.isEmpty(mItem.taskName)) {
-//            mBinding.fabDelete.setVisibility(View.GONE);
-//        } else {
-//            mSelectedAllArea = mItem.jobStatus == 0;
-//            try {
-//                Date date = mSimpleDateFormat.parse(mItem.startTime);
-//                mBinding.tpTime.setHour(date.getHours());
-//                mBinding.tpTime.setMinute(date.getMinutes());
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +92,17 @@ public class EditTasksFragment extends BaseFragment {
         });
         onSelectChanged();
         refreshAreaList();
+        if (mItem == null) {
+
+            mBinding.fabDelete.setVisibility(View.GONE);
+        } else {
+            mBinding.et1.setText(mItem.taskName);
+            mBinding.tvStartTime.setText(mItem.startTime);
+            mBinding.tvEndTime.setText(mItem.endTime);
+            mBinding.et3.setText(String.valueOf(mItem.circle));
+            mBinding.et4.setText(mItem.taskType == 0 ? "执行一次" : "每天");
+            mBinding.fabDelete.setVisibility(View.VISIBLE);
+        }
 
         mBinding.fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,7 +239,7 @@ public class EditTasksFragment extends BaseFragment {
         return -1;
     }
 
-    public void setTask(CleanTask task) {
-        mItem = task;
+    public void setItem(CleanTask item) {
+        mItem = item;
     }
 }

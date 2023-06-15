@@ -19,6 +19,7 @@
         app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar" />
 
     <EditText
+        android:id="@+id/et_1"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/et_background"
@@ -87,10 +88,12 @@
         app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
 
     <EditText
+        android:id="@+id/et_3"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/et_background"
         android:gravity="end"
+        android:inputType="number"
         android:hint="请输入循环次数"
         android:padding="10dp"
         android:textSize="18dp"
@@ -115,6 +118,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv3" />
 
     <EditText
+        android:id="@+id/et_4"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/et_background"

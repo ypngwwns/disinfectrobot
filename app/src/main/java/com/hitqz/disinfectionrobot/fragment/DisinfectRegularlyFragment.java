@@ -111,8 +111,7 @@ public class DisinfectRegularlyFragment extends BaseFragment {
         mBinding.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CleanTask item = new CleanTask();
-                ((DisinfectRegularlyActivity) getActivity()).go2EditTask(item);
+                ((DisinfectRegularlyActivity) getActivity()).go2EditTask(null);
             }
         });
         refreshList();

@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hitqz.disinfectionrobot.R;
-import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.ActivityDisinfectRegularlyBinding;
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.fragment.DisinfectRegularlyFragment;
@@ -55,7 +54,7 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mEditTasksFragment == null) {
             mEditTasksFragment = EditTasksFragment.newInstance();
-            mEditTasksFragment.setTask(task);
+            mEditTasksFragment.setItem(task);
             fragmentTransaction.add(R.id.vp_content, mEditTasksFragment, EditTasksFragment.TAG);
 //            fragmentTransaction.addToBackStack(null);//后退时先移除，不销毁Activity
         } else {

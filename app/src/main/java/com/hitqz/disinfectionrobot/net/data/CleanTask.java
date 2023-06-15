@@ -15,4 +15,6 @@ public class CleanTask {
     public String taskName;
     @SerializedName("taskType")
     public int taskType;
+    @SerializedName("circle")
+    public int circle;
 }

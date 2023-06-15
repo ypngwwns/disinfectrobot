@@ -128,6 +128,18 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> addTask(@Body DisinfectTask disinfectTask);
 
     /**
+     * 添加清洁任务
+     */
+    @POST("/robot/api/clean/add")
+    Observable<BaseRespond<Object>> addCleanTask(@Body CleanTask item);
+
+    /**
+     * 添加清洁任务
+     */
+    @POST("/robot/api/clean/update")
+    Observable<BaseRespond<Object>> updateCleanTask(@Body CleanTask item);
+
+    /**
      * 更新任务
      */
     @POST("/robot/api/update")
