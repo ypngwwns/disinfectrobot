@@ -133,11 +133,16 @@ public class MapFragment extends BaseFragment {
     }
 
     public void refresh(RobotStatus robotStatus) {
-        mRobotPos.rawX = robotStatus.getCurrentPos().getX();
-        mRobotPos.rawY = robotStatus.getCurrentPos().getY();
-        mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
-        mBinding.navigationView.setRobotPoint(mRobotPos);
-        mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
+        if (robotStatus.getCurrentPos() != null) {
+            mRobotPos.rawX = robotStatus.getCurrentPos().getX();
+            mRobotPos.rawY = robotStatus.getCurrentPos().getY();
+            mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
+            mBinding.navigationView.setRobotPoint(mRobotPos);
+        }
+        if (robotStatus.getLaserOriginData() != null) {
+            mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
+        }
+
         mBinding.navigationView.postInvalidate();
     }
 }
