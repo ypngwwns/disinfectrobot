@@ -309,6 +309,7 @@ public class EditMapActivity extends BaseActivity {
                                     .subscribeWith(new BaseDataObserver<Object>() {
                                         @Override
                                         public void onSuccess(Object model) {
+                                            mChassisManager.mMapDataResponse = null;
                                             dismissDialog();
                                             ToastUtils.showShort("上传成功");
                                         }

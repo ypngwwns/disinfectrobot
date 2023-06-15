@@ -311,11 +311,17 @@ public class DeploymentRouteActivity extends BaseActivity {
                     if (robotStatus == null || robotStatus.getLaserData() == null) {
                         return;
                     }
-                    mActivity.mRobotPos.rawX = robotStatus.getCurrentPos().getX();
-                    mActivity.mRobotPos.rawY = robotStatus.getCurrentPos().getY();
-                    mActivity.mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
-                    mActivity.mBinding.navigationView.setRobotPoint(mActivity.mRobotPos);
-                    mActivity.mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
+                    if (robotStatus.getCurrentPos() != null) {
+                        mActivity.mRobotPos.rawX = robotStatus.getCurrentPos().getX();
+                        mActivity.mRobotPos.rawY = robotStatus.getCurrentPos().getY();
+                        mActivity.mRobotPos.radian = robotStatus.getCurrentPos().getYaw();
+                        mActivity.mBinding.navigationView.setRobotPoint(mActivity.mRobotPos);
+                    }
+
+                    if (robotStatus.getLaserOriginData() != null) {
+                        mActivity.mBinding.navigationView.setLaserScan(robotStatus.getLaserOriginData());
+                    }
+
                     mActivity.mBinding.navigationView.postInvalidate();
                 }
             });

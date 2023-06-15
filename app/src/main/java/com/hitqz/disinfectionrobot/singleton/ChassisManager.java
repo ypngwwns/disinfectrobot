@@ -3,6 +3,7 @@ package com.hitqz.disinfectionrobot.singleton;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,11 @@ import com.hitqz.disinfectionrobot.net.ISkyNet;
 import com.hitqz.disinfectionrobot.net.RetrofitManager;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+
+import io.reactivex.observers.DisposableObserver;
+import okhttp3.ResponseBody;
 
 @SuppressLint("CheckResult")
 public class ChassisManager {
@@ -57,16 +62,43 @@ public class ChassisManager {
                     public void onSuccess(MapDataResponse model) {
                         if (model != null) {
                             mMapDataResponse = model;
-                            Glide.with(mContext)
-                                    .asBitmap()
-                                    .load(model.uri)
-                                    .into(new SimpleTarget<Bitmap>() {
+
+                            mISkyNet.downloadFile(model.uri)
+                                    .compose(RxSchedulers.io_main())
+                                    .subscribeWith(new DisposableObserver<ResponseBody>() {
                                         @Override
-                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                            mMapDataResponse.bitmap = resource;
+                                        public void onNext(ResponseBody responseBody) {
+                                            // 将ResponseBody的字节流转换为byte数组
+                                            try {
+                                                byte[] bytes = responseBody.bytes();
+                                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                mMapDataResponse.bitmap = bitmap;
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
                                             mCountDownLatch.countDown();
                                         }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            mCountDownLatch.countDown();
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
                                     });
+//                            Glide.with(mContext)
+//                                    .asBitmap()
+//                                    .load(model.uri)
+//                                    .into(new SimpleTarget<Bitmap>() {
+//                                        @Override
+//                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//                                            mMapDataResponse.bitmap = resource;
+//                                            mCountDownLatch.countDown();
+//                                        }
+//                                    });
                         } else {
                             mCountDownLatch.countDown();
                         }
