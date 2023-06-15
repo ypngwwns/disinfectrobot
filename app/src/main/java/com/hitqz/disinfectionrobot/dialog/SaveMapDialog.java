@@ -30,7 +30,6 @@ public class SaveMapDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Dialog_Alert);
-        AutoSize.autoConvertDensity(mBaseActivity, 960f, true);
     }
 
     @NonNull

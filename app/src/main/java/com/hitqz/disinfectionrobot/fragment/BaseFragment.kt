@@ -17,7 +17,7 @@ import me.jessyan.autosize.AutoSize
 open class BaseFragment : RxFragment() {
 
     protected lateinit var mIDialog: IDialog
-    protected lateinit var mSkyNet: ISkyNet
+    protected lateinit var mISkyNet: ISkyNet
     protected lateinit var mContext: BaseActivity
     protected lateinit var mChassisManager: ChassisManager
 
@@ -36,7 +36,7 @@ open class BaseFragment : RxFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSkyNet = RetrofitManager.getInstance((context as Activity).applicationContext)
+        mISkyNet = RetrofitManager.getInstance((context as Activity).applicationContext)
             .create(ISkyNet::class.java)
         mChassisManager = ChassisManager.getInstance(mContext)
     }

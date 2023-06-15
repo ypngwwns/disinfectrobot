@@ -108,7 +108,7 @@ public class DisinfectAreaListFragment extends BaseFragment {
 
     private void refreshAreaList() {
         showDialog();
-        getMSkyNet().areaListGet().compose(RxSchedulers.io_main())
+        getMISkyNet().areaListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<MapArea>>() {
                     @Override
                     public void onSuccess(List<MapArea> model) {

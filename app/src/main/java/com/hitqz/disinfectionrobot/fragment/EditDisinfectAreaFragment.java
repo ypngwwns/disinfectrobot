@@ -162,7 +162,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                 mapAreaData.actions = actions;
                 if (null != mMapArea.id) {
                     mapAreaData.id = mMapArea.id;
-                    mSkyNet.areaPosUpdate(mapAreaData).compose(RxSchedulers.io_main())
+                    mISkyNet.areaPosUpdate(mapAreaData).compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
@@ -178,7 +178,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                                 }
                             });
                 } else {
-                    mSkyNet.areaPosAdd(mapAreaData).compose(RxSchedulers.io_main())
+                    mISkyNet.areaPosAdd(mapAreaData).compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
@@ -205,7 +205,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
                     @Override
                     public void onConfirm() {
                         showDialog();
-                        mSkyNet.mapAreaDelete(mMapArea.id).compose(RxSchedulers.io_main())
+                        mISkyNet.mapAreaDelete(mMapArea.id).compose(RxSchedulers.io_main())
                                 .subscribeWith(new BaseDataObserver<Object>() {
                                     @Override
                                     public void onSuccess(Object model) {
@@ -231,7 +231,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
         showDialog();
         AreaId areaId = new AreaId();
         areaId.areaId = mMapArea.id;
-        mSkyNet.areaPosList(areaId).compose(RxSchedulers.io_main())
+        mISkyNet.areaPosList(areaId).compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<AreaPose>>() {
                     @Override
                     public void onSuccess(List<AreaPose> model) {
@@ -259,7 +259,7 @@ public class EditDisinfectAreaFragment extends BaseFragment {
 
     private void getMapPose() {
         showDialog();
-        mSkyNet.mapPosListGet().compose(RxSchedulers.io_main())
+        mISkyNet.mapPosListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<MapPose>>() {
                     @Override
                     public void onSuccess(List<MapPose> model) {

@@ -100,7 +100,7 @@ public class MapFragment extends BaseFragment {
 
     private void getMapPose() {
         showDialog();
-        mSkyNet.mapPosListGet().compose(RxSchedulers.io_main())
+        mISkyNet.mapPosListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<MapPose>>() {
                     @Override
                     public void onSuccess(List<MapPose> model) {

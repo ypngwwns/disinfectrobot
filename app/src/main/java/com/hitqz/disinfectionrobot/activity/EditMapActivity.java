@@ -9,13 +9,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.hitqz.disinfectionrobot.data.SaveUtil;
 import com.hitqz.disinfectionrobot.databinding.ActivityEditMapBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
-import com.hitqz.disinfectionrobot.dialog.SaveMapDialog;
+import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.util.AssetBitmapLoader;
 import com.hitqz.disinfectionrobot.widget.EditMapView;
+import com.sonicers.commonlib.rx.RxSchedulers;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,7 +28,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import me.jessyan.autosize.AutoSize;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 @SuppressLint("CheckResult")
 public class EditMapActivity extends BaseActivity {
@@ -65,7 +75,6 @@ public class EditMapActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AutoSize.autoConvertDensity(this, 960f, true);
         mBinding = ActivityEditMapBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         setListener();
@@ -80,6 +89,12 @@ public class EditMapActivity extends BaseActivity {
             @Override
             public void run() {
                 mBinding.editMapView.setMap(bitmap);
+            }
+        });
+        mBinding.includeLayoutCommonTitleBar.vpBackContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -98,48 +113,6 @@ public class EditMapActivity extends BaseActivity {
     }
 
     private void setListener() {
-        mBinding.editMapMenu.editMapLoadButton.setOnClickListener((v) -> {
-//            showDialog();
-//            Observable
-//                    .fromCallable(() -> mNavconnectorImp.getMapNameList())
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe((result) -> {
-//                        if (result != null) {//成功
-//                            if (result.size() == 0) {
-//                                ToastUtils.showShort("获取地图列表为空");
-//                            } else {
-//                                MapListDialog dialog = new MapListDialog();
-//                                dialog.setList(result);
-//                                dialog.setOnClickListener(new MapListDialog.OnClickListener() {
-//                                    @Override
-//                                    public void onConfirm(String text) {
-//                                        showDialog();
-//                                        Observable.fromCallable(() -> {
-//                                                    mCurrMapName = text;
-//                                                    initMap(mCurrMapName);
-//                                                    return true;
-//                                                })
-//                                                .subscribeOn(Schedulers.io())
-//                                                .observeOn(AndroidSchedulers.mainThread())
-//                                                .subscribe((result) -> {
-//                                                    if (!TextUtils.isEmpty(mCurrMapName)) {
-//                                                        mBinding.mapnameShowTv.setText(mCurrMapName);
-//                                                    }
-//                                                    mBinding.editMapView.setMap(mMapData.bitmap);
-//                                                    dismissDialog();
-//                                                });
-//                                    }
-//                                });
-//                                dialog.show(getSupportFragmentManager(), dialog.getTag());
-//                            }
-//                        } else {
-//                            ToastUtils.showShort("获取地图列表失败");
-//                        }
-//
-//                        dismissDialog();
-//                    });
-        });
         mBinding.editMapMenu.editMapTouchMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,117 +126,7 @@ public class EditMapActivity extends BaseActivity {
                 touchMode(false);
             }
         });
-
-        mBinding.editMapMenu.editMapLinetypeLineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBinding.editMapMenu.editMapLinetypeLineButton.setEnabled(false);
-                mBinding.editMapMenu.editMapLinetypePathButton.setEnabled(true);
-                mBinding.editMapView.setLineType(EditMapView.PaintType.LINE);
-            }
-        });
-
-        mBinding.editMapMenu.editMapLinetypePathButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBinding.editMapMenu.editMapLinetypePathButton.setEnabled(false);
-                mBinding.editMapMenu.editMapLinetypeLineButton.setEnabled(true);
-                mBinding.editMapView.setLineType(EditMapView.PaintType.PATH);
-            }
-        });
-
-        mBinding.editMapMenu.editMapDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                showDialog();
-//                Observable
-//                        .fromCallable(() -> mNavconnectorImp.getMapNameList())
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe((result) -> {
-//                            if (result != null) {//成功
-//                                if (result.size() == 0) {
-//                                    ToastUtils.showShort("获取地图列表为空");
-//                                } else {
-//                                    MapListDialog dialog = new MapListDialog();
-//                                    dialog.setList(result);
-//                                    dialog.setOnClickListener(new MapListDialog.OnClickListener() {
-//                                        @Override
-//                                        public void onConfirm(String text) {
-//                                            showDialog();
-//                                            Observable
-//                                                    .fromCallable(() -> {
-//                                                        List<String> list = new ArrayList<>();
-//                                                        list.add(text);
-//                                                        return mNavconnectorImp.deleteMap2D(list);
-//                                                    })
-//                                                    .subscribeOn(Schedulers.io())
-//                                                    .observeOn(AndroidSchedulers.mainThread())
-//                                                    .subscribe((result) -> {
-//                                                        if (result == 0) {//成功
-//                                                            ToastUtils.showShort("删除地图成功");
-//                                                        } else {
-//                                                            ToastUtils.showShort("删除地图失败");
-//                                                        }
-//                                                        dismissDialog();
-//                                                    });
-//                                        }
-//                                    });
-//                                    dialog.show(getSupportFragmentManager(), dialog.getTag());
-//                                }
-//                            } else {
-//                                ToastUtils.showShort("获取地图列表失败");
-//                            }
-//
-//                            dismissDialog();
-//                        });
-            }
-        });
-        mBinding.editMapMenu.editMapColorBlackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBinding.editMapMenu.editMapColorBlackButton.setEnabled(false);
-                mBinding.editMapMenu.editMapColorWhiteButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorGrayButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorEraseButton.setEnabled(true);
-                mBinding.editMapView.setLineColor(Color.BLACK);
-                mBinding.editMapView.setDrawType(EditMapView.DrawType.DRAW);
-            }
-        });
-        mBinding.editMapMenu.editMapColorGrayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBinding.editMapMenu.editMapColorGrayButton.setEnabled(false);
-                mBinding.editMapMenu.editMapColorBlackButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorWhiteButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorEraseButton.setEnabled(true);
-                mBinding.editMapView.setLineColor(Color.rgb(205, 205, 205));
-                mBinding.editMapView.setDrawType(EditMapView.DrawType.DRAW);
-            }
-        });
-        mBinding.editMapMenu.editMapColorWhiteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBinding.editMapMenu.editMapColorWhiteButton.setEnabled(false);
-                mBinding.editMapMenu.editMapColorGrayButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorBlackButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorEraseButton.setEnabled(true);
-                mBinding.editMapView.setLineColor(Color.WHITE);
-                mBinding.editMapView.setDrawType(EditMapView.DrawType.WHITE);
-            }
-        });
-        mBinding.editMapMenu.editMapColorEraseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBinding.editMapMenu.editMapColorEraseButton.setEnabled(false);
-                mBinding.editMapMenu.editMapColorBlackButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorGrayButton.setEnabled(true);
-                mBinding.editMapMenu.editMapColorWhiteButton.setEnabled(true);
-
-                mBinding.editMapView.setLineColor(Color.WHITE);
-                mBinding.editMapView.setDrawType(EditMapView.DrawType.ERASE);
-            }
-        });
+        mBinding.editMapView.setLineType(EditMapView.PaintType.LINE);
         mBinding.editMapMenu.editMapLineRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -292,80 +155,20 @@ public class EditMapActivity extends BaseActivity {
                 mBinding.editMapView.redo();
             }
         });
-        mBinding.editMapMenu.editMapRecoverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                recover();
-            }
-        });
         mBinding.editMapMenu.editMapSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaveMapDialog dialog = new SaveMapDialog();
-                dialog.setOnClickListener(text -> {
-//                    showDialog();
-//                    Observable
-//                            .fromCallable(() -> {
-//                                //创建新地图文件夹
-//                                File newFileDir = PathUtil.getMapDeCompressFile(getApplicationContext(), text);
-//
-//                                if (newFileDir.exists()) {
-//                                    String yamlFilePath = PathUtil.getMapYmlFile(getApplicationContext(), mCurrMapName);
-//                                    Map<String, Object> map = YmlUtil.parseYaml(yamlFilePath);
-//                                    String rawPgmPath = (String) map.get("image");
-//                                    //map.put("image", "/home/nav/protocol/devel/lib/navconnector/.data/map2d/" + text + ".pgm");
-//                                    int index = rawPgmPath.indexOf("map2d/");
-//                                    String newRawPgmPath = rawPgmPath.substring(0, index) + "map2d/" + text + ".pgm";
-//                                    map.put("image", newRawPgmPath);
-//                                    String newYamlFilePath = PathUtil.getMapYmlFile(getApplicationContext(), text);
-//                                    Yaml yml = new Yaml();
-//                                    FileWriter writer = new FileWriter(newYamlFilePath, true);
-//                                    BufferedWriter bufferedWriter = new BufferedWriter(writer);
-//                                    bufferedWriter.newLine();
-//                                    yml.dump(map, bufferedWriter);
-//                                    bufferedWriter.close();
-//                                    writer.close();
-//
-//                                    File newYamlFile = new File(newYamlFilePath);
-//                                    if (newYamlFile.exists()) {
-//                                        Bitmap whiteBgBitmap = mBinding.editMapView.getMap();//获取新图
-//                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                                        whiteBgBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//                                        byte[] mapBytes = baos.toByteArray();
-//                                        BitmapFactory.Options options = new BitmapFactory.Options();
-//                                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//                                        Bitmap bitmap = BitmapFactory.decodeByteArray(mapBytes, 0, mapBytes.length, options);
-//                                        ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
-//                                        bitmap.copyPixelsToBuffer(buffer);
-//                                        byte[] bytes = buffer.array();
-//                                        byte[] pgmBytes = createPGMFile(bytes, bitmap.getWidth(), bitmap.getHeight());
-////                                        byte[] pgm = CompressUtil.compress(pgmBytes);
-//
-//                                        File newPgmFile = new File(PathUtil.getMapPGMFile(getApplicationContext(), text));
-//                                        createFileWithByte(pgmBytes, newPgmFile);
-//
-//                                        TARGZ.compress(PathUtil.getMapCompressFilePath(getApplicationContext(), text), newYamlFile, newPgmFile);
-//
-//                                        byte[] targzBytes = readBytesFromFile(PathUtil.getMapCompressFilePath(getApplicationContext(), text));
-//                                        return mNavconnectorImp.setMap2D(targzBytes);
-//                                    }
-//                                }
-//
-//                                return -1;
-//                            })
-//                            .subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe((result) -> {
-//                                if (result == 0) {//成功
-//                                    ToastUtils.showShort("保存地图成功");
-//                                } else {
-//                                    ToastUtils.showShort("保存地图失败");
-//                                }
-//
-//                                dismissDialog();
-//                            });
+                if (!mBinding.editMapView.operated()) {
+                    return;
+                }
+                CommonDialog dialog = new CommonDialog();
+                dialog.setOnClickListener(new CommonDialog.OnClickListener() {
+                    @Override
+                    public void onConfirm() {
+                        saveAndUpload();
+                    }
                 });
-                dialog.show(getSupportFragmentManager(), dialog.getTag());
+                dialog.show(getSupportFragmentManager(), dialog.TAG);
             }
         });
     }
@@ -460,20 +263,11 @@ public class EditMapActivity extends BaseActivity {
             setEditButtonEnable(true);
             mBinding.editMapView.setLineColor(Color.BLACK);
             mBinding.editMapView.setDrawType(EditMapView.DrawType.DRAW);
-            mBinding.editMapMenu.editMapColorBlackButton.setEnabled(false);
-            mBinding.editMapMenu.editMapLinetypeLineButton.performClick();
         }
     }
 
     private void setEditButtonEnable(boolean enable) {
-        mBinding.editMapMenu.editMapLinetypeLineButton.setEnabled(enable);
-        mBinding.editMapMenu.editMapLinetypePathButton.setEnabled(enable);
-        mBinding.editMapMenu.editMapColorBlackButton.setEnabled(enable);
-        mBinding.editMapMenu.editMapColorGrayButton.setEnabled(enable);
-        mBinding.editMapMenu.editMapColorWhiteButton.setEnabled(enable);
-        mBinding.editMapMenu.editMapColorEraseButton.setEnabled(enable);
         mBinding.editMapMenu.editMapLineRadius.setEnabled(enable);
-        mBinding.editMapMenu.editMapRecoverButton.setEnabled(enable);
         mBinding.editMapMenu.editMapRedoButton.setEnabled(enable);
         mBinding.editMapMenu.editMapUndoButton.setEnabled(enable);
     }
@@ -492,5 +286,50 @@ public class EditMapActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void saveAndUpload() {
+        Observable
+                .fromCallable(() -> SaveUtil.saveBitmapToStorage(this, mBinding.editMapView.getMap(), "map"))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<String>() {
+                    @Override
+                    public void onNext(@NonNull String filePath) {
+                        if (TextUtils.isEmpty(filePath)) {
+                            ToastUtils.showShort("保存失败");
+                        } else {
+                            File file = new File(filePath);
+                            // 创建RequestBody并指定文件类型
+                            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), file);
+                            // 创建MultipartBody.Part以便添加到请求
+                            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+                            mISkyNet.updateRobotMap(filePart)
+                                    .compose(RxSchedulers.io_main())
+                                    .subscribeWith(new BaseDataObserver<Object>() {
+                                        @Override
+                                        public void onSuccess(Object model) {
+                                            dismissDialog();
+                                            ToastUtils.showShort("上传成功");
+                                        }
+
+                                        @Override
+                                        public void onFailure(String msg) {
+                                            ToastUtils.showShort("上传失败");
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        dismissDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

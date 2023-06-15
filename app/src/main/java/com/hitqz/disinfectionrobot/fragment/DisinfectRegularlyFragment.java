@@ -77,7 +77,7 @@ public class DisinfectRegularlyFragment extends BaseFragment {
                 Task task = new Task();
                 task.id = mList.get(position).id;
                 task.jobStatus = check ? 0 : 1;
-                getMSkyNet().activeJob(task).compose(RxSchedulers.io_main())
+                getMISkyNet().activeJob(task).compose(RxSchedulers.io_main())
                         .subscribeWith(new BaseDataObserver<Object>() {
                             @Override
                             public void onSuccess(Object model) {
@@ -124,7 +124,7 @@ public class DisinfectRegularlyFragment extends BaseFragment {
 
     private void refreshList() {
         showDialog();
-        getMSkyNet().cleanTaskListGet().compose(RxSchedulers.io_main())
+        getMISkyNet().cleanTaskListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<CleanTask>>() {
                     @Override
                     public void onSuccess(List<CleanTask> model) {

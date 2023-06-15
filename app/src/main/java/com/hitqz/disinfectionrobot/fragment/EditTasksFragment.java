@@ -115,7 +115,7 @@ public class EditTasksFragment extends BaseFragment {
                     @Override
                     public void onConfirm() {
                         showDialog();
-                        mSkyNet.deleteCleanTask(mItem.id).compose(RxSchedulers.io_main())
+                        mISkyNet.deleteCleanTask(mItem.id).compose(RxSchedulers.io_main())
                                 .subscribeWith(new BaseDataObserver<Object>() {
                                     @Override
                                     public void onSuccess(Object model) {
@@ -146,7 +146,7 @@ public class EditTasksFragment extends BaseFragment {
                     mItem = new CleanTask();
                     assignBody();
                     showDialog();
-                    mSkyNet.addCleanTask(mItem)
+                    mISkyNet.addCleanTask(mItem)
                             .compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
@@ -164,7 +164,8 @@ public class EditTasksFragment extends BaseFragment {
                             });
                 } else {
                     assignBody();
-                    mSkyNet.updateCleanTask(mItem)
+                    showDialog();
+                    mISkyNet.updateCleanTask(mItem)
                             .compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
@@ -225,7 +226,7 @@ public class EditTasksFragment extends BaseFragment {
 
     private void refreshAreaList() {
         showDialog();
-        getMSkyNet().areaListGet().compose(RxSchedulers.io_main())
+        getMISkyNet().areaListGet().compose(RxSchedulers.io_main())
                 .subscribeWith(new BaseDataObserver<List<MapArea>>() {
                     @Override
                     public void onSuccess(List<MapArea> model) {
