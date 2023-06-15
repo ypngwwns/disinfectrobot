@@ -16,6 +16,7 @@ import com.hitqz.disinfectionrobot.data.PointData;
 import com.hitqz.disinfectionrobot.data.SpeedRequest;
 import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.data.TempTask;
+import com.hitqz.disinfectionrobot.net.data.CleanTask;
 
 import java.util.List;
 
@@ -167,4 +168,10 @@ public interface ISkyNet {
      */
     @POST("/robot/api/addJobNow")
     Observable<BaseRespond<Object>> addJobNow(@Body TempTask task);
+
+    /**
+     * 获取清洁任务列表
+     */
+    @POST("/robot/api/clean/taskListGet")
+    Observable<BaseRespond<List<CleanTask>>> cleanTaskListGet();
 }

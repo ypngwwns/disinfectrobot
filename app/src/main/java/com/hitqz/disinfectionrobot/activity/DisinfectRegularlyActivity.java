@@ -11,6 +11,7 @@ import com.hitqz.disinfectionrobot.databinding.ActivityDisinfectRegularlyBinding
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.fragment.DisinfectRegularlyFragment;
 import com.hitqz.disinfectionrobot.fragment.EditTasksFragment;
+import com.hitqz.disinfectionrobot.net.data.CleanTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,7 +50,7 @@ public class DisinfectRegularlyActivity extends BaseActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    public void go2EditTask(Task task) {
+    public void go2EditTask(CleanTask task) {
         hideOther();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (mEditTasksFragment == null) {

@@ -16,6 +16,7 @@ import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.databinding.FragmentDisinfectRegularlyBinding;
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.net.data.CleanTask;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,7 +32,7 @@ public class DisinfectRegularlyFragment extends BaseFragment {
 
     FragmentDisinfectRegularlyBinding mBinding;
     private TimedTaskAdapter mTimedTaskAdapter;
-    private List<Task> mList = new ArrayList<>();
+    private List<CleanTask> mList = new ArrayList<>();
 
     private DisinfectRegularlyFragment() {
         // Required empty public constructor
@@ -110,8 +111,8 @@ public class DisinfectRegularlyFragment extends BaseFragment {
         mBinding.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task task = new Task();
-                ((DisinfectRegularlyActivity) getActivity()).go2EditTask(task);
+                CleanTask item = new CleanTask();
+                ((DisinfectRegularlyActivity) getActivity()).go2EditTask(item);
             }
         });
         refreshList();
@@ -124,10 +125,10 @@ public class DisinfectRegularlyFragment extends BaseFragment {
 
     private void refreshList() {
         showDialog();
-        getMSkyNet().taskListGet().compose(RxSchedulers.io_main())
-                .subscribeWith(new BaseDataObserver<List<Task>>() {
+        getMSkyNet().cleanTaskListGet().compose(RxSchedulers.io_main())
+                .subscribeWith(new BaseDataObserver<List<CleanTask>>() {
                     @Override
-                    public void onSuccess(List<Task> model) {
+                    public void onSuccess(List<CleanTask> model) {
                         mList.clear();
                         mList.addAll(model);
                         mTimedTaskAdapter.notifyDataSetInvalidated();

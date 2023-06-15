@@ -19,6 +19,7 @@ import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
+import com.hitqz.disinfectionrobot.net.data.CleanTask;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +39,7 @@ public class EditTasksFragment extends BaseFragment {
     private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
     private List<MapArea> mList = new ArrayList<>();
     private boolean mSelectedAllArea = true;
-    private Task mTask;
+    private CleanTask mItem;
 
     private EditTasksFragment() {
         // Required empty public constructor
@@ -64,12 +65,12 @@ public class EditTasksFragment extends BaseFragment {
         mSelectDisinfectAreaAdapter = new SelectDisinfectAreaAdapter(mList);
         mBinding.lvDisinfectionArea.setAdapter(mSelectDisinfectAreaAdapter);
         mBinding.tpTime.setIs24HourView(true);
-        if (TextUtils.isEmpty(mTask.areaName)) {
+        if (TextUtils.isEmpty(mItem.taskName)) {
             mBinding.fabDelete.setVisibility(View.GONE);
         } else {
-            mSelectedAllArea = mTask.taskType == 0;
+            mSelectedAllArea = mItem.jobStatus == 0;
             try {
-                Date date = mSimpleDateFormat.parse(mTask.jobTime);
+                Date date = mSimpleDateFormat.parse(mItem.startTime);
                 mBinding.tpTime.setHour(date.getHours());
                 mBinding.tpTime.setMinute(date.getMinutes());
             } catch (ParseException e) {
@@ -115,7 +116,7 @@ public class EditTasksFragment extends BaseFragment {
                     @Override
                     public void onConfirm() {
                         showDialog();
-                        mSkyNet.deleteTask(mTask.id).compose(RxSchedulers.io_main())
+                        mSkyNet.deleteTask(mItem.id).compose(RxSchedulers.io_main())
                                 .subscribeWith(new BaseDataObserver<Object>() {
                                     @Override
                                     public void onSuccess(Object model) {
@@ -150,8 +151,8 @@ public class EditTasksFragment extends BaseFragment {
                     task.workArea = mList.get(pos).id;
                 }
 
-                if (!TextUtils.isEmpty(mTask.areaName)) {
-                    task.id = mTask.id;
+                if (!TextUtils.isEmpty(mItem.taskName)) {
+                    task.id = mItem.id;
                     mSkyNet.updateTask(task).compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
@@ -227,22 +228,22 @@ public class EditTasksFragment extends BaseFragment {
     }
 
     private int findIndex(List<MapArea> mapAreas) {
-        if (TextUtils.isEmpty(mTask.areaName)) {
-            return -1;
-        }
-        if (mTask.taskType == 0) {
-            return -1;
-        }
-
-        for (int i = 0; i < mapAreas.size(); i++) {
-            if (mapAreas.get(i).id.equals(mTask.workArea.id)) {
-                return i;
-            }
-        }
+//        if (TextUtils.isEmpty(mItem.areaName)) {
+//            return -1;
+//        }
+//        if (mItem.taskType == 0) {
+//            return -1;
+//        }
+//
+//        for (int i = 0; i < mapAreas.size(); i++) {
+//            if (mapAreas.get(i).id.equals(mItem.workArea.id)) {
+//                return i;
+//            }
+//        }
         return -1;
     }
 
-    public void setTask(Task task) {
-        mTask = task;
+    public void setTask(CleanTask task) {
+        mItem = task;
     }
 }

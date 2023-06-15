@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.Task;
+import com.hitqz.disinfectionrobot.net.data.CleanTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,13 +24,13 @@ import java.util.List;
  */
 public class TimedTaskAdapter extends BaseAdapter {
 
-    private final List<Task> mData;
+    private final List<CleanTask> mData;
     private final Context mContext;
     private View.OnClickListener mOnClickListener;
     private IOnCheckChangeListener mIOnCheckChangeListener;
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("HH:mm");
 
-    public TimedTaskAdapter(Context mContext, List<Task> mData) {
+    public TimedTaskAdapter(Context mContext, List<CleanTask> mData) {
         this.mData = mData;
         this.mContext = mContext;
     }
@@ -65,9 +66,8 @@ public class TimedTaskAdapter extends BaseAdapter {
             }
         });
 
-
         try {
-            Date date = mSimpleDateFormat.parse(mData.get(position).jobTime);
+            Date date = mSimpleDateFormat.parse(mData.get(position).startTime);
             if (date != null) {
                 time.setText(mSimpleDateFormat.format(date));
             }
@@ -75,7 +75,7 @@ public class TimedTaskAdapter extends BaseAdapter {
             e.printStackTrace();
         }
 
-        tv1.setText(mData.get(position).areaName);
+        tv1.setText(mData.get(position).taskName);
         switchCompat.setChecked(mData.get(position).jobStatus == 0);
         convertView.setTag(position);
         convertView.setOnClickListener(new View.OnClickListener() {
