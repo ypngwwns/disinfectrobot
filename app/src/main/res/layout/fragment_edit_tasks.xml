@@ -8,12 +8,21 @@
         android:id="@+id/include_layout_common_title_bar"
         layout="@layout/layout_common_title_bar" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gv_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:padding="10dp"
         android:text="任务名称"
+        android:textColor="#000000"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_layout_common_title_bar" />
@@ -22,9 +31,10 @@
         android:id="@+id/et_1"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/et_background"
         android:gravity="end"
-        android:hint="请输入任务名称"
+        android:hint="必填"
         android:padding="10dp"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,8 +50,10 @@
         android:id="@+id/tv2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:padding="10dp"
         android:text="执行时间"
+        android:textColor="#000000"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv1" />
@@ -51,22 +63,25 @@
         android:id="@+id/tv_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:padding="10dp"
         android:text="09:30"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toStartOf="@id/gv_1"
         app:layout_constraintTop_toBottomOf="@id/tv2" />
-
 
 
     <TextView
         android:id="@+id/tv_end_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:padding="10dp"
         android:text="12:30"
-        android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="@id/tv_start_time"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        app:layout_constraintStart_toEndOf="@id/gv_1"
         app:layout_constraintTop_toBottomOf="@id/tv2" />
 
 
@@ -81,20 +96,23 @@
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:padding="10dp"
         android:text="任务循环"
+        android:textColor="#000000"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_start_time" />
 
     <EditText
         android:id="@+id/et_3"
-        android:layout_width="200dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/et_background"
         android:gravity="end"
+        android:hint="非必填"
         android:inputType="number"
-        android:hint="请输入循环次数"
         android:padding="10dp"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,23 +129,24 @@
         android:id="@+id/tv4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:padding="10dp"
         android:text="任务排班"
+        android:textColor="#000000"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv3" />
 
-    <EditText
-        android:id="@+id/et_4"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/et_background"
+    <com.hitqz.disinfectionrobot.widget.editspinner.EditSpinner
+        android:id="@+id/es_4"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="30dp"
         android:gravity="end"
-        android:hint="请选择排班类型"
-        android:padding="10dp"
-        android:textSize="18dp"
+        app:editable="false"
+        app:layout_constraintBottom_toBottomOf="@id/tv4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv3" />
+        app:layout_constraintTop_toTopOf="@id/tv4" />
 
     <View
         android:layout_width="match_parent"

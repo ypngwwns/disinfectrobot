@@ -28,7 +28,7 @@
     <style name="edit_main_bg">
         <item name="android:background">@drawable/et_background</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:padding">3dp</item>
     </style>
 </resources>

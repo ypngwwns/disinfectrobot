@@ -128,6 +128,18 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> addTask(@Body DisinfectTask disinfectTask);
 
     /**
+     * 更新任务
+     */
+    @POST("/robot/api/update")
+    Observable<BaseRespond<Object>> updateTask(@Body DisinfectTask disinfectTask);
+
+    /**
+     * 删除任务
+     */
+    @DELETE("/robot/api/delete")
+    Observable<BaseRespond<Object>> deleteTask(@Query("id") int id);
+
+    /**
      * 添加清洁任务
      */
     @POST("/robot/api/clean/add")
@@ -140,16 +152,10 @@ public interface ISkyNet {
     Observable<BaseRespond<Object>> updateCleanTask(@Body CleanTask item);
 
     /**
-     * 更新任务
+     * 删除清洁任务
      */
-    @POST("/robot/api/update")
-    Observable<BaseRespond<Object>> updateTask(@Body DisinfectTask disinfectTask);
-
-    /**
-     * 删除任务
-     */
-    @DELETE("/robot/api/delete")
-    Observable<BaseRespond<Object>> deleteTask(@Query("id") int id);
+    @DELETE("/robot/api/clean/delete")
+    Observable<BaseRespond<Object>> deleteCleanTask(@Query("id") int id);
 
     /**
      * 建图指令

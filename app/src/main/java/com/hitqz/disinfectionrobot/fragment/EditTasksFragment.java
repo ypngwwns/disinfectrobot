@@ -1,6 +1,7 @@
 package com.hitqz.disinfectionrobot.fragment;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,26 +13,26 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.hitqz.disinfectionrobot.adapter.SelectDisinfectAreaAdapter;
-import com.hitqz.disinfectionrobot.data.DisinfectTask;
+import com.hitqz.disinfectionrobot.constant.Constants;
 import com.hitqz.disinfectionrobot.data.MapArea;
 import com.hitqz.disinfectionrobot.databinding.FragmentEditTasksBinding;
 import com.hitqz.disinfectionrobot.dialog.CommonDialog;
 import com.hitqz.disinfectionrobot.event.TaskRefreshEvent;
 import com.hitqz.disinfectionrobot.net.BaseDataObserver;
 import com.hitqz.disinfectionrobot.net.data.CleanTask;
+import com.hitqz.disinfectionrobot.widget.editspinner.SimpleAdapter;
 import com.sonicers.commonlib.rx.RxSchedulers;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressLint("CheckResult")
 public class EditTasksFragment extends BaseFragment {
 
     public static final String TAG = EditTasksFragment.class.getSimpleName();
-    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("HH:mm");
     FragmentEditTasksBinding mBinding;
     private SelectDisinfectAreaAdapter mSelectDisinfectAreaAdapter;
     private List<MapArea> mList = new ArrayList<>();
@@ -92,15 +93,17 @@ public class EditTasksFragment extends BaseFragment {
         });
         onSelectChanged();
         refreshAreaList();
+        SimpleAdapter simpAdapter = new SimpleAdapter(mContext, Arrays.asList(Constants.taskTypes));
+        mBinding.es4.setAdapter(simpAdapter);
         if (mItem == null) {
-
             mBinding.fabDelete.setVisibility(View.GONE);
+            mBinding.es4.setText("一次");
         } else {
             mBinding.et1.setText(mItem.taskName);
             mBinding.tvStartTime.setText(mItem.startTime);
             mBinding.tvEndTime.setText(mItem.endTime);
             mBinding.et3.setText(String.valueOf(mItem.circle));
-            mBinding.et4.setText(mItem.taskType == 0 ? "" : "每天");
+            mBinding.es4.setText(mItem.taskType == 0 ? "一次" : "每天");
             mBinding.fabDelete.setVisibility(View.VISIBLE);
         }
 
@@ -112,7 +115,7 @@ public class EditTasksFragment extends BaseFragment {
                     @Override
                     public void onConfirm() {
                         showDialog();
-                        mSkyNet.deleteTask(mItem.id).compose(RxSchedulers.io_main())
+                        mSkyNet.deleteCleanTask(mItem.id).compose(RxSchedulers.io_main())
                                 .subscribeWith(new BaseDataObserver<Object>() {
                                     @Override
                                     public void onSuccess(Object model) {
@@ -136,53 +139,72 @@ public class EditTasksFragment extends BaseFragment {
         mBinding.fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
-                DisinfectTask task = new DisinfectTask();
-//                task.jobTime = mBinding.tpTime.getHour() + ":" + mBinding.tpTime.getMinute();
-                if (mSelectedAllArea) {
-                    task.taskType = 0;
-                } else {
-                    task.taskType = 1;
-                    int pos = mSelectDisinfectAreaAdapter.getSelectedPos();
-                    task.workArea = mList.get(pos).id;
+                if (checkInvalid()) {
+                    return;
                 }
-
-                if (!TextUtils.isEmpty(mItem.taskName)) {
-                    task.id = mItem.id;
-                    mSkyNet.updateTask(task).compose(RxSchedulers.io_main())
+                if (mItem == null) {
+                    mItem = new CleanTask();
+                    assignBody();
+                    showDialog();
+                    mSkyNet.addCleanTask(mItem)
+                            .compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
-                                    ToastUtils.showShort("更新任务成功");
-                                    EventBus.getDefault().post(new TaskRefreshEvent());
                                     dismissDialog();
+                                    refreshList();
+                                    ToastUtils.showShort("添加成功");
                                 }
 
                                 @Override
                                 public void onFailure(String msg) {
-                                    ToastUtils.showShort("更新任务失败%s", msg);
-                                    dismissDialog();
+                                    mItem = null;
+                                    ToastUtils.showShort("添加失败");
                                 }
                             });
                 } else {
-                    mSkyNet.addTask(task).compose(RxSchedulers.io_main())
+                    assignBody();
+                    mSkyNet.updateCleanTask(mItem)
+                            .compose(RxSchedulers.io_main())
                             .subscribeWith(new BaseDataObserver<Object>() {
                                 @Override
                                 public void onSuccess(Object model) {
-                                    ToastUtils.showShort("新增任务成功");
-                                    EventBus.getDefault().post(new TaskRefreshEvent());
                                     dismissDialog();
+                                    refreshList();
+                                    ToastUtils.showShort("更新成功");
                                 }
 
                                 @Override
                                 public void onFailure(String msg) {
-                                    ToastUtils.showShort("新增任务失败%s", msg);
-                                    dismissDialog();
+                                    mItem = null;
+                                    ToastUtils.showShort("更新失败");
                                 }
                             });
                 }
             }
         });
+    }
+
+    private void refreshList() {
+
+    }
+
+    private boolean checkInvalid() {
+        boolean invalid = false;
+        if (TextUtils.isEmpty(mBinding.et1.getText().toString())) {
+            mBinding.et1.setHintTextColor(Color.parseColor("#ff0000"));
+            invalid = true;
+        }
+
+        return invalid;
+    }
+
+    private void assignBody() {
+        mItem.taskName = (mBinding.et1.getText().toString());
+        mItem.startTime = mBinding.tvStartTime.getText().toString();
+        mItem.endTime = mBinding.tvEndTime.getText().toString();
+        mItem.circle = Integer.parseInt(mBinding.et3.getText().toString());
+        mItem.taskType = mBinding.es4.getText().equals("一次") ? 0 : 1;
     }
 
     private void onSelectChanged() {
