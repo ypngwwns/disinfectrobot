@@ -1,5 +1,6 @@
 package com.hitqz.disinfectionrobot.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.hitqz.disinfectionrobot.R;
 import com.hitqz.disinfectionrobot.data.Task;
 import com.hitqz.disinfectionrobot.net.data.CleanTask;
+import com.hitqz.disinfectionrobot.util.HHmmUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +24,7 @@ import java.util.List;
 /**
  * 记录列表
  */
+@SuppressLint("SetTextI18n")
 public class TimedTaskAdapter extends BaseAdapter {
 
     private final List<CleanTask> mData;
@@ -66,16 +69,8 @@ public class TimedTaskAdapter extends BaseAdapter {
             }
         });
 
-        try {
-            Date date = mSimpleDateFormat.parse(mData.get(position).startTime);
-            if (date != null) {
-                time.setText(mSimpleDateFormat.format(date));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         tv1.setText(mData.get(position).taskName);
+        time.setText(HHmmUtil.format(mData.get(position).startTime) + "-" + HHmmUtil.format(mData.get(position).endTime));
         switchCompat.setChecked(mData.get(position).jobStatus == 0);
         convertView.setTag(position);
         convertView.setOnClickListener(new View.OnClickListener() {
