@@ -2,67 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="242.5dp"
-        android:scaleType="centerCrop"
-        android:background="@mipmap/bg3" />
+        android:background="@mipmap/bg3"
+        android:scaleType="centerCrop" />
 
-    <include layout="@layout/setting_line_1" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
-
-    <include layout="@layout/setting_line_2" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
-
-    <include layout="@layout/setting_line_3" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
 
     <include
         android:id="@+id/btn_test"
         layout="@layout/setting_line_4" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
-
-    <include layout="@layout/setting_line_5" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
-
-    <include layout="@layout/setting_line_6" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
-
-    <include layout="@layout/setting_line_7" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F3F4F5" />
-
-    <include layout="@layout/setting_line_8" />
 
     <View
         android:layout_width="match_parent"
