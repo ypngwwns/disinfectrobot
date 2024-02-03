@@ -27,7 +27,6 @@ allprojects {
         maven { url 'https://jitpack.io' }
         mavenCentral()
         google()
-        maven { url "http://maven.rongcloud.cn/repository/maven-releases/" }
     }
 }
 
